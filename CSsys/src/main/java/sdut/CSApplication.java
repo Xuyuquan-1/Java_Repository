@@ -1,11 +1,11 @@
-package sdut.xk;
+package sdut;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class CSSApplication {
+public class CSApplication {
     public static void main(String[] args) {
-        SpringApplication.run(CSSApplication.class, args);
+        SpringApplication.run(CSApplication.class, args);
     }
 }
