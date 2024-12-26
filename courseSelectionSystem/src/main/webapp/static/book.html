@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="http://localhost:8080/">
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="static/layui/css/layui.css">
+</head>
+<body>
+<table class="layui-table" lay-data="{toolbar:'#toptools', url:'/book/list', page:true, id:'datalist'}" lay-filter="datalist">
+    <thead>
+    <tr>
+        <th lay-data="{field:'bookid'}">ID</th>
+        <th lay-data="{field:'booktitle'}">书名</th>
+        <th lay-data="{field:'author'}">作者</th>
+        <th lay-data="{field:'publisheddate'}">发布时间</th>
+        <th lay-data="{field:'pages'}">页数</th>
+        <th lay-data="{field:'price'}">价格</th>
+        <th lay-data="{templet:function(d){ return d.category.categoryname}}">分类</th>
+
+        <th lay-data="{toolbar:'#linetools'}">操作</th>
+    </tr>
+    </thead>
+</table>
+<!--借阅图书窗口-->
+<div id="borrowWin" lay-filter="borrowWin" class="layui-form" style="display: none">
+    <input type="hidden" name="bookid">
+    <div class="layui-form-item">
+        <label class="layui-form-label">书名</label>
+        <div class="layui-input-block">
+            <input type="text" name="booktitle" readonly placeholder="请输入图书名称" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">借阅人</label>
+        <div class="layui-input-block">
+            <select name="userid" lay-verify="required" lay-search="">
+                <option value="">直接选择或搜索选择</option>
+            </select>
+
+        </div>
+    </div>
+</div>
+
+<!--新增窗口组件-->
+<div id="addWin" lay-filter="addWin" class="layui-form" style="display: none">
+    <div class="layui-form-item">
+        <label class="layui-form-label">分类</label>
+        <div class="layui-input-block">
+<!--            <input type="text" name="categoryid" placeholder="请输入部门编号" autocomplete="off" class="layui-input">-->
+            <select name="categoryid"></select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">书名</label>
+        <div class="layui-input-block">
+            <input type="text" name="booktitle"  placeholder="请输入图书名称" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">作者</label>
+        <div class="layui-input-block">
+            <input type="text" name="author"  placeholder="请输入作者" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">发布时间</label>
+        <div class="layui-input-block">
+            <input type="text" name="publisheddate"  placeholder="请输入发布时间" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">页数</label>
+        <div class="layui-input-block">
+            <input type="text" name="pages"  placeholder="请输入图书页数" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">价格</label>
+        <div class="layui-input-block">
+            <input type="text" name="price"  placeholder="请输入图书价格" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+</div>
+<!--编辑窗口组件-->
+<div id="editWin" lay-filter="editWin" class="layui-form" style="display: none">
+   <input type="hidden" name="bookid" >
+    <div class="layui-form-item">
+        <label class="layui-form-label">分类</label>
+        <div class="layui-input-block">
+<!--            <input type="text" name="categoryid" placeholder="请输入部门编号" autocomplete="off" class="layui-input">-->
+            <select name="categoryid"></select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">书名</label>
+        <div class="layui-input-block">
+            <input type="text" name="booktitle"  placeholder="请输入图书名称" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">作者</label>
+        <div class="layui-input-block">
+            <input type="text" name="author"  placeholder="请输入作者" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">发布时间</label>
+        <div class="layui-input-block">
+            <input type="text" name="publisheddate"  placeholder="请输入发布时间" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">页数</label>
+        <div class="layui-input-block">
+            <input type="text" name="pages"  placeholder="请输入图书页数" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">价格</label>
+        <div class="layui-input-block">
+            <input type="text" name="price"  placeholder="请输入图书价格" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+</div>
+<!--表格头部工具栏-->
+<script type="text/html" id="toptools">
+    <div class="layui-form-item">
+        <div class="layui-input-inline">
+            <input type="text" name="checktext"  autocomplete="off" class="layui-input">
+        </div>
+        <div class="layui-input-inline">
+            <button type="button" class="layui-btn layui-btn"
+                    lay-event="check">查询</button>
+            <button type="button" class="layui-btn layui-btn"
+                    lay-event="add">新增</button>
+        </div>
+    </div>
+</script>
+<!--表格行内工具栏-->
+<script type="text/html" id="linetools">
+    <button type="button" class="layui-btn layui-btn-xs layui-bg-green"
+            lay-event="borrow">借阅</button>
+    <button type="button" class="layui-btn layui-btn-xs layui-bg-orange"
+            lay-event="edit">编辑</button>
+    <button type="button" class="layui-btn layui-btn-xs layui-bg-red"
+            lay-event="delete">删除</button>
+</script>
+
+<script src="static/layui/layui.all.js"></script>
+<script>
+    /*声明layui内部对象*/
+    const $=layui.$;
+    const table=layui.table;
+    const layer=layui.layer;
+    const form=layui.form;
+
+    //如果没有登录,直接跳转到login.html
+    $.ajax({
+        url:"login/islogin",
+        async:false,
+        success:function(result){
+            if(!result){
+                top.location.href="login.html"
+            }
+        }
+    });
+
+    //查询数据库中分类的信息 将分类信息转换成下拉框选项 设置到两个下拉框中
+    $.ajax({
+        url:'category/list',
+        async:false,
+        success:function(result){
+            var data=result.data;
+            for(var index in data){
+                $("select[name='categoryid']").append(
+                    "<option value='"+data[index].categoryid+"'>"+data[index].categoryname+"</option>"
+                );
+            }
+        }
+    });
+
+
+    $.ajax({
+        url:'user/list',
+        async:false,
+        success:function(result){
+            var data=result.data;
+            for(var index in data){
+                $("select[name='userid']").append(
+                    "<option value='"+data[index].userid+"'>"+data[index].name+"</option>"
+                );
+            }
+        }
+    });
+
+
+    /*声明表格头部工具栏时间*/
+    table.on("toolbar(datalist)",function(obj){
+        var event=obj.event;
+        if(event=='checktext'){
+            //点击查询按钮执行的代码
+            var checktext=$("[name='checktext']").val();//获取输入框中输入的内容
+            table.reload("datalist",{where:{checktext:checktext}});
+            $("[name='checktext']").val(chexketxt);
+        }else if(event=='add'){
+            //点击新增按钮执行的方法
+            form.val("addWin",{booktitle:'',author:'',publisheddate:'',categoryid:'',pages:'',price:''});
+            //打开一个对话框(输入内容)
+            layer.open({
+                type:1,
+                title:"新增图书",
+                area:['400px','480px'],
+                content:$("#addWin"),
+                btn:["保存"],
+                btn1:function(){
+                    //点击保存按钮  保存数据
+                    //表单中的数据
+                    var formdata=form.val("addWin");
+                    $.ajax({
+                        method:'post',
+                        url:'book/add',
+                        data:formdata,
+                        success:function(result){
+                            //关闭对话框
+                            layer.closeAll();
+                            //刷新数据
+                            table.reload("datalist");
+                            //提示用户
+                            layer.msg("添加成功",{icon:1,time:1800});
+                        }
+                    });
+
+                }
+            });
+
+        }
+    });
+
+    /*行内工具栏的监听事件*/
+    table.on("tool(datalist)",function(obj){
+        var event=obj.event;
+        var data=obj.data;//点击按钮所在行的数据
+        if(event=='borrow'){
+            //点击借阅按钮执行的代码
+            form.val("borrowWin",data);
+            layer.open({
+                type:1,
+                title:"借阅",
+                area:['400px','470px'],
+                content:$("#borrowWin"),
+                btn:["保存"],
+                btn1:function(){
+                    var formdata=form.val("borrowWin");
+                    $.ajax({
+                        url:"borrow/borrow",
+                        data:formdata,
+                        success:function(){
+                            //关闭窗口
+                            layer.closeAll();
+                            //提示用户
+                            layer.msg("保存成功",{icon:1,time:1800});
+                        }
+                    });
+                }
+            });
+        }
+        else if(event=='edit'){
+            //点击编辑按钮执行的方法
+            form.val("editWin",data);//显示原始数据
+            //打开对话框
+            layer.open({
+                type:1,
+                title:'编辑图书',
+                area:['400px','470px'],
+                content:$("#editWin"),
+                btn:["保存"],
+                btn1:function(){
+                    //获取表单数据
+                    var formdata=form.val("editWin");
+                    //提交数据
+                    $.ajax({
+                        method:"post",
+                        url:"book/edit",
+                        data:formdata,
+                        success:function(result){
+                            //刷新表格
+                            table.reload("datalist");
+                            //关闭窗口
+                            layer.closeAll();
+                            //提示用户
+                            layer.msg("保存成功",{icon:1,time:1800});
+                        }
+                    });
+
+                }
+            });
+        }else if(event=='delete'){
+            //点击删除按钮执行的方法
+            //确认是否删除数据
+            layer.confirm("确认要删除该行数据吗?",function(){
+                //点击确认后执行的代码
+                $.ajax({
+                    url:"book/delete",
+                    data:{bookid:data.bookid},
+                    success:function (){
+                        layer.closeAll();
+                        table.reload("datalist");
+                        layer.msg("删除成功",{icon:1,time:1800});
+                    }
+                });
+            });
+        }
+    });
+</script>
+</body>
+</html>
