@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="http://localhost:8080/student">
+    <meta charset="UTF-8">
+    <title>可选课程</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <style>
+        /* 自定义样式 */
+        .layui-table {
+            margin-top: 20px;
+        }
+        .layui-btn {
+            margin-right: 5px;
+        }
+        .layui-btn-danger {
+            background-color: #FF5722;
+        }
+    </style>
+</head>
+<body>
+<table class="layui-table" lay-data="{toolbar:'#toptools', url:'/course/list', page:true, id:'datalist'}" lay-filter="datalist">
+    <thead>
+    <tr>
+        <th lay-data="{field:'courseid', sort: true}">课程ID</th>
+        <th lay-data="{field:'coursename', sort: true}">课程名称</th>
+        <th lay-data="{field:'credits', sort: true}">学分</th>
+        <th lay-data="{field:'semester', sort: true}">学期</th>
+        <th lay-data="{field:'maxenrollment', sort: true}">最大容量</th>
+        <th lay-data="{toolbar:'#linetools'}">操作</th>
+    </tr>
+    </thead>
+</table>
+
+<!-- 表格行内工具栏 -->
+<script type="text/html" id="linetools">
+    <button type="button" class="layui-btn layui-btn-xs layui-btn-danger" lay-event="exit">退选</button>
+</script>
+
+<script src="/layui/layui.all.js"></script>
+<script>
+    /* 声明layui内部对象 */
+    const $ = layui.$;
+    const table = layui.table;
+    const layer = layui.layer;
+    const form = layui.form;
+
+    // 如果没有登录,直接跳转到login.html
+    $.ajax({
+        url: "login/islogin",
+        async: false,
+        success: function (result) {
+            if (!result) {
+                top.location.href = "login.html";
+            }
+        }
+    });
+
+    /* 行内工具栏的监听事件 */
+    table.on("tool(datalist)", function (obj) {
+        var event = obj.event;
+        var data = obj.data; // 点击按钮所在行的数据
+
+        if (event === 'exit') {
+            // 点击可选按钮执行的方法
+            layer.confirm("确认要退选该课程吗?", function () {
+                // 点击确认后执行的代码
+                $.ajax({
+                    url: "course/exitcourse",
+                    data: { courseid: data.courseid },
+                    success: function (result) {
+                        layer.closeAll();
+                        table.reload("datalist");
+                        layer.msg("退选成功", { icon: 1, time: 1800 });
+                    },
+                    error: function () {
+                        layer.msg("退选失败，请重试", { icon: 2, time: 1800 });
+                    }
+                });
+            });
+        }
+    });
+</script>
+</body>
+</html>

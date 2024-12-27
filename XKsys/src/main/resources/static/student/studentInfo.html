@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="http://localhost:8080/student">
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+</head>
+<body>
+<table class="layui-table" lay-data="{toolbar:'#toptools', url:'/student/list', page:true, id:'datalist'}" lay-filter="datalist">
+    <thead>
+    <tr>
+        <th lay-data="{field:'studentid', sort: true}">学生ID</th>
+        <th lay-data="{field:'studentname', sort: true}">学生姓名</th>
+        <th lay-data="{field:'studentno', sort: true}">学生学号</th>
+        <th lay-data="{field:'studentpwd', sort: true}">学生密码</th>
+        <th lay-data="{field:'email', sort: true}">邮件</th>
+        <th lay-data="{field:'major', sort: true}">专业</th>
+        <th lay-data="{field:'gender', sort: true}">性别</th>
+        <th lay-data="{toolbar:'#linetools'}">操作</th>
+    </tr>
+    </thead>
+</table>
+<!--编辑窗口组件-->
+<div id="editWin" lay-filter="editWin" class="layui-form" style="display: none">
+    <input type="hidden" name="categoryid" >
+    <div class="layui-form-item">
+        <label class="layui-form-label">分类名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="categoryname"  placeholder="请输入分类名称" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+</div>
+<!--表格行内工具栏-->
+<script type="text/html" id="linetools">
+    <button type="button" class="layui-btn layui-btn-xs layui-bg-orange"
+            lay-event="edit">编辑</button>
+</script>
+
+<script src="/layui/layui.all.js"></script>
+<script>
+    /*声明layui内部对象*/
+    const $=layui.$;
+    const table=layui.table;
+    const layer=layui.layer;
+    const form=layui.form;
+
+    //如果没有登录,直接跳转到login.html
+    $.ajax({
+        url:"login/islogin",
+        async:false,
+        success:function(result){
+            if(!result){
+                top.location.href="login.html"
+            }
+        }
+    });
+
+    /*行内工具栏的监听事件*/
+    table.on("tool(datalist)",function(obj){
+        var event=obj.event;
+        var data=obj.data;//点击按钮所在行的数据
+        if(event=='edit'){
+            //点击编辑按钮执行的方法
+            form.val("editWin",data);//显示原始数据
+            //打开对话框
+            layer.open({
+                type:1,
+                title:'编辑分类',
+                area:['400px','500px'],
+                content:$("#editWin"),
+                btn:["保存"],
+                btn1:function(){
+                    //获取表单数据
+                    var formdata=form.val("editWin");
+                    //提交数据
+                    $.ajax({
+                        method:"post",
+                        url:"student/edit",
+                        data:formdata,
+                        success:function(result){
+                            //刷新表格
+                            table.reload("datalist");
+                            //关闭窗口
+                            layer.closeAll();
+                            //提示用户
+                            layer.msg("保存成功",{icon:1,time:1800});
+                        }
+                    });
+
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <base href="http://localhost:8080/">
+    <meta charset="UTF-8">
+    <title>登录页面</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+</head>
+<body class="layui-layout-body"
+      style="background-image:url(/img/background.jpg);background-repeat:no-repeat;background-size:cover;">
+<div class="layui-container">
+    <div class="layui-card" style="width: 500px; margin: 100px auto;">
+        <div class="layui-card-body">
+            <form class="layui-form" action="/login" method="post">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">用户名</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="username" required lay-verify="required" placeholder="请输入用户名"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">密码</label>
+                    <div class="layui-input-block">
+                        <input type="password" name="password" required lay-verify="required" placeholder="请输入密码"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">用户类型</label>
+                    <div class="layui-input-block">
+                        <select name="role" lay-verify="required" required>
+                            <option value="">请选择</option>
+                            <option value="student">学生</option>
+                            <option value="admin">管理员</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" type="submit" lay-submit lay-filter="login">登录</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="/layui/layui.all.js"></script>
+<script>
+    var $ = layui.$;
+    var form = layui.form;
+    var layer = layui.layer;
+
+    // 如果已经登录不可以再访问此页面
+    // $.ajax({
+    //     url: '/login/islogin',
+    //     async: false,
+    //     success: function (result) {
+    //         if (result) {
+    //             // 说明已经登陆过
+    //             location.href = "index.html";
+    //         }
+    //     }
+    // });
+
+    // 提交表单的监听
+    form.on('submit(login)', function (data) {
+        // 获取表单提交的字段
+        var role = data.field.role; // 用户类型
+        var url = '';
+        var redirectUrl = '';
+
+        // 根据用户类型设置不同的URL和重定向地址
+        if (role === 'student') {
+            url = '/login/studentlogin';
+            redirectUrl = 'student/studentindex.html';
+        } else if (role === 'admin') {
+            url = '/login/adminlogin';
+            redirectUrl = '/admin/adminindex.html';
+        } else {
+            layer.msg("请选择用户类型", {icon: 2});
+            return false; // 阻止表单提交
+        }
+
+        // 提交到服务器处理
+        $.ajax({
+            url: url,
+            data: data.field,
+            type: 'post',
+            success: function (res) {
+                if (res === 'success') {
+                    // 登录成功
+                    location.href = redirectUrl;
+                } else {
+                    // 登录失败
+                    layer.msg("登录失败", {icon: 2});
+                }
+            },
+            error: function () {
+                // 请求出错
+                layer.msg("服务器错误，请稍后再试", {icon: 2});
+            }
+        });
+
+        // 取消原有登录过程
+        return false;
+    });
+</script>
+</body>
+</html>

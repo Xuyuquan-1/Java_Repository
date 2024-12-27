@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="http://localhost:8080/admin">
+    <meta charset="UTF-8">
+    <title>课程管理</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <style>
+        .layui-table th, .layui-table td {
+            text-align: center;
+        }
+
+        .layui-form-label {
+            width: 100px;
+            text-align: right; /* 标签右对齐 */
+            padding-right: 10px; /* 右侧留出一些空间 */
+        }
+
+        .layui-input-block {
+            margin-left: 120px; /* 标签与输入框之间的间距 */
+        }
+
+        .layui-inline .layui-input-inline {
+            width: 200px; /* 输入框宽度 */
+        }
+
+        /* 新增和编辑窗口的样式 */
+        #addWin, #editWin {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+<table class="layui-table" lay-data="{toolbar:'#toptools', url:'/course/list', page:true, id:'datalist'}" lay-filter="datalist">
+    <thead>
+    <tr>
+        <th lay-data="{field:'courseid', sort: true}">课程ID</th>
+        <th lay-data="{field:'coursename', sort: true}">课程名称</th>
+        <th lay-data="{field:'credits', sort: true}">学分</th>
+        <th lay-data="{field:'semester', sort: true}">学期</th>
+        <th lay-data="{field:'maxenrollment', sort: true}">最大容量</th>
+        <th lay-data="{toolbar:'#linetools'}">操作</th>
+    </tr>
+    </thead>
+</table>
+
+<!--新增窗口组件-->
+<div id="addWin" lay-filter="addWin" class="layui-form" style="display: none;">
+    <!-- 使用 layui-inline 包裹每个表单项 -->
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">课程名称</label>
+        <div class="layui-input-inline">
+            <input type="text" name="coursename" placeholder="请输入课程名称" autocomplete="off" class="layui-input" lay-verify="required">
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">学分</label>
+        <div class="layui-input-inline">
+            <input type="number" name="credits" placeholder="请输入学分" autocomplete="off" class="layui-input" lay-verify="required">
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">学期</label>
+        <div class="layui-input-inline">
+            <input type="text" name="semester" placeholder="请输入学期" autocomplete="off" class="layui-input" lay-verify="required">
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">最大容量</label>
+        <div class="layui-input-inline">
+            <input type="number" name="maxenrollment" placeholder="请输入最大容量" autocomplete="off" class="layui-input" lay-verify="required">
+        </div>
+    </div>
+</div>
+
+<!--编辑窗口组件-->
+<div id="editWin" lay-filter="editWin" class="layui-form" style="display: none;">
+    <input type="hidden" name="courseid">
+    <!-- 使用 layui-inline 包裹每个表单项 -->
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">课程名称</label>
+        <div class="layui-input-inline">
+            <input type="text" name="coursename" placeholder="请输入课程名称" autocomplete="off" class="layui-input" lay-verify="required">
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">学分</label>
+        <div class="layui-input-inline">
+            <input type="number" name="credits" placeholder="请输入学分" autocomplete="off" class="layui-input" lay-verify="required">
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">学期</label>
+        <div class="layui-input-inline">
+            <input type="text" name="semester" placeholder="请输入学期" autocomplete="off" class="layui-input" lay-verify="required">
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">最大容量</label>
+        <div class="layui-input-inline">
+            <input type="number" name="maxenrollment" placeholder="请输入最大容量" autocomplete="off" class="layui-input" lay-verify="required">
+        </div>
+    </div>
+</div>
+
+<!--表格头部工具栏-->
+<script type="text/html" id="toptools">
+    <button type="button" class="layui-btn " lay-event="check">查询</button>
+    <button type="button" class="layui-btn layui-btn-primary" lay-event="add">新增</button>
+</script>
+
+<!--表格行内工具栏-->
+<script type="text/html" id="linetools">
+    <button type="button" class="layui-btn layui-btn-xs layui-btn-normal" lay-event="edit">编辑</button>
+    <button type="button" class="layui-btn layui-btn-xs layui-btn-danger" lay-event="delete">删除</button>
+</script>
+
+<script src="/layui/layui.all.js"></script>
+<script>
+    /*声明layui内部对象*/
+    const $ = layui.$;
+    const table = layui.table;
+    const layer = layui.layer;
+    const form = layui.form;
+
+    //如果没有登录,直接跳转到login.html
+    $.ajax({
+        url: "login/islogin",
+        async: false,
+        success: function (result) {
+            if (!result) {
+                top.location.href = "login.html";
+            }
+        }
+    });
+
+    /*声明表格头部工具栏事件*/
+    table.on("toolbar(datalist)", function (obj) {
+        var event = obj.event;
+        if (event == 'add') {
+            //点击新增按钮执行的方法
+            //重置表单内容
+            form.val("addWin", {coursename: "", credits: "", semester: "", maxenrollment: ""});
+            //打开一个对话框(输入内容)
+            layer.open({
+                //具有遮罩层样式的窗口
+                type: 1,
+                title: "新增课程",
+                area: ['400px', '400px'], // 调整窗口大小
+                content: $("#addWin"),
+                btn: ["保存"],
+                btn1: function () {
+                    //点击保存按钮  保存数据
+                    //表单中的数据
+                    var formdata = form.val("addWin");
+                    $.ajax({
+                        method: 'post',
+                        url: 'course/add',
+                        data: formdata,
+                        success: function (result) {
+                            //关闭对话框
+                            layer.closeAll();
+                            //刷新数据
+                            table.reload("datalist");
+                            //提示用户
+                            layer.msg("添加成功", {icon: 1, time: 1800});
+                        }
+                    });
+                }
+            });
+        }
+    });
+
+    /*行内工具栏的监听事件*/
+    table.on("tool(datalist)", function (obj) {
+        var event = obj.event;
+        var data = obj.data; //点击按钮所在行的数据
+        if (event == 'edit') {
+            //点击编辑按钮执行的方法
+            form.val("editWin", data); //显示原始数据
+            //打开对话框
+            layer.open({
+                type: 1,
+                title: '编辑课程',
+                area: ['400px', '400px'], // 调整窗口大小
+                content: $("#editWin"),
+                btn: ["保存"],
+                btn1: function () {
+                    //获取表单数据
+                    var formdata = form.val("editWin");
+                    //提交数据
+                    $.ajax({
+                        method: "post",
+                        url: "course/add",
+                        data: formdata,
+                        success: function (result) {
+                            //刷新表格
+                            table.reload("datalist");
+                            //关闭窗口
+                            layer.closeAll();
+                            //提示用户
+                            layer.msg("保存成功", {icon: 1, time: 1800});
+                        }
+                    });
+                }
+            });
+        } else if (event == 'delete') {
+            //点击删除按钮执行的方法
+            //确认是否删除数据
+            layer.confirm("确认要删除该行数据吗?", function () {
+                //点击确认后执行的代码
+                $.ajax({
+                    method: "post",
+                    url: "course/delete",
+                    data: data,
+                    success: function () {
+                        layer.closeAll();
+                        table.reload("datalist");
+                        layer.msg("删除成功", {icon: 1, time: 1800});
+                    }
+                });
+            });
+        }
+    });
+</script>
+</body>
+</html>

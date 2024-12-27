@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="http://localhost:8080/admin">
+    <meta charset="UTF-8">
+    <title>管理员信息</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+</head>
+<body>
+<div class="layui-container" style="margin-top: 50px;">
+    <form class="layui-form" id="adminForm">
+        <div class="layui-form-item">
+            <label class="layui-form-label">管理员ID</label>
+            <div class="layui-input-block">
+                <input type="text" name="adminid" id="adminid" readonly class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">管理员姓名</label>
+            <div class="layui-input-block">
+                <input type="text" name="adminname" id="adminname" required lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">管理员密码</label>
+            <div class="layui-input-block">
+                <input type="password" name="adminpwd" id="adminpwd" required lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="editAdmin">保存修改</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script src="/layui/layui.all.js"></script>
+<script>
+    /*声明layui内部对象*/
+    const $ = layui.$;
+    const form = layui.form;
+    const layer = layui.layer;
+
+    // 获取当前登录管理员的信息
+    function getAdminInfo() {
+        $.ajax({
+            url: "admin/getInfo",
+            method: "GET",
+            success: function (result) {
+                if (result) {
+                    $("#adminid").val(result.adminid);
+                    $("#adminname").val(result.adminname);
+                    $("#adminpwd").val(result.adminpwd);
+                } else {
+                    layer.msg("获取管理员信息失败", {icon: 2, time: 1800});
+                }
+            },
+            error: function () {
+                layer.msg("获取管理员信息失败", {icon: 2, time: 1800});
+            }
+        });
+    }
+
+    // 提交修改
+    form.on('submit(editAdmin)', function (data) {
+        $.ajax({
+            url: "admin/edit",
+            method: "POST",
+            data: data.field,
+            success: function (result) {
+                if (result) {
+                    layer.msg("修改成功", {icon: 1, time: 1800});
+                } else {
+                    layer.msg("修改失败", {icon: 2, time: 1800});
+                }
+            },
+            error: function () {
+                layer.msg("修改失败", {icon: 2, time: 1800});
+            }
+        });
+        return false; // 阻止表单跳转
+    });
+
+    // 页面加载时获取管理员信息
+    $(document).ready(function () {
+        getAdminInfo();
+    });
+</script>
+</body>
+</html>
