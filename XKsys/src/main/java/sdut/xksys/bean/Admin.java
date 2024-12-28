@@ -8,8 +8,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Admin {
     int adminid;
-    String adminname;
+    String adminaccount;
     String adminpwd;
+    String adminname;
+    String email;
+    String phone;
 
     public int getAdminid() {
         return adminid;
@@ -17,6 +20,22 @@ public class Admin {
 
     public void setAdminid(int adminid) {
         this.adminid = adminid;
+    }
+
+    public String getAdminaccount() {
+        return adminaccount;
+    }
+
+    public void setAdminaccount(String adminaccount) {
+        this.adminaccount = adminaccount;
+    }
+
+    public String getAdminpwd() {
+        return adminpwd;
+    }
+
+    public void setAdminpwd(String adminpwd) {
+        this.adminpwd = adminpwd;
     }
 
     public String getAdminname() {
@@ -27,11 +46,19 @@ public class Admin {
         this.adminname = adminname;
     }
 
-    public String getAdminpwd() {
-        return adminpwd;
+    public String getEmail() {
+        return email;
     }
 
-    public void setAdminpwd(String adminpwd) {
-        this.adminpwd = adminpwd;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

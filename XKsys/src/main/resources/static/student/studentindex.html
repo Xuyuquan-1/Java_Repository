@@ -14,9 +14,10 @@
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
                 <a href="javascript:;" id="loginName">
-                    <img src="/images/user.png" class="layui-nav-img">贤心
+                    <img src="/img/user.png" class="layui-nav-img">贤心
                 </a>
                 <dl class="layui-nav-child">
+                    <dd><a href="/student/studentInfo.html">个人信息</a></dd>
                     <dd><a href="javascript:;" id="logout">退出</a></dd>
                 </dl>
             </li>
@@ -29,7 +30,6 @@
             <ul class="layui-nav layui-nav-tree" lay-filter="test">
                 <li class="layui-nav-item"><a href="javascript:;" _url="selectedCourses.html"><i class="layui-icon layui-icon-list"></i> 已选课程</a></li>
                 <li class="layui-nav-item"><a href="javascript:;" _url="availableCourses.html"><i class="layui-icon layui-icon-read"></i> 可选课程</a></li>
-                <li class="layui-nav-item"><a href="javascript:;" _url="studentInfo.html"><i class="layui-icon layui-icon-user"></i> 学生个人信息</a></li>
             </ul>
         </div>
     </div>
@@ -42,21 +42,6 @@
 <script>
     const $ = layui.$;
     const layer = layui.layer;
-
-    // 如果没有登录,直接跳转到login.html
-    $.ajax({
-        url: "login/islogin",
-        async: false,
-        success: function (result) {
-            if (!result) {
-                // 没有登录的状态
-                top.location.href = "login.html";
-            } else {
-                // 已经登录的状态
-                $("#loginName").text(result.username);
-            }
-        }
-    });
 
     // 绑定导航链接点击事件
     $(".layui-nav-item a[_url]").click(function () {

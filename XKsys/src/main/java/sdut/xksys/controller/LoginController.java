@@ -23,19 +23,19 @@ public class LoginController {
     private StudentDao studentDao;
 
     @PostMapping("/adminlogin")
-    public String loginAdmin(@RequestParam("username") String username,
-                             @RequestParam("password") String password,
+    public String loginAdmin(@RequestParam("account") String adminaccount,
+                             @RequestParam("password") String adminpwd,
                              HttpSession session) throws SQLException, IllegalAccessException, InstantiationException {
         // 验证用户输入
-        if (isInputEmpty(username, password)) {
+        if (isInputEmpty(adminaccount, adminpwd)) {
             return "error";
         }
 
         // 查询数据库
-        Admin admin = adminDao.getAdminByAdminname(username);
+        Admin admin = adminDao.getAdminByAdminaccount(adminaccount);
 
         // 检查是否找到管理员，并验证密码
-        if (admin != null && password.equals(admin.getAdminpwd())) { // 建议使用更安全的密码验证方法
+        if (admin != null && adminpwd.equals(admin.getAdminpwd())) {
             // 登录成功，设置会话属性
             session.setAttribute("admin", admin);
             return "success"; // 返回成功标识
@@ -46,8 +46,8 @@ public class LoginController {
     }
 
     @PostMapping("/studentlogin")
-    public String loginStudent(@RequestParam("studentno") String studentno,
-                               @RequestParam("studentpwd") String studentpwd,
+    public String loginStudent(@RequestParam("account") String studentno,
+                               @RequestParam("password") String studentpwd,
                                HttpSession session) throws SQLException, IllegalAccessException, InstantiationException {
         // 验证用户输入
         if (isInputEmpty(studentno, studentpwd)) {
@@ -68,15 +68,15 @@ public class LoginController {
         }
     }
 
-    @RequestMapping("/islogin")
-    public String isLogin(HttpSession session) {
-        // 检查会话中是否存在用户信息
-        if (session.getAttribute("admin") != null || session.getAttribute("student") != null) {
-            return "success"; // 已登录
-        } else {
-            return "error"; // 未登录
-        }
-    }
+//    @RequestMapping("/islogin")
+//    public Boolean isLogin(HttpSession session) {
+//        // 检查会话中是否存在用户信息
+//        if (session.getAttribute("admin") != null || session.getAttribute("student") != null) {
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    }
 
     @RequestMapping("/logout")
     public String logout(HttpSession session) {

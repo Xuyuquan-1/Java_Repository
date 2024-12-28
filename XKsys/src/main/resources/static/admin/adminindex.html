@@ -4,7 +4,7 @@
     <base href="http://localhost:8080/">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>课程选择系统 - 管理员页面</title>
+    <title>管理员页面</title>
     <link rel="stylesheet" href="/layui/css/layui.css">
 </head>
 <body class="layui-layout-body">
@@ -14,9 +14,10 @@
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
                 <a href="javascript:;" id="loginName">
-                    <img src="/images/user.png" class="layui-nav-img">贤心
+                    <img src="/img/user.png" class="layui-nav-img">贤心
                 </a>
                 <dl class="layui-nav-child">
+                    <dd><a href="/admin/adminInfo.html">个人信息</a></dd>
                     <dd><a href="javascript:;" id="logout">退出</a></dd>
                 </dl>
             </li>
@@ -29,7 +30,6 @@
             <ul class="layui-nav layui-nav-tree" lay-filter="test">
                 <li class="layui-nav-item"><a href="javascript:;" _url="students.html"><i class="layui-icon layui-icon-set"></i> 学生管理</a></li>
                 <li class="layui-nav-item"><a href="javascript:;" _url="courses.html"><i class="layui-icon layui-icon-set"></i> 课程管理</a></li>
-                <li class="layui-nav-item"><a href="javascript:;" _url="adminInfo.html"><i class="layui-icon layui-icon-set"></i> 管理员信息</a></li>
             </ul>
         </div>
     </div>
@@ -42,21 +42,6 @@
 <script>
     const $ = layui.$;
     const layer = layui.layer;
-
-    // 如果没有登录,直接跳转到login.html
-    $.ajax({
-        url: "login/islogin",
-        async: false,
-        success: function (result) {
-            if (!result) {
-                // 没有登录的状态
-                top.location.href = "login.html";
-            } else {
-                // 已经登录的状态
-                $("#loginName").text(result.adminname);
-            }
-        }
-    });
 
     // 绑定导航链接点击事件
     $(".layui-nav-item a[_url]").click(function () {

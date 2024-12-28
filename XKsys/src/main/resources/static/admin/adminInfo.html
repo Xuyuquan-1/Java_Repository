@@ -16,9 +16,9 @@
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">管理员姓名</label>
+            <label class="layui-form-label">管理员账号</label>
             <div class="layui-input-block">
-                <input type="text" name="adminname" id="adminname" required lay-verify="required" autocomplete="off" class="layui-input">
+                <input type="text" name="adminaccount" id="adminaccount" required lay-verify="required" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
@@ -27,6 +27,22 @@
                 <input type="password" name="adminpwd" id="adminpwd" required lay-verify="required" autocomplete="off" class="layui-input">
             </div>
         </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">管理员姓名</label>
+            <div class="layui-input-block">
+                <input type="text" name="adminname" id="adminname" required lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div><div class="layui-form-item">
+        <label class="layui-form-label">管理员邮箱</label>
+        <div class="layui-input-block">
+            <input type="text" name="email" id="email" required lay-verify="required" autocomplete="off" class="layui-input">
+        </div>
+    </div><div class="layui-form-item">
+        <label class="layui-form-label">管理员手机号</label>
+        <div class="layui-input-block">
+            <input type="text" name="phone" id="phone" required lay-verify="required" autocomplete="off" class="layui-input">
+        </div>
+    </div>
         <div class="layui-form-item">
             <div class="layui-input-block">
                 <button class="layui-btn" lay-submit lay-filter="editAdmin">保存修改</button>

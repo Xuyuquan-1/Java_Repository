@@ -54,14 +54,14 @@ public class StudentDao {
     }
 
     public int updateStudent(Student student) throws SQLException {
-        String sql = "update students set studentname = ?, email = ?, major = ?, gender = ? where studentno = ?";
-        int result = JdbcUtil.update(sql, student.getStudentname(), student.getEmail(), student.getMajor(), student.getGender(), student.getStudentno());
+        String sql = "update students set studentname = ?,studentno = ?,studentpwd = ?, email = ?, major = ?, gender = ? where studentnid = ?";
+        int result = JdbcUtil.update(sql, student.getStudentname(), student.getStudentno(), student.getStudentpwd(), student.getEmail(), student.getMajor(), student.getGender(), student.getStudentid());
         return result;
     }
 
-    public int deleteStudent(String studentno) throws SQLException {
+    public int deleteStudent(String studentid) throws SQLException {
         String sql = "delete from students where studentno = ?";
-        int result = JdbcUtil.update(sql, studentno);
+        int result = JdbcUtil.update(sql, studentid);
         return result;
     }
 

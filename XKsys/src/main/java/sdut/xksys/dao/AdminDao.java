@@ -12,9 +12,9 @@ import java.util.List;
 
 @Repository
 public class AdminDao {
-    public Admin getAdminByAdminname(String name) throws SQLException, IllegalAccessException, InstantiationException {
-        String sql = "select * from admins where adminname = ?";
-        ResultSet rs = JdbcUtil.query(sql, name);
+    public Admin getAdminByAdminaccount(String account) throws SQLException, IllegalAccessException, InstantiationException {
+        String sql = "select * from admins where adminaccount = ?";
+        ResultSet rs = JdbcUtil.query(sql, account);
         List<Admin> list = JdbcUtil.convertResultSetToList(rs, Admin.class);
         Admin admin = list.get(0);
         JdbcUtil.close(rs);
@@ -22,8 +22,8 @@ public class AdminDao {
     }
 
     public int updateAdmin(Admin admin) throws SQLException {
-        String sql = "update admins set adminname = ?, adminpwd = ? where adminid = ?";
-        int result = JdbcUtil.update(sql, admin.getAdminname(), admin.getAdminpwd(), admin.getAdminid());
+        String sql = "update admins set adminaccount = ?, adminpwd = ?,accountname = ?, email = ?, phone = ? where adminid = ?";
+        int result = JdbcUtil.update(sql, admin.getAdminaccount(), admin.getAdminpwd(), admin.getAdminname(), admin.getEmail(), admin.getPhone(), admin.getAdminid());
         return result;
     }
 

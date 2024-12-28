@@ -13,9 +13,9 @@
         <div class="layui-card-body">
             <form class="layui-form" action="/login" method="post">
                 <div class="layui-form-item">
-                    <label class="layui-form-label">用户名</label>
+                    <label class="layui-form-label">账号</label>
                     <div class="layui-input-block">
-                        <input type="text" name="username" required lay-verify="required" placeholder="请输入用户名"
+                        <input type="text" name="account" required lay-verify="required" placeholder="请输入账号"
                                autocomplete="off" class="layui-input">
                     </div>
                 </div>
@@ -51,15 +51,25 @@
     var form = layui.form;
     var layer = layui.layer;
 
-    // 如果已经登录不可以再访问此页面
+    // // 如果已经登录不可以再访问此页面
     // $.ajax({
     //     url: '/login/islogin',
-    //     async: false,
+    //     async: true, // 使用异步请求
     //     success: function (result) {
-    //         if (result) {
+    //         if (result && result.role) {
     //             // 说明已经登陆过
-    //             location.href = "index.html";
+    //             if (result.role === 'student') {
+    //                 location.href = "student/studentindex.html";
+    //             } else if (result.role === 'admin') {
+    //                 location.href = "admin/adminindex.html";
+    //             } else {
+    //                 location.href = "index.html"; // 默认重定向到主页
+    //             }
     //         }
+    //     },
+    //     error: function () {
+    //         // 请求出错，可以给出提示或者忽略
+    //         layer.msg("检查登录状态时出错，请稍后再试", {icon: 2});
     //     }
     // });
 

@@ -129,17 +129,6 @@
     const layer = layui.layer;
     const form = layui.form;
 
-    //如果没有登录,直接跳转到login.html
-    $.ajax({
-        url: "login/islogin",
-        async: false,
-        success: function (result) {
-            if (!result) {
-                top.location.href = "login.html";
-            }
-        }
-    });
-
     /*声明表格头部工具栏事件*/
     table.on("toolbar(datalist)", function (obj) {
         var event = obj.event;
