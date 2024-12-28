@@ -1,312 +1,174 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <base href="http://localhost:8080">
     <meta charset="UTF-8">
     <title>学生信息</title>
-    <style>
-        /* 全局样式 */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-
-        /* 弹窗样式 */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4);
-        }
-
-        .modal-content {
-            background-color: white;
-            margin: 10% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 600px;
-            max-width: 90%;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .modal-header, .modal-footer {
-            text-align: center;
-        }
-
-        .modal-header h2 {
-            margin: 0;
-        }
-
-        .modal-body .form-group {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .modal-body label {
-            flex: 1;
-            margin-right: 10px;
-            font-weight: bold;
-        }
-
-        .modal-body input[type="text"],
-        .modal-body input[type="email"],
-        .modal-body input[type="password"] {
-            flex: 2;
-            padding: 8px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-        }
-
-        .modal-footer button {
-            padding: 8px 12px;
-            margin: 5px;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-        }
-
-        .modal-footer .btn-primary {
-            background-color: #007bff;
-            color: white;
-        }
-
-        .modal-footer .btn-secondary {
-            background-color: #6c757d;
-            color: white;
-        }
-
-        .modal-footer button:hover {
-            opacity: 0.9;
-        }
-
-        /* 加载动画 */
-        .loading {
-            display: none;
-            position: fixed;
-            z-index: 2;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.4);
-            justify-content: center;
-            align-items: center;
-        }
-
-        .loading::after {
-            content: '';
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid #3498db;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 2s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-    </style>
+    <link rel="stylesheet" href="/layui/css/layui.css">
 </head>
 <body>
+<div class="layui-container" style="margin-top: 50px;">
+    <form class="layui-form" id="studentForm">
+        <div class="layui-form-item">
+            <label class="layui-form-label">学生ID</label>
+            <div class="layui-input-block">
+                <input type="text" name="studentid" id="studentId" readonly class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">学生姓名</label>
+            <div class="layui-input-block">
+                <input type="text" name="studentname" id="studentNameEdit" required lay-verify="required"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">学生学号</label>
+            <div class="layui-input-block">
+                <input type="text" name="studentno" id="studentNoEdit" required lay-verify="required" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-block">
+                <input type="password" name="studentpwd" id="studentPwdEdit" required lay-verify="required"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">邮件</label>
+            <div class="layui-input-block">
+                <input type="email" name="email" id="studentEmailEdit" required lay-verify="required" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">专业</label>
+            <div class="layui-input-block">
+                <input type="text" name="major" id="studentMajorEdit" required lay-verify="required" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">性别</label>
+            <div class="layui-input-block">
+                <input type="text" name="gender" id="studentGenderEdit" required lay-verify="required"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="editStudent">编辑</button>
+            </div>
+        </div>
+    </form>
+</div>
 
-<!-- 学生信息弹窗 -->
-<div id="studentInfoModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2>学生信息</h2>
+
+<!--编辑窗口组件-->
+<div id="editWin" lay-filter="editWin" class="layui-form" style="display: none; padding: 20px;">
+    <input type="hidden" name="studentid">
+
+    <!-- 使用 layui-inline 包裹每个表单项 -->
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label"><i class="layui-icon layui-icon-username"></i> 学生姓名</label>
+        <div class="layui-input-inline">
+            <input type="text" name="studentname" placeholder="请输入学生姓名" autocomplete="off" class="layui-input"
+                   lay-verify="required">
         </div>
-        <div class="modal-body">
-            <p><strong>学生ID：</strong><span id="studentId"></span></p>
-            <p><strong>学生姓名：</strong><span id="studentName"></span></p>
-            <p><strong>学生学号：</strong><span id="studentNo"></span></p>
-            <p><strong>密码：</strong><span id="studentPwd"></span></p>
-            <p><strong>邮件：</strong><span id="studentEmail"></span></p>
-            <p><strong>专业：</strong><span id="studentMajor"></span></p>
-            <p><strong>性别：</strong><span id="studentGender"></span></p>
+    </div>
+
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label"><i class="layui-icon layui-icon-user"></i> 学生学号</label>
+        <div class="layui-input-inline">
+            <input type="text" name="studentno" placeholder="请输入学生学号" autocomplete="off" class="layui-input"
+                   lay-verify="required">
         </div>
-        <div class="modal-footer">
-            <button class="btn-primary" id="editBtn">编辑</button>
+    </div>
+
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label"><i class="layui-icon layui-icon-email"></i> 学生邮箱</label>
+        <div class="layui-input-inline">
+            <input type="email" name="email" placeholder="请输入学生邮箱" autocomplete="off" class="layui-input"
+                   lay-verify="email">
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label"><i class="layui-icon layui-icon-note"></i> 学生专业</label>
+        <div class="layui-input-inline">
+            <input type="text" name="major" placeholder="请输入学生专业" autocomplete="off" class="layui-input"
+                   lay-verify="required">
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label"><i class="layui-icon layui-icon-female"></i> 学生性别</label>
+        <div class="layui-input-inline">
+            <select name="gender" lay-verify="required">
+                <option value="">请选择性别</option>
+                <option value="男">男</option>
+                <option value="女">女</option>
+            </select>
         </div>
     </div>
 </div>
-
-<!-- 编辑窗口组件 -->
-<div id="editModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2>编辑学生信息</h2>
-        </div>
-        <div class="modal-body">
-            <input type="hidden" id="studentIdEdit">
-            <div class="form-group">
-                <label for="studentNameEdit">学生姓名</label>
-                <input type="text" id="studentNameEdit" required>
-            </div>
-            <div class="form-group">
-                <label for="studentNoEdit">学生学号</label>
-                <input type="text" id="studentNoEdit" required>
-            </div>
-            <div class="form-group">
-                <label for="studentPwdEdit">密码</label>
-                <input type="password" id="studentPwdEdit" required>
-            </div>
-            <div class="form-group">
-                <label for="studentEmailEdit">邮件</label>
-                <input type="email" id="studentEmailEdit" required>
-            </div>
-            <div class="form-group">
-                <label for="studentMajorEdit">专业</label>
-                <input type="text" id="studentMajorEdit" required>
-            </div>
-            <div class="form-group">
-                <label for="studentGenderEdit">性别</label>
-                <input type="text" id="studentGenderEdit" required>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button class="btn-primary" id="saveBtn">保存</button>
-            <button class="btn-secondary" id="cancelBtn">取消</button>
-        </div>
-    </div>
-</div>
-
-<!-- 加载动画 -->
-<div id="loading" class="loading"></div>
-
+<script src="/layui/layui.all.js"></script>
 <script>
-    // 显示加载动画
-    function showLoading() {
-        document.getElementById('loading').style.display = 'flex';
-    }
+    /*声明layui内部对象*/
+    const $ = layui.$;
+    const form = layui.form;
+    const layer = layui.layer;
 
-    // 隐藏加载动画
-    function hideLoading() {
-        document.getElementById('loading').style.display = 'none';
-    }
-
-    // 显示学生信息弹窗
-    function showStudentInfo(studentData) {
-        document.getElementById('studentId').innerText = studentData.studentid;
-        document.getElementById('studentName').innerText = studentData.studentname;
-        document.getElementById('studentNo').innerText = studentData.studentno;
-        document.getElementById('studentPwd').innerText = studentData.studentpwd;
-        document.getElementById('studentEmail').innerText = studentData.email;
-        document.getElementById('studentMajor').innerText = studentData.major;
-        document.getElementById('studentGender').innerText = studentData.gender;
-
-        const modal = document.getElementById('studentInfoModal');
-        modal.style.display = 'block';
-    }
-
-    // 打开编辑窗口
-    document.getElementById('editBtn').addEventListener('click', () => {
-        const editModal = document.getElementById('editModal');
-        editModal.style.display = 'block';
-
-        // 填充编辑窗口的数据
-        document.getElementById('studentIdEdit').value = studentData.studentid;
-        document.getElementById('studentNameEdit').value = studentData.studentname;
-        document.getElementById('studentNoEdit').value = studentData.studentno;
-        document.getElementById('studentPwdEdit').value = studentData.studentpwd;
-        document.getElementById('studentEmailEdit').value = studentData.email;
-        document.getElementById('studentMajorEdit').value = studentData.major;
-        document.getElementById('studentGenderEdit').value = studentData.gender;
-    });
-
-    // 保存编辑的学生信息
-    document.getElementById('saveBtn').addEventListener('click', () => {
-        const studentId = document.getElementById('studentIdEdit').value;
-        const studentName = document.getElementById('studentNameEdit').value;
-        const studentNo = document.getElementById('studentNoEdit').value;
-        const studentPwd = document.getElementById('studentPwdEdit').value;
-        const studentEmail = document.getElementById('studentEmailEdit').value;
-        const studentMajor = document.getElementById('studentMajorEdit').value;
-        const studentGender = document.getElementById('studentGenderEdit').value;
-
-        const formData = {
-            studentid: studentId,
-            studentname: studentName,
-            studentno: studentNo,
-            studentpwd: studentPwd,
-            email: studentEmail,
-            major: studentMajor,
-            gender: studentGender
-        };
-
-        // 显示加载动画
-        showLoading();
-
-        fetch('/student/edit', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        })
-            .then(response => response.json())
-            .then(result => {
+    // 获取当前登录学生的信息
+    function getStudentInfo() {
+        $.ajax({
+            url: "student/info",
+            method: "GET",
+            success: function (result) {
                 if (result.success) {
-                    alert("保存成功");
-                    // 更新本地存储的学生信息
-                    studentData = formData;
-                    // 关闭编辑窗口并重新显示学生信息
-                    document.getElementById('editModal').style.display = 'none';
-                    showStudentInfo(studentData);
+                    $("#studentId").val(result.data.studentid);
+                    $("#studentNameEdit").val(result.data.studentname);
+                    $("#studentNoEdit").val(result.data.studentno);
+                    $("#studentPwdEdit").val(result.data.studentpwd);
+                    $("#studentEmailEdit").val(result.data.email);
+                    $("#studentMajorEdit").val(result.data.major);
+                    $("#studentGenderEdit").val(result.data.gender);
                 } else {
-                    alert("保存失败：" + result.message);
+                    layer.msg("获取学生信息失败", {icon: 2, time: 1800});
                 }
-            })
-            .catch(() => {
-                alert("服务器错误");
-            })
-            .finally(() => {
-                // 隐藏加载动画
-                hideLoading();
-            });
-    });
-
-    // 取消编辑
-    document.getElementById('cancelBtn').addEventListener('click', () => {
-        document.getElementById('editModal').style.display = 'none';
-    });
-
-    // 获取学生信息
-    let studentData = null;
-
-    function fetchStudentInfo() {
-        showLoading();
-        fetch('/student/info')
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    studentData = data.data; // 假设返回的数据结构为 { success: true, data: { ...studentInfo } }
-                    showStudentInfo(studentData);
-                } else {
-                    alert("获取学生信息失败：" + data.message);
-                }
-            })
-            .catch(() => {
-                alert("服务器错误");
-            })
-            .finally(() => {
-                hideLoading();
-            });
+            },
+            error: function () {
+                layer.msg("获取学生信息失败", {icon: 2, time: 1800});
+            }
+        });
     }
+
+    // 提交修改
+    form.on('submit(editStudent)', function (data) {
+        $.ajax({
+            url: "student/edit",
+            method: "POST",
+            data: data.field,
+            success: function (result) {
+                if (result.success) {
+                    layer.msg("修改成功", {icon: 1, time: 1800});
+                } else {
+                    layer.msg("修改失败：" + result.message, {icon: 2, time: 1800});
+                }
+            },
+            error: function () {
+                layer.msg("修改失败", {icon: 2, time: 1800});
+            }
+        });
+        return false; // 阻止表单跳转
+    });
 
     // 页面加载时获取学生信息
-    window.onload = fetchStudentInfo;
+    $(document).ready(function () {
+        getStudentInfo();
+    });
 </script>
-
 </body>
 </html>
