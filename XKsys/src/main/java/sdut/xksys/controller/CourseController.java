@@ -5,6 +5,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sdut.xksys.bean.Course;
 import sdut.xksys.dao.CourseDao;
+import sdut.xksys.util.RestResult;
+
+import java.sql.ResultSet;
+import java.util.List;
 
 @RestController
 @RequestMapping("/course")
@@ -16,7 +20,10 @@ public class CourseController {
     @RequestMapping("/list")
     public Object getAllCourses() {
         try {
-            return courseDao.getAllCourses();
+            List list = courseDao.getAllCourses();
+            int count = courseDao.getCourseCount();
+            return new RestResult( count,list);
+
         } catch (Exception e) {
             e.printStackTrace();
             return "error";

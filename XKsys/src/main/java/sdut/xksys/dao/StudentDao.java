@@ -3,8 +3,8 @@ package sdut.xksys.dao;
 import org.springframework.stereotype.Repository;
 import sdut.xksys.bean.Course;
 import sdut.xksys.bean.Student;
-import sdut.xksys.bean.StudentCourseSummary;
 import sdut.xksys.util.JdbcUtil;
+import sdut.xksys.util.RestResult;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -47,15 +47,25 @@ public class StudentDao {
         return courseList;
     }
 
+    public int getStudentCount() throws SQLException {
+        //统计所有数据的行数
+        String sql = "select count(*) from students";
+        //返回的结果集是一个包含一行一列的结果集
+        ResultSet rs = JdbcUtil.query(sql);
+        rs.next();
+        int result = rs.getInt(1);
+        return result;
+    }
+
     public int addStudent(Student student) throws SQLException {
-        String sql = "insert into students(studentname, studentno, studentpwd, email, major, gender) values(?, ?, ?, ?, ?, ?)";
-        int result = JdbcUtil.update(sql, student.getStudentname(), student.getStudentno(), student.getStudentpwd(), student.getEmail(), student.getMajor(), student.getGender());
+        String sql = "insert into students(studentname, studentno, studentpwd, email, major, grade) values(?, ?, ?, ?, ?, ?)";
+        int result = JdbcUtil.update(sql, student.getStudentname(), student.getStudentno(), student.getStudentpwd(), student.getEmail(), student.getMajor(), student.getGrade());
         return result;
     }
 
     public int updateStudent(Student student) throws SQLException {
-        String sql = "update students set studentname = ?,studentno = ?,studentpwd = ?, email = ?, major = ?, gender = ? where studentnid = ?";
-        int result = JdbcUtil.update(sql, student.getStudentname(), student.getStudentno(), student.getStudentpwd(), student.getEmail(), student.getMajor(), student.getGender(), student.getStudentid());
+        String sql = "update students set studentname = ?,studentno = ?,studentpwd = ?, email = ?, major = ?, grade = ? where studentnid = ?";
+        int result = JdbcUtil.update(sql, student.getStudentname(), student.getStudentno(), student.getStudentpwd(), student.getEmail(), student.getMajor(), student.getGrade(), student.getStudentid());
         return result;
     }
 

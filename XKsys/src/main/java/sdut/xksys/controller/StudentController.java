@@ -6,8 +6,10 @@ import org.springframework.web.bind.annotation.*;
 import sdut.xksys.bean.Course;
 import sdut.xksys.bean.Student;
 import sdut.xksys.dao.StudentDao;
+import sdut.xksys.util.RestResult;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -25,10 +27,16 @@ public class StudentController {
     @RequestMapping("/list")
     public Object getAllStudents() {
         try {
-            return studentDao.getAllStudents();
+            List<Student> list = studentDao.getAllStudents();
+            int count = studentDao.getStudentCount();
+            RestResult result = new RestResult(count,list);
+            return result;
         } catch (Exception e) {
             e.printStackTrace();
-            return "error";
+            throw new RuntimeException("Controller.getAllstudent:error");
+        }
+        finally {
+            ;
         }
     }
 

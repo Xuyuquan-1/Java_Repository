@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import sdut.xksys.util.JdbcUtil;
+import sdut.xksys.util.RestResult;
 
 @Repository
 public class CourseDao {
@@ -48,6 +49,23 @@ public class CourseDao {
         String sql = "INSERT INTO enrollments (studentno, courseid, status) VALUES (?, ?, 'PENDING')";
         int rowsAffected = JdbcUtil.update(sql, studentno, courseid);
         return rowsAffected;
+    }
+
+    public int getCourseCount(){
+        String sql = "select count(*) from courses";
+        ResultSet rs = JdbcUtil.query(sql);
+        try {
+            rs.next();
+            int count = rs.getInt(1);
+            return count;
+        }catch(Exception e){
+            e.printStackTrace();
+            throw new RuntimeException("CourseDao.getCourseCount:error");
+        }
+        finally {
+            ;
+        }
+
     }
 
     public Object exitCourse(int courseid, String studentno) throws SQLException, IllegalAccessException, InstantiationException {

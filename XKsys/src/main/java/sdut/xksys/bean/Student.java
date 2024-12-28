@@ -1,7 +1,6 @@
 package sdut.xksys.bean;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
@@ -14,7 +13,7 @@ public class Student {
     String studentpwd;
     String email;
     String major;
-    String gender;
+    String grade;
 
     public int getStudentid() {
         return studentid;
@@ -64,11 +63,11 @@ public class Student {
         this.major = major;
     }
 
-    public String getGender() {
-        return gender;
+    public String getGrade() {
+        return grade;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
+    public void setGrade(String grade) {
+        this.grade = grade;
     }
 }
