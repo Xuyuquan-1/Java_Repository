@@ -22,7 +22,7 @@ public class AdminDao {
     }
 
     public int updateAdmin(Admin admin) throws SQLException {
-        String sql = "update admins set adminaccount = ?, adminpwd = ?,accountname = ?, email = ?, phone = ? where adminid = ?";
+        String sql = "update admins set adminaccount = ?, adminpwd = ?,adminaccount = ?, email = ?, phone = ? where adminid = ?";
         int result = JdbcUtil.update(sql, admin.getAdminaccount(), admin.getAdminpwd(), admin.getAdminname(), admin.getEmail(), admin.getPhone(), admin.getAdminid());
         return result;
     }

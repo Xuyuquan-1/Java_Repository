@@ -14,10 +14,10 @@
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
                 <a href="javascript:;" id="loginName">
-                    <img src="/img/user.png" class="layui-nav-img">贤心
+                    <img src="/img/user.png" class="layui-nav-img">admin
                 </a>
                 <dl class="layui-nav-child">
-                    <dd><a href="/admin/adminInfo.html">个人信息</a></dd>
+                    <dd><a href="admin/adminInfo.html">个人信息</a></dd>
                     <dd><a href="javascript:;" id="logout">退出</a></dd>
                 </dl>
             </li>
@@ -28,14 +28,15 @@
         <div class="layui-side-scroll">
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree" lay-filter="test">
-                <li class="layui-nav-item"><a href="javascript:;" _url="students.html"><i class="layui-icon layui-icon-set"></i> 学生管理</a></li>
-                <li class="layui-nav-item"><a href="javascript:;" _url="courses.html"><i class="layui-icon layui-icon-set"></i> 课程管理</a></li>
+                <li class="layui-nav-item"><a href="javascript:;" _url="admin/allstudents.html"><i class="layui-icon layui-icon-set"></i> 学生管理</a></li>
+                <li class="layui-nav-item"><a href="javascript:;" _url="admin/allcourses.html"><i class="layui-icon layui-icon-set"></i> 课程管理</a></li>
             </ul>
         </div>
     </div>
 
     <div class="layui-body">
-        <iframe src="allstudents.html" style="width:100%;height:100%;border: none;" id="main"></iframe>
+        <!--   src里面是登陆后的初始网页，后续会根据ajax监听事件来修改src     -->
+        <iframe src="admin/allstudents.html" style="width:98%;height:98%;border: none;" id="main"></iframe>
     </div>
 </div>
 <script src="/layui/layui.all.js"></script>

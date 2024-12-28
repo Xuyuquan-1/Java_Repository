@@ -31,7 +31,7 @@
     </style>
 </head>
 <body>
-<table class="layui-table" lay-data="{toolbar:'#toptools', url:'/student/list', page:true, id:'datalist'}"
+<table class="layui-table" lay-data="{toolbar:'#toptools', url:'http://localhost:8080/student/list', page:true, id:'datalist'}"
        lay-filter="datalist">
     <thead>
     <tr>
@@ -40,7 +40,7 @@
         <th lay-data="{field:'studentno', sort: true}">学生学号</th>
         <th lay-data="{field:'email', sort: true}">学生邮箱</th>
         <th lay-data="{field:'major', sort: true}">学生专业</th>
-        <th lay-data="{field:'gender', sort: true}">学生性别</th>
+        <th lay-data="{field:'grade', sort: true}">学生年级</th>
         <th lay-data="{toolbar:'#linetools'}">操作</th>
     </tr>
     </thead>
@@ -82,7 +82,7 @@
     <div class="layui-form-item layui-inline">
         <label class="layui-form-label"><i class="layui-icon layui-icon-female"></i> 学生性别</label>
         <div class="layui-input-inline">
-            <select name="gender" lay-verify="required">
+            <select name="grade" lay-verify="required">
                 <option value="">请选择性别</option>
                 <option value="男">男</option>
                 <option value="女">女</option>
@@ -127,7 +127,7 @@
     <div class="layui-form-item layui-inline">
         <label class="layui-form-label"><i class="layui-icon layui-icon-female"></i> 学生性别</label>
         <div class="layui-input-inline">
-            <select name="gender" lay-verify="required">
+            <select name="grade" lay-verify="required">
                 <option value="">请选择性别</option>
                 <option value="男">男</option>
                 <option value="女">女</option>
@@ -162,7 +162,7 @@
         if (event == 'add') {
             //点击新增按钮执行的方法
             //重置表单内容
-            form.val("addWin", {studentname: "", studentno: "", email: "", major: "", gender: ""});
+            form.val("addWin", {studentname: "", studentno: "", email: "", major: "", grade: ""});
             //打开一个对话框(输入内容)
             layer.open({
                 //具有遮罩层样式的窗口
