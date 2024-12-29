@@ -39,7 +39,7 @@ public class StudentDao {
         return result;
     }
 
-    public int addStudent(Student student) throws SQLException {
+    public int addStudent(Student student) {
         String sql = "insert into students(studentname, studentno, studentpwd, email, major, grade) values(?, ?, ?, ?, ?, ?)";
         int result = JdbcUtil.update(sql, student.getStudentname(), student.getStudentno(), student.getStudentpwd(), student.getEmail(), student.getMajor(), student.getGrade());
         return result;
@@ -48,6 +48,20 @@ public class StudentDao {
     public int updateStudent(Student student) throws SQLException {
         String sql = "update students set studentname = ?,studentno = ?,studentpwd = ?, email = ?, major = ?, grade = ? where studentid = ?";
         int result = JdbcUtil.update(sql, student.getStudentname(), student.getStudentno(), student.getStudentpwd(), student.getEmail(), student.getMajor(), student.getGrade(), student.getStudentid());
+        return result;
+    }
+
+    //仅用于admin增加学生
+    public int adminAddStudent(Student student){
+        String sql = "insert into students(studentname, studentno, email, major, grade) values(?, ?, ?, ?, ?)";
+        int result = JdbcUtil.update(sql, student.getStudentname(), student.getStudentno(), student.getEmail(), student.getMajor(), student.getGrade());
+        return result;
+    }
+
+    //仅用于admin编辑学生
+    public int editUpdateStudent(Student student){
+        String sql = "update students set studentname = ?, email = ?, major = ?, grade = ? where studentid = ?";
+        int result = JdbcUtil.update(sql, student.getStudentname(),student.getEmail(),student.getMajor(),student.getGrade(),student.getStudentid());
         return result;
     }
 

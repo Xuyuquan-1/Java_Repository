@@ -46,19 +46,19 @@ public class StudentController {
     }
 
     @RequestMapping("/add")
-    public Object addStudent(Student student) {
+    public Object addStudent(@RequestBody Student student) {
         try {
             return studentDao.addStudent(student);
         } catch (Exception e) {
             e.printStackTrace();
-            return "error";
+            return "/add error";
         }
     }
 
     @RequestMapping("/edit")
     public Object updateStudent(Student student) {
         try {
-            return studentDao.updateStudent(student);
+            return studentDao.editUpdateStudent(student);
         } catch (Exception e) {
             e.printStackTrace();
             return "error";
