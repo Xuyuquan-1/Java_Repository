@@ -19,8 +19,7 @@
     </style>
 </head>
 <body>
-<table class="layui-table" lay-data="{toolbar:'#toptools', url:'/student/list', page:true, id:'datalist'}" lay-filter="datalist">
-    <thead>
+<table class="layui-table" lay-data="{toolbar:'#toptools', url:'/enrollment/selectedlist', page:true, id:'datalist'}" lay-filter="datalist">    <thead>
     <tr>
         <th lay-data="{field:'courseid', sort: true}">课程ID</th>
         <th lay-data="{field:'coursename', sort: true}">课程名称</th>
@@ -55,8 +54,8 @@
             layer.confirm("确认要退选该课程吗?", function () {
                 // 点击确认后执行的代码
                 $.ajax({
-                    url: "course/exitcourse",
-                    data: { courseid: data.courseid, studentno: studentno }, // 确保studentno已定义
+                    url: "enrollment/exit",
+                    data: {studentno: data.studentno , courseid: data.courseid },
                     success: function (result) {
                         layer.closeAll();
                         if (result.success) {

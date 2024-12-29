@@ -39,48 +39,6 @@ public class CourseController {
             return "error";
         }
     }
-
-
-    @RequestMapping("/getselectedcourse")
-    public Object getSelectedCourses(String studentno) {
-        try {
-            return courseDao.getSelectedCourses(studentno);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "error";
-        }
-    }
-
-    @RequestMapping("/getavailablecourse")
-    public Object getAvailableCourses(String studentno) {
-        try {
-            return courseDao.getAvailableCourses(studentno);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "error";
-        }
-    }
-
-    @RequestMapping("selectcourse")
-    public Object selectCourse(int courseid, String studentno) {
-        try {
-            return courseDao.selectCourse(courseid, studentno);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "error";
-        }
-    }
-
-    @RequestMapping("/exitcourse")
-    public Object exitCourse(int courseid, String studentno) {
-        try {
-            return courseDao.exitCourse(courseid, studentno);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "error";
-        }
-    }
-
     @RequestMapping("/add")
     public Object addCourse(Course course) {
         try {

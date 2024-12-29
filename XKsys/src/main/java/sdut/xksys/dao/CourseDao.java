@@ -29,28 +29,6 @@ public class CourseDao {
         return course;
     }
 
-    public List<Course> getSelectedCourses(String studentno) throws SQLException, IllegalAccessException, InstantiationException {
-        String sql = "SELECT c.* FROM courses c JOIN enrollments e ON c.courseid = e.courseid WHERE e.studentno = ?";
-        ResultSet rs = JdbcUtil.query(sql, studentno);
-        List<Course> list = JdbcUtil.convertResultSetToList(rs, Course.class);
-        JdbcUtil.close(rs);
-        return list;
-    }
-
-    public List<Course> getAvailableCourses(String studentno) throws SQLException, IllegalAccessException, InstantiationException {
-        String sql = "SELECT c.* FROM courses c LEFT JOIN enrollments e ON c.courseid = e.courseid WHERE e.studentno IS NULL AND c.maxenrollment > (SELECT COUNT(*) FROM enrollments WHERE courseid = c.courseid)";
-        ResultSet rs = JdbcUtil.query(sql, studentno);
-        List<Course> list = JdbcUtil.convertResultSetToList(rs, Course.class);
-        JdbcUtil.close(rs);
-        return list;
-    }
-
-    public Object selectCourse(int courseid, String studentno) throws SQLException, IllegalAccessException, InstantiationException {
-        String sql = "INSERT INTO enrollments (studentno, courseid, status) VALUES (?, ?, 'PENDING')";
-        int rowsAffected = JdbcUtil.update(sql, studentno, courseid);
-        return rowsAffected;
-    }
-
     public int getCourseCount(){
         String sql = "select count(*) from courses";
         ResultSet rs = JdbcUtil.query(sql);
@@ -66,12 +44,6 @@ public class CourseDao {
             ;
         }
 
-    }
-
-    public Object exitCourse(int courseid, String studentno) throws SQLException, IllegalAccessException, InstantiationException {
-        String sql = "DELETE FROM enrollments WHERE studentno = ? AND courseid = ?";
-        int rowsAffected = JdbcUtil.update(sql, studentno, courseid);
-        return rowsAffected;
     }
 
     public int addCourse(Course course) throws SQLException {

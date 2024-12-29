@@ -29,24 +29,6 @@ public class StudentDao {
         return list;
     }
 
-    // 查询某个学生的选课状态为 ENROLLED 的课程
-    public List<Course> getEnrolledCoursesByStudent(String studentno) throws SQLException, IllegalAccessException, InstantiationException {
-        String sql = "SELECT c.* FROM students s JOIN enrollments e ON s.studentno = e.studentno JOIN courses c ON e.courseid = c.courseid WHERE s.studentno = ? AND e.status = 'ENROLLED' ORDER BY c.coursename";
-        ResultSet rs = JdbcUtil.query(sql, studentno);
-        List<Course> courseList = JdbcUtil.convertResultSetToList(rs, Course.class);
-        JdbcUtil.close(rs);
-        return courseList;
-    }
-
-    // 查询某个学生的选课状态为 PENDING 的课程
-    public List<Course> getPendingCoursesByStudent(String studentno) throws SQLException, IllegalAccessException, InstantiationException {
-        String sql = "SELECT c.* FROM students s JOIN enrollments e ON s.studentno = e.studentno JOIN courses c ON e.courseid = c.courseid WHERE s.studentno = ? AND e.status = 'PENDING' ORDER BY c.coursename";
-        ResultSet rs = JdbcUtil.query(sql, studentno);
-        List<Course> courseList = JdbcUtil.convertResultSetToList(rs, Course.class);
-        JdbcUtil.close(rs);
-        return courseList;
-    }
-
     public int getStudentCount() throws SQLException {
         //统计所有数据的行数
         String sql = "select count(*) from students";
