@@ -34,7 +34,7 @@
 
 <!-- 表格行内工具栏 -->
 <script type="text/html" id="linetools">
-    <button type="button" class="layui-btn layui-btn-xs layui-btn-normal" lay-event="select">可选</button>
+    <button type="button" class="layui-btn layui-btn-xs layui-btn-normal" lay-event="select">选择</button>
 </script>
 
 <script src="/layui/layui.all.js"></script>
@@ -55,7 +55,7 @@
             layer.confirm("确认要选择该课程吗?", function () {
                 // 点击确认后执行的代码
                 $.ajax({
-                    url: "course/selectcourse",
+                    url: "enrollment/selectcourse",
                     data: { courseid: data.courseid },
                     success: function (result) {
                         layer.closeAll();

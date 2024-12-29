@@ -46,7 +46,7 @@ public class StudentDao {
     }
 
     public int updateStudent(Student student) throws SQLException {
-        String sql = "update students set studentname = ?,studentno = ?,studentpwd = ?, email = ?, major = ?, grade = ? where studentnid = ?";
+        String sql = "update students set studentname = ?,studentno = ?,studentpwd = ?, email = ?, major = ?, grade = ? where studentid = ?";
         int result = JdbcUtil.update(sql, student.getStudentname(), student.getStudentno(), student.getStudentpwd(), student.getEmail(), student.getMajor(), student.getGrade(), student.getStudentid());
         return result;
     }

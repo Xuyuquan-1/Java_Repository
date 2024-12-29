@@ -46,7 +46,9 @@ public class EnrollmentController {
     }
 
     @RequestMapping("/selectcourse")
-    public Object selectCourse(String studentno, int courseid) {
+    public Object selectCourse(HttpSession session, @RequestParam int courseid) {
+        Student student = (Student) session.getAttribute("student");
+        String studentno = student.getStudentno();
         try {
             return enrollmentDao.selectCourse(studentno, courseid);
         } catch (Exception e) {
@@ -56,7 +58,9 @@ public class EnrollmentController {
     }
 
     @RequestMapping("/exitcourse")
-    public Object exitCourse(String studentno, int courseid) {
+    public Object exitCourse(HttpSession session,@RequestParam int courseid) {
+        Student student = (Student) session.getAttribute("student");
+        String studentno = student.getStudentno();
         try {
             return enrollmentDao.exitCourse(studentno, courseid);
         } catch (Exception e) {

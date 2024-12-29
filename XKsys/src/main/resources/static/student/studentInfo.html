@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <base href="http://localhost:8080/student">
     <meta charset="UTF-8">
     <title>学生信息</title>
     <link rel="stylesheet" href="/layui/css/layui.css">
@@ -51,7 +50,7 @@
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">性别</label>
+            <label class="layui-form-label">年级</label>
             <div class="layui-input-block">
                 <input type="text" name="grade" id="studentGradeEdit" required lay-verify="required"
                        autocomplete="off" class="layui-input">
@@ -120,14 +119,15 @@
     const $ = layui.$;
     const form = layui.form;
     const layer = layui.layer;
+    var baseUrl = "http://localhost:8080/student/";
 
     // 获取当前登录学生的信息
     function getStudentInfo() {
         $.ajax({
-            url: "student/info",
+            url:baseUrl + "getinfo",
             method: "GET",
             success: function (result) {
-                if (result.success) {
+                if (result.success && result.data) {
                     $("#studentId").val(result.data.studentid);
                     $("#studentNameEdit").val(result.data.studentname);
                     $("#studentNoEdit").val(result.data.studentno);
@@ -136,11 +136,15 @@
                     $("#studentMajorEdit").val(result.data.major);
                     $("#studentGradeEdit").val(result.data.grade);
                 } else {
-                    layer.msg("获取学生信息失败", {icon: 2, time: 1800});
+                    // 如果后端返回的格式不符合预期，提供更具体的错误信息
+                    layer.msg("获取学生信息失败: " + (result.message || '未知错误'), {icon: 2, time: 1800});
                 }
             },
-            error: function () {
-                layer.msg("获取学生信息失败", {icon: 2, time: 1800});
+            error: function (jqXHR, textStatus, errorThrown) {
+                // 记录详细的错误信息到控制台
+                console.error("获取学生信息失败: " + textStatus + ", " + errorThrown);
+                // 提供用户友好的错误提示
+                layer.msg("获取学生信息失败: " + (jqXHR.responseText || '网络错误'), {icon: 2, time: 1800});
             }
         });
     }

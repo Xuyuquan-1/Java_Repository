@@ -54,16 +54,12 @@
             layer.confirm("确认要退选该课程吗?", function () {
                 // 点击确认后执行的代码
                 $.ajax({
-                    url: "enrollment/exit",
-                    data: {studentno: data.studentno , courseid: data.courseid },
+                    url: "enrollment/exitcourse",
+                    data: { courseid: data.courseid },
                     success: function (result) {
                         layer.closeAll();
-                        if (result.success) {
-                            table.reload("datalist");
-                            layer.msg(result.message, { icon: 1, time: 1800 });
-                        } else {
-                            layer.msg(result.message, { icon: 2, time: 1800 });
-                        }
+                        table.reload("datalist");
+                        layer.msg("退选成功", { icon: 1, time: 1800 });
                     },
                     error: function () {
                         layer.msg("服务器错误", { icon: 2, time: 1800 });
