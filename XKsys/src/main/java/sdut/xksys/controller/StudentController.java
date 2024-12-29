@@ -50,7 +50,7 @@ public class StudentController {
     @RequestMapping("/add")
     public Object addStudent(@RequestBody Student student) {
         try {
-            return studentDao.addStudent(student);
+            return studentDao.adminAddStudent(student);
         } catch (Exception e) {
             e.printStackTrace();
             return "/add error";

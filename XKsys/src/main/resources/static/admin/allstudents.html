@@ -177,6 +177,8 @@
                         method: 'post',
                         url: "student/add",
                         data: formdata,
+                        contentType: 'application/json', // 明确发送的数据类型为 JSON
+                        data: JSON.stringify(formdata), //转换为json字符串
                         success: function (result) {
                             //关闭对话框
                             layer.closeAll();

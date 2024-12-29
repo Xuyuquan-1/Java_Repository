@@ -53,8 +53,9 @@ public class StudentDao {
 
     //仅用于admin增加学生
     public int adminAddStudent(Student student){
-        String sql = "insert into students(studentname, studentno, email, major, grade) values(?, ?, ?, ?, ?)";
-        int result = JdbcUtil.update(sql, student.getStudentname(), student.getStudentno(), student.getEmail(), student.getMajor(), student.getGrade());
+        String sql = "insert into students(studentname, studentno, studentpwd, email, major, grade) values(?, ?, ?, ?, ?, ?)";
+        int result = JdbcUtil.update(sql, student.getStudentname(), student.getStudentno(), "123456" ,student.getEmail(), student.getMajor(), student.getGrade());
+
         return result;
     }
 

@@ -186,8 +186,10 @@
                     //提交数据
                     $.ajax({
                         method: "post",
-                        url: "course/add",
-                        data: formdata,
+                        url: "course/edit",
+                        data:formdata,
+                        // contextType:'application/json',
+                        // data:JSON.stringify(formdata),
                         success: function (result) {
                             //刷新表格
                             table.reload("datalist");

@@ -6,6 +6,7 @@ import java.lang.reflect.Field;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class JdbcUtil {
 
@@ -31,11 +32,11 @@ public class JdbcUtil {
         //dataSource.setFilters("stat,wall,log4j");
 
         // 配置其他属性，如连接超时时间等
-//        Properties properties = new Properties();
-//        properties.setProperty("validationQuery", "SELECT 1");
-//        properties.setProperty("testWhileIdle", "true");
-//        properties.setProperty("testOnBorrow", "false");
-//        properties.setProperty("testOnReturn", "false");
+        Properties properties = new Properties();
+        properties.setProperty("validationQuery", "SELECT 1");
+        properties.setProperty("testWhileIdle", "true");
+        properties.setProperty("testOnBorrow", "false");
+        properties.setProperty("testOnReturn", "false");
 //        dataSource.setConnectionProperties(properties);
     }
 
@@ -63,7 +64,7 @@ public class JdbcUtil {
             throw new RuntimeException("Error executing query", e);
         } finally {
 
-           // close(conn, stmt, rs);
+//            close(conn, stmt, rs);
         }
     }
 
