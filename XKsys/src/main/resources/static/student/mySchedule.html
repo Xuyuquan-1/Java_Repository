@@ -2,71 +2,85 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>课表渲染示例</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/layui-src/dist/css/layui.css">
+    <title>我的课表</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <style>
+        /* 设置单元格内的文本可换行 */
+        .layui-table-cell {
+            height: auto;
+            white-space: normal;
+        }
+    </style>
 </head>
 <body>
-<table id="demo" lay-filter="test"></table>
+<table id="demo" lay-filter="test" class="layui-table"></table>
 
-<script src="https://cdn.jsdelivr.net/npm/layui-src/dist/layui.js"></script>
+<script src="/layui/layui.all.js"></script>
 <script>
-    layui.use('table', function(){
+    layui.use(['table', 'jquery'], function(){
         var table = layui.table;
+        var $ = layui.jquery;
 
-        // 假设这是从后端接口获取的JSON数据
-        var jsonData = [
-            {teachername: '张老师', classroom: 'A101', dayofweek: '周一', starttime: '09:00:00', endtime: '10:30:00', courseid: '1', coursename: '数据结构与算法'},
-            {teachername: '李老师', classroom: 'B205', dayofweek: '周二', starttime: '11:00:00', endtime: '12:30:00', courseid: '2', coursename: '操作系统'},
-            {teachername: '王老师', classroom: 'C310', dayofweek: '周三', starttime: '14:00:00', endtime: '15:30:00', courseid: '3', coursename: '计算机网络'},
-            {teachername: '赵老师', classroom: 'A101', dayofweek: '周四', starttime: '09:00:00', endtime: '10:30:00', courseid: '4', coursename: '编译原理'},
-            {teachername: '周老师', classroom: 'C310', dayofweek: '周一', starttime: '14:00:00', endtime: '15:30:00', courseid: '6', coursename: '人工智能基础'},
-            {teachername: '张老师', classroom: 'A101', dayofweek: '周二', starttime: '09:00:00', endtime: '10:30:00', courseid: '7', coursename: '计算机图形学'},
-            {teachername: '王老师', classroom: 'C310', dayofweek: '周四', starttime: '09:00:00', endtime: '10:30:00', courseid: '9', coursename: '计算机体系结构'}
-        ];
+        // 使用 AJAX 请求获取数据
+        $.ajax({
+            url: '/schedule/list',
+            type: 'GET',
+            dataType: 'json',
+            success: function(res) {
+                if (res.code === 0) {
+                    var jsonData = res.data;
 
-        // 将数据转换为符合表格渲染的数据格式
-        var weekMap = { '周一': [], '周二': [], '周三': [], '周四': [], '周五': [] };
-        jsonData.forEach(function (item) {
-            if (weekMap[item.dayofweek]) {
-                // 格式化课程信息
-                var courseInfo = item.teachername + ' ' + item.classroom + ' ' + item.starttime + '-' + item.endtime + ' ' + item.coursename;
-                weekMap[item.dayofweek].push(courseInfo);
+                    var weekMap = { '周一': [], '周二': [], '周三': [], '周四': [], '周五': [], '周六': [], '周日': [] };
+                    jsonData.forEach(function (item) {
+                        var dayOfWeek = item.dayofweek || '周一'; // 如果 dayofweek 为 null，则默认为 '周一'
+                        // 格式化课程信息
+                        var courseInfo = item.teachername + ' ' + item.classroom + ' ' + item.starttime + '-' + item.endtime;
+                        weekMap[dayOfWeek].push(courseInfo);
+                    });
+
+                    // 补充空的课程信息
+                    for (var day in weekMap) {
+                        while (weekMap[day].length < 4) {
+                            weekMap[day].push(''); // 没有课就用空字符串表示
+                        }
+                    }
+
+                    // 将 weekMap 转换为 table 所需的数据格式
+                    var tableData = [];
+                    for (var i = 0; i < 4; i++) {
+                        var row = {
+                            period: '第' + (i + 1) + '节课'
+                        };
+                        for (var day in weekMap) {
+                            row[day] = weekMap[day][i];
+                        }
+                        tableData.push(row);
+                    }
+
+                    // 渲染表格
+                    table.render({
+                        elem: '#demo'
+                        ,cols: [[
+                            {field:'period', title: '时间段', width:100}
+                            ,{field:'周一', title: '周一', width:150}
+                            ,{field:'周二', title: '周二', width:150}
+                            ,{field:'周三', title: '周三', width:150}
+                            ,{field:'周四', title: '周四', width:150}
+                            ,{field:'周五', title: '周五', width:150}
+                            ,{field:'周六', title: '周六', width:150}
+                            ,{field:'周日', title: '周日', width:150}
+                        ]]
+                        ,data: tableData
+                        ,page: false // 不需要分页
+                        ,height: 600 // 增加表格高度
+                    });
+                } else {
+                    layer.msg(res.msg); // 使用 layer 弹出错误信息
+                }
+            },
+            error: function() {
+                layer.msg('获取数据失败'); // 使用 layer 弹出错误信息
             }
-        });
-
-        // 补充空的课程信息
-        for (var day in weekMap) {
-            while (weekMap[day].length < 4) {
-                weekMap[day].push(''); // 没有课就用空字符串表示
-            }
-        }
-
-        // 将weekMap转换为table所需的数据格式
-        var tableData = [];
-        for (var i = 0; i < 4; i++) {
-            var row = {
-                period: '第' + (i + 1) + '节课'
-            };
-            for (var day in weekMap) {
-                row[day] = weekMap[day][i];
-            }
-            tableData.push(row);
-        }
-
-        // 渲染表格
-        table.render({
-            elem: '#demo'
-            ,cols: [[
-                {field:'period', title: '时间段', width:100}
-                ,{field:'周一', title: '周一', width:200}
-                ,{field:'周二', title: '周二', width:200}
-                ,{field:'周三', title: '周三', width:200}
-                ,{field:'周四', title: '周四', width:200}
-                ,{field:'周五', title: '周五', width:200}
-            ]]
-            ,data: tableData
-            ,page: false // 不需要分页
-            ,height: 300 // 设置表格高度
         });
     });
 </script>
