@@ -1,7 +1,9 @@
 package sdut.xksys.dao;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestParam;
 import sdut.xksys.bean.Course;
+import sdut.xksys.bean.Student;
 import sdut.xksys.util.JdbcUtil;
 
 import java.sql.ResultSet;
@@ -43,6 +45,7 @@ public class EnrollmentDao {
         JdbcUtil.close(rs);
         return courseList;
     }
+
 
     public List<Course> getAvailableCourses(String studentno) throws SQLException, IllegalAccessException, InstantiationException {
         String sql = "SELECT c.* " +

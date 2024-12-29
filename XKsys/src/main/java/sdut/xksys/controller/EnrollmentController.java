@@ -1,8 +1,11 @@
 package sdut.xksys.controller;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import sdut.xksys.bean.Student;
 import sdut.xksys.dao.EnrollmentDao;
 import sdut.xksys.util.RestResult;
 
@@ -15,8 +18,10 @@ public class EnrollmentController {
     EnrollmentDao enrollmentDao;
 
     @RequestMapping("/selectedlist")
-    public Object getSelectedCourses(String studentno) {
+    public Object getSelectedCourses(HttpSession session) {
         try {
+            Student student = (Student) session.getAttribute("student");
+            String studentno = student.getStudentno();
             List list = enrollmentDao.getSelectedCourses(studentno);
             int count = enrollmentDao.getSelectedCount(studentno);
             return new RestResult( count,list);
@@ -27,8 +32,10 @@ public class EnrollmentController {
     }
 
     @RequestMapping("/availablelist")
-    public Object getAvailableCourses(String studentno) {
+    public Object getAvailableCourses(HttpSession session) {
         try {
+            Student student = (Student) session.getAttribute("student");
+            String studentno = student.getStudentno();
             List list = enrollmentDao.getAvailableCourses(studentno);
             int count = enrollmentDao.getAvailableCount(studentno);
             return new RestResult(count, list);
