@@ -1,5 +1,7 @@
 package sdut.xksys.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,11 +23,11 @@ public class StudentController {
     private StudentDao studentDao;
 
     @GetMapping("/getinfo")
-    public Student getStudentInfo(HttpSession session) throws SQLException, IllegalAccessException, InstantiationException {
+    public Object getStudentInfo(HttpSession session) throws SQLException, IllegalAccessException, InstantiationException {
         Student oldStudent = (Student) session.getAttribute("student");
         Student newStudent = studentDao.getStudentByStudentno(oldStudent.getStudentno());
         studentDao.updateStudent(newStudent);
-        session.getAttribute("student");
+        session.setAttribute("student",newStudent);
         return (Student) session.getAttribute("student");
     }
 

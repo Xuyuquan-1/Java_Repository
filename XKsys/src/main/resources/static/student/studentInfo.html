@@ -127,14 +127,14 @@
             url:baseUrl + "getinfo",
             method: "GET",
             success: function (result) {
-                if (result.success && result.data) {
-                    $("#studentId").val(result.data.studentid);
-                    $("#studentNameEdit").val(result.data.studentname);
-                    $("#studentNoEdit").val(result.data.studentno);
-                    $("#studentPwdEdit").val(result.data.studentpwd);
-                    $("#studentEmailEdit").val(result.data.email);
-                    $("#studentMajorEdit").val(result.data.major);
-                    $("#studentGradeEdit").val(result.data.grade);
+                if (result) {
+                    $("#studentId").val(result.studentid);
+                    $("#studentNameEdit").val(result.studentname);
+                    $("#studentNoEdit").val(result.studentno);
+                    $("#studentPwdEdit").val(result.studentpwd);
+                    $("#studentEmailEdit").val(result.email);
+                    $("#studentMajorEdit").val(result.major);
+                    $("#studentGradeEdit").val(result.grade);
                 } else {
                     // 如果后端返回的格式不符合预期，提供更具体的错误信息
                     layer.msg("获取学生信息失败: " + (result.message || '未知错误'), {icon: 2, time: 1800});
@@ -152,10 +152,11 @@
     // 提交修改
     form.on('submit(editStudent)', function (data) {
         $.ajax({
-            url: "student/edit",
-            method: "POST",
+            url: baseUrl + "edit",
+            method: "post",
             data: data.field,
             success: function (result) {
+                //修改成功，数据库同步成功，但是result.success返回false
                 if (result.success) {
                     layer.msg("修改成功", {icon: 1, time: 1800});
                 } else {
