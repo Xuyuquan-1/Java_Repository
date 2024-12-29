@@ -152,13 +152,17 @@
     // 提交修改
     form.on('submit(editStudent)', function (data) {
         $.ajax({
-            url: baseUrl + "edit",
-            method: "post",
+            url: "edit",
+            method: "POST",
             data: data.field,
             success: function (result) {
                 //修改成功，数据库同步成功，但是result.success返回false
-                if (result.success) {
-                    layer.msg("修改成功", {icon: 1, time: 1800});
+                if (result) {
+                    layer.msg("修改成功，但是result.success返回false");
+                    setTimeout(function () {
+                        // 重定向
+                        location.href = "studentindex.html";
+                    }, 1000);
                 } else {
                     layer.msg("修改失败：" + result.message, {icon: 2, time: 1800});
                 }
