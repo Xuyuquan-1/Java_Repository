@@ -17,11 +17,22 @@ public class AdminController {
     private AdminDao adminDao;
 
     @GetMapping("/getinfo")
-    public Admin getAdminInfo(HttpSession session) {
-        return (Admin) session.getAttribute("admin");
+    public Admin getAdminInfo(HttpSession session){
+         Admin oldAdmin =  (Admin) session.getAttribute("admin");
+         Admin newAdmin = adminDao.getAdminById(oldAdmin.getAdminid());
+         try {
+             adminDao.updateAdmin(newAdmin);
+             session.setAttribute("admin", newAdmin);
+             return (Admin) session.getAttribute("admin");
+         }catch (Exception e){
+             e.printStackTrace();
+             throw new RuntimeException("/getinfo:error!");
+         }finally {
+             ;
+         }
     }
 
-    @RequestMapping("edit")
+    @RequestMapping("/edit")
     public Object updateAdmin(Admin admin) {
         try {
             int result = adminDao.updateAdmin(admin);

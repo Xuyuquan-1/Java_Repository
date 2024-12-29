@@ -21,8 +21,25 @@ public class AdminDao {
         return admin;
     }
 
+
+    public Admin getAdminById(int adminid){
+        String sql = "select * from admins where adminid = ?";
+        ResultSet rs = JdbcUtil.query(sql,adminid);
+        try {
+            List<Admin> list = JdbcUtil.convertResultSetToList(rs, Admin.class);
+            Admin admin = list.get(0);
+            JdbcUtil.close(rs);
+            return admin;
+        } catch(Exception e){
+            e.printStackTrace();
+            throw new RuntimeException("AdminDao.getAdminById:error!");
+        }finally {
+            ;
+        }
+    }
+
     public int updateAdmin(Admin admin) throws SQLException {
-        String sql = "update admins set adminaccount = ?, adminpwd = ?,adminaccount = ?, email = ?, phone = ? where adminid = ?";
+        String sql = "update admins set adminaccount = ?, adminpwd = ?,adminname = ?, email = ?, phone = ? where adminid = ?";
         int result = JdbcUtil.update(sql, admin.getAdminaccount(), admin.getAdminpwd(), admin.getAdminname(), admin.getEmail(), admin.getPhone(), admin.getAdminid());
         return result;
     }

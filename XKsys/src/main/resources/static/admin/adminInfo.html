@@ -85,6 +85,7 @@
         });
     }
 
+
     // 提交修改
     form.on('submit(editAdmin)', function (data) {
         $.ajax({
@@ -95,7 +96,11 @@
                 if (result) {
                     layer.msg("修改成功", {icon: 1, time: 1800});
                     //重定向，之后还需要改成动态的（即从哪走的从哪回来）
-                    location.href = "admin/adminindex.html";
+                    //等待2000ms
+                    setTimeout(function () {
+                        // 重定向，目前是固定跳转到 "admin/adminindex.html"，后续按需求改成动态的
+                        location.href = "admin/adminindex.html";
+                    }, 2000);
 
                 } else {
                     layer.msg("修改失败", {icon: 2, time: 1800});
