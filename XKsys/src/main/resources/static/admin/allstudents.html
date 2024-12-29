@@ -104,12 +104,6 @@
         </div>
     </div>
 
-    <div class="layui-form-item layui-inline">
-        <label class="layui-form-label"><i class="layui-icon layui-icon-user"></i> 学生学号</label>
-        <div class="layui-input-inline">
-            <input type="text" name="studentno" placeholder="请输入学生学号" autocomplete="off" class="layui-input" lay-verify="required">
-        </div>
-    </div>
 
     <div class="layui-form-item layui-inline">
         <label class="layui-form-label"><i class="layui-icon layui-icon-email"></i> 学生邮箱</label>
@@ -157,14 +151,15 @@
     const table = layui.table;
     const layer = layui.layer;
     const form = layui.form;
-
+    var baseUrl = "http://localhost:8080/";
     /*声明表格头部工具栏时间*/
     table.on("toolbar(datalist)", function (obj) {
         var event = obj.event;
+        // var data = obj.data;
         if (event == 'add') {
             //点击新增按钮执行的方法
             //重置表单内容
-            form.val("addWin", {studentname: "", studentno: "", email: "", major: "", grade: ""});
+            form.val("addWin", {studentname: '', studentno: '', email: '', major: '', grade: ''});
             //打开一个对话框(输入内容)
             layer.open({
                 //具有遮罩层样式的窗口
@@ -177,9 +172,10 @@
                     //点击保存按钮  保存数据
                     //表单中的数据
                     var formdata = form.val("addWin");
+                    console.log(formdata);
                     $.ajax({
                         method: 'post',
-                        url: 'student/add',
+                        url: "student/add",
                         data: formdata,
                         success: function (result) {
                             //关闭对话框
@@ -187,7 +183,11 @@
                             //刷新数据
                             table.reload("datalist");
                             //提示用户
+                            // console.log(result);
                             layer.msg("添加成功", {icon: 1, time: 1800});
+                        },
+                        error:function(result){
+                            layer.msg("添加失败！",{icon: 2, time:1000});
                         }
                     });
                 }
@@ -224,6 +224,9 @@
                             layer.closeAll();
                             //提示用户
                             layer.msg("保存成功", {icon: 1, time: 1800});
+                        },
+                        error:function (result){
+                            layer.msg("保存失败");
                         }
                     });
                 }
