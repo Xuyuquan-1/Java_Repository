@@ -32,11 +32,11 @@
 </head>
 <body>
 <table class="layui-table" lay-data="{toolbar:'#toptools', url:'http://localhost:8080/student/list', page:true, id:'datalist'}"
-       lay-filter="datalist">
+        id="datalist" lay-filter="datalist">
     <thead>
     <tr>
         <th lay-data="{field:'studentid', sort: true}">学生ID</th>
-        <th lay-data="{field:'studentname', sort: true}">学生姓名</th>
+        <th id="name" lay-data="{field:'studentname', sort: true}">学生姓名</th>
         <th lay-data="{field:'studentno', sort: true}">学生学号</th>
         <th lay-data="{field:'email', sort: true}">学生邮箱</th>
         <th lay-data="{field:'major', sort: true}">学生专业</th>
@@ -134,8 +134,21 @@
 
 <!--表格头部工具栏-->
 <script type="text/html" id="toptools">
-    <button type="button" class="layui-btn " lay-event="check">查询</button>
-    <button type="button" class="layui-btn layui-btn-primary" lay-event="add">新增</button>
+    <form class="layui-form layui-row layui-col-space16">
+        <div class="layui-form-item">
+            <div class="layui-col-sm1 layui-input-inline">
+                <button type="button" class="layui-btn layui-btn-primary" lay-event="add">新增</button>
+            </div>
+            <div class="layui-col-sm2 layui-input-inline">
+                <input type="text" name="checktext" placeholder="请输入" autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-col-sm1 layui-input-inline">
+                <button type="button" class="layui-btn " lay-event="check">查询</button>
+            </div>
+        </div>
+
+    </form>
+
 </script>
 </script>
 <!--表格行内工具栏-->
@@ -195,6 +208,24 @@
                 }
             });
         }
+        if(event == 'check') {
+            var checktext = $("[name='checktext']").val(); // 获取输入框的值
+            console.log(checktext);
+            console.log(document.getElementById("datalist"));
+            table.reload("datalist", {
+                page: {
+                    curr: 1 // 重载表格时从第一页开始
+                },
+                where: {
+                    studentname:checktext // 使用获取到的值作为查询条件
+                }
+
+            });
+
+            // 如果需要保持输入框内容不变，则不需要下面这行代码
+            // $("[name='checktext']").val(checktext);
+        }
+
     });
 
     /*行内工具栏的监听事件*/
