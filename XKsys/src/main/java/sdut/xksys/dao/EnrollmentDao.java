@@ -61,7 +61,7 @@ public class EnrollmentDao {
     }
 
 
-    public int selectCourse(String studentno, int courseid) throws SQLException, IllegalAccessException, InstantiationException {
+    public int selectCourse(String studentno, int courseid ) throws SQLException, IllegalAccessException, InstantiationException {
         String sql = "UPDATE enrollments SET status = 'ENROLLED' WHERE studentno = ? AND courseid = ?";
         return JdbcUtil.update(sql, studentno, courseid);
     }

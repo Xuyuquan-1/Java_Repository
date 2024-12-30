@@ -1,5 +1,6 @@
 package sdut.xksys.bean;
 
+import java.sql.Time;
 import java.util.Date;
 
 public class DetailCourse {
@@ -9,17 +10,23 @@ public class DetailCourse {
     String description;
     Date startdate;
     Date enddate;
+    String dayofweek;
+    Time starttime;
+    Time endtime;
 
     public DetailCourse() {
     }
 
-    public DetailCourse(int courseid, int detailcourseid, String coursename, String description, Date startdate, Date enddate) {
+    public DetailCourse(int courseid, int detailcourseid, String coursename, String description, Date startdate, Date enddate, String dayofweek, Time starttime, Time endtime) {
         this.courseid = courseid;
         this.detailcourseid = detailcourseid;
         this.coursename = coursename;
         this.description = description;
         this.startdate = startdate;
         this.enddate = enddate;
+        this.dayofweek = dayofweek;
+        this.starttime = starttime;
+        this.endtime = endtime;
     }
 
     public int getCourseid() {
@@ -68,5 +75,29 @@ public class DetailCourse {
 
     public void setEnddate(Date enddate) {
         this.enddate = enddate;
+    }
+
+    public String getDayofweek() {
+        return dayofweek;
+    }
+
+    public void setDayofweek(String dayofweek) {
+        this.dayofweek = dayofweek;
+    }
+
+    public Time getStarttime() {
+        return starttime;
+    }
+
+    public void setStarttime(Time starttime) {
+        this.starttime = starttime;
+    }
+
+    public Time getEndtime() {
+        return endtime;
+    }
+
+    public void setEndtime(Time endtime) {
+        this.endtime = endtime;
     }
 }

@@ -56,11 +56,22 @@ public class StudentController {
             return "/add error";
         }
     }
-
+   //admin的编辑
     @RequestMapping("/edit")
     public Object updateStudent(Student student) {
         try {
             return studentDao.editUpdateStudent(student);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "error";
+        }
+    }
+
+    //student的编辑
+    @RequestMapping("/update")
+    public Object studentUpdateStudent(@RequestBody Student student) {
+        try {
+            return studentDao.updateStudent(student);
         } catch (Exception e) {
             e.printStackTrace();
             return "error";

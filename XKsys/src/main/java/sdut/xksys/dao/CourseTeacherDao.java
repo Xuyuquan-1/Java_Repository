@@ -28,8 +28,7 @@ public class CourseTeacherDao {
                 "JOIN " +
                 "teachers t ON ct.teacherid = t.teacherid " +
                 "WHERE " +
-                "e.studentno = ? " +
-                "AND e.status = 'ENROLLED';";
+                "e.studentno = ? ;";
         ResultSet rs= JdbcUtil.query(sql, studentno);
         List<CourseTeacher> list=JdbcUtil.convertResultSetToList(rs, CourseTeacher.class);
         JdbcUtil.close(rs);
