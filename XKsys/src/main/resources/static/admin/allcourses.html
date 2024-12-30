@@ -31,7 +31,8 @@
     </style>
 </head>
 <body>
-<table class="layui-table" lay-data="{toolbar:'#toptools', url:'http://localhost:8080/course/list', page:true, id:'datalist'}" lay-filter="datalist">
+<table class="layui-table" lay-data="{toolbar:'#toptools', url:'http://localhost:8080/course/newlist', page:true, id:'datalist'}"
+       id="datalist" lay-filter="datalist">
     <thead>
     <tr>
         <th lay-data="{field:'courseid', sort: true}">课程ID</th>
@@ -111,17 +112,18 @@
 
 <!--表格头部工具栏-->
 <script type="text/html" id="toptools">
-    <div class="layui-form-item">
-        <div class="layui-input-inline" >
-            <input type="text" name="checktext" autocomplete="off" class="layui-input">
+    <form class="layui-form layui-row layui-col-space4">
+        <div class="layui-form-item">
+            <div class="layui-col-sm1 layui-input-inline">
+                <input type="text" name="checktext" placeholder="请输入课程名称查找" autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-col-sm1 layui-input-inline">
+                <button type="button" class="layui-btn " lay-event="check">查询</button>
+                <button type="button" class="layui-btn layui-btn-primary" lay-event="add">新增</button>
+            </div>
         </div>
-        <div class="layui-input-inline">
-            <button type="button" class="layui-btn " lay-event="check">查询</button>
-            <button type="button" class="layui-btn layui-btn-primary" lay-event="add">新增</button>
-        </div>
-    </div>
+    </form>
 </script>
-
 <!--表格行内工具栏-->
 <script type="text/html" id="linetools">
     <button type="button" class="layui-btn layui-btn-xs layui-btn-normal" lay-event="edit">编辑</button>
@@ -170,6 +172,22 @@
                     });
                 }
             });
+        }
+        if(event == 'check') {
+            var checktext = $("[name='checktext']").val(); // 获取输入框的值
+            // console.log(checktext);
+            // console.log(document.getElementById("datalist"));
+            //datalist是通过id选择的
+            table.reload("datalist", {
+                page: {
+                    curr: 1 // 重载表格时从第一页开始
+                },
+                where: {
+                    coursename:checktext // 使用获取到的值作为查询条件
+                }
+
+            });
+            $("[name='checktext']").val(checktext);
         }
     });
 

@@ -5,7 +5,10 @@ import sdut.xksys.bean.Course;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+
+import sdut.xksys.bean.Student;
 import sdut.xksys.util.JdbcUtil;
 import sdut.xksys.util.RestResult;
 
@@ -16,6 +19,22 @@ public class CourseDao {
         String sql = "SELECT * FROM courses";
         ResultSet rs = JdbcUtil.query(sql);
         List<Course> list = JdbcUtil.convertResultSetToList(rs, Course.class);
+        JdbcUtil.close(rs);
+        return list;
+    }
+
+    public List<Course> getCheckCourse(Course course) throws SQLException, IllegalAccessException, InstantiationException {
+        String sql = "select * from courses ";
+        List<String> params = new ArrayList<>();
+        if(course.getCoursename()!=null){
+            sql = sql+"where coursename like ?";
+            //模糊查询
+            params.add("%"+course.getCoursename()+"%");
+        }
+//        sql=sql+" order by status asc ";
+        ResultSet rs = JdbcUtil.query(sql, params.toArray());
+        List<Course> list=JdbcUtil.convertResultSetToList(rs, Course.class);
+
         JdbcUtil.close(rs);
         return list;
     }

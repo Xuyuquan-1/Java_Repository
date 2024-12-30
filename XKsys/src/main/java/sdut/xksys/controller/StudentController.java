@@ -52,7 +52,6 @@ public class StudentController {
         try {
             System.out.println(student.getStudentname());
             List<Student> list = studentDao.getCheckStudent(student);
-
             int count = studentDao.getStudentCount();
             RestResult result = new RestResult(count,list);
             return result;
