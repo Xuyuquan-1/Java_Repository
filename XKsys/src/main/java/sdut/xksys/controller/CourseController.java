@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sdut.xksys.bean.Course;
+import sdut.xksys.bean.Student;
 import sdut.xksys.dao.CourseDao;
 import sdut.xksys.util.RestResult;
 
@@ -31,6 +32,22 @@ public class CourseController {
         }
     }
 
+    @RequestMapping("/newlist")
+    public Object checkStudent(Course course) {
+        try {
+            System.out.println(course.getCoursename());
+            List<Course> list = courseDao.getCheckCourse(course);
+            int count =  courseDao.getCourseCount();
+            RestResult result = new RestResult(count,list);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Controller.getAllstudent:error");
+        }
+        finally {
+            ;
+        }
+    }
     @RequestMapping("/getcoursebyid")
     public Object getCourseById(int courseid) {
         try {
