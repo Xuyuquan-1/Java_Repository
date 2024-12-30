@@ -17,7 +17,7 @@
 
 <script src="/layui/layui.all.js"></script>
 <script>
-    layui.use(['table', 'jquery'], function(){
+    layui.use(['table', 'jquery'], function () {
         var table = layui.table;
         var $ = layui.jquery;
 
@@ -26,15 +26,15 @@
             url: '/schedule/list',
             type: 'GET',
             dataType: 'json',
-            success: function(res) {
+            success: function (res) {
                 if (res.code === 0) {
                     var jsonData = res.data;
 
-                    var weekMap = { '周一': [], '周二': [], '周三': [], '周四': [], '周五': [], '周六': [], '周日': [] };
+                    var weekMap = {'周一': [], '周二': [], '周三': [], '周四': [], '周五': [], '周六': [], '周日': []};
                     jsonData.forEach(function (item) {
                         var dayOfWeek = item.dayofweek || '周一'; // 如果 dayofweek 为 null，则默认为 '周一'
                         // 格式化课程信息
-                        var courseInfo = item.teachername + ' ' + item.classroom + ' ' + item.starttime + '-' + item.endtime;
+                        var courseInfo = item.coursename +' '+ item.teachername + ' ' + item.classroom + ' ' + item.starttime + '-' + item.endtime;
                         weekMap[dayOfWeek].push(courseInfo);
                     });
 
@@ -60,25 +60,25 @@
                     // 渲染表格
                     table.render({
                         elem: '#demo'
-                        ,cols: [[
-                            {field:'period', title: '时间段', width:100}
-                            ,{field:'周一', title: '周一', width:150}
-                            ,{field:'周二', title: '周二', width:150}
-                            ,{field:'周三', title: '周三', width:150}
-                            ,{field:'周四', title: '周四', width:150}
-                            ,{field:'周五', title: '周五', width:150}
-                            ,{field:'周六', title: '周六', width:150}
-                            ,{field:'周日', title: '周日', width:150}
+                        , cols: [[
+                            {field: 'period', title: '时间段', width: 100}
+                            , {field: '周一', title: '周一', width: 150}
+                            , {field: '周二', title: '周二', width: 150}
+                            , {field: '周三', title: '周三', width: 150}
+                            , {field: '周四', title: '周四', width: 150}
+                            , {field: '周五', title: '周五', width: 150}
+                            , {field: '周六', title: '周六', width: 150}
+                            , {field: '周日', title: '周日', width: 150}
                         ]]
-                        ,data: tableData
-                        ,page: false // 不需要分页
-                        ,height: 600 // 增加表格高度
+                        , data: tableData
+                        , page: false // 不需要分页
+                        , height: 600 // 增加表格高度
                     });
                 } else {
                     layer.msg(res.msg); // 使用 layer 弹出错误信息
                 }
             },
-            error: function() {
+            error: function () {
                 layer.msg('获取数据失败'); // 使用 layer 弹出错误信息
             }
         });

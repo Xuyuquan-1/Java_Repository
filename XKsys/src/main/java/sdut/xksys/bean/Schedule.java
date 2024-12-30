@@ -6,6 +6,7 @@ import java.sql.Time;
 
 @Data
 public class Schedule {
+    String coursename;
     Long scheduleid; // 上课时间表ID
     String teachername; // 教师姓名
     String classroom; // 教室名称
@@ -14,6 +15,14 @@ public class Schedule {
     Time endtime; // 上课结束时间
     String studentno; // 学生学号
     Long courseid; // 课程ID
+
+    public String getCoursename() {
+        return coursename;
+    }
+
+    public void setCoursename(String coursename) {
+        this.coursename = coursename;
+    }
 
     public Long getScheduleid() {
         return scheduleid;

@@ -17,8 +17,9 @@ public class ScheduleDao {
     public void updateSchedules(String studentno) {
         // SQL语句中添加了ON DUPLICATE KEY UPDATE以实现更新或插入
         String sql1 = "DELETE FROM schedules";
-        String sql2 = "INSERT INTO schedules (teachername, classroom, dayofweek, starttime, endtime, studentno, courseid) "
+        String sql2 = "INSERT INTO schedules (coursename, teachername, classroom, dayofweek, starttime, endtime, studentno, courseid) "
                 + "SELECT DISTINCT "  // 使用DISTINCT避免重复记录
+                + "    co.coursename, "
                 + "    t.teachername, "
                 + "    c.classroomname, "
                 + "    ti.dayofweek, "
@@ -35,6 +36,7 @@ public class ScheduleDao {
                 + "JOIN course_times ct2 ON co.courseid = ct2.courseid "
                 + "JOIN times ti ON ct2.timeid = ti.timeid "
                 + "WHERE e.status = 'ENROLLED' AND e.studentno = ?;";
+
         try (Connection conn = JdbcUtil.getConnection()) {
             // 开启事务
             conn.setAutoCommit(false);
