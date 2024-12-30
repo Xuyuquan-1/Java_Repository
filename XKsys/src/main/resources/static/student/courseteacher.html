@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="http://localhost:8080">
+    <meta charset="UTF-8">
+    <title>查看选课老师</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <style>
+        /* 自定义样式 */
+        .layui-table {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 表格 -->
+<table id="datalist" lay-filter="datalist"></table>
+
+<!-- 工具栏模板（可选） -->
+<script type="text/html" id="toptools">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="refresh">刷新</button>
+        <!-- 可以根据需求添加更多按钮 -->
+    </div>
+</script>
+
+<!-- 引入 layui.js -->
+<script src="/layui/layui.all.js"></script>
+<script>
+    // 初始化 layui 表格
+    layui.use(['table'], function () {
+        var table = layui.table;
+
+        // 渲染表格
+        table.render({
+            elem: '#datalist', // 表格容器 ID
+            url: '/courseteacher/list', // 数据接口
+            method: 'get', // 请求方式
+            page: true, // 开启分页
+            toolbar: '#toptools', // 工具栏
+            cols: [[ // 表头
+                {field: 'coursename', title: '课程名称', sort: true},
+                {field: 'teachername', title: '教师名称', sort: true},
+                {field: 'teacherno', title: '教师编号', sort: true},
+                {field: 'email', title: '邮箱', sort: true},
+                {field: 'phone', title: '电话', sort: true},
+                {field: 'office', title: '办公室', sort: true}
+            ]],
+            response: { // 定义返回数据格式
+                statusName: 'code', // 状态码字段名
+                statusCode: 0, // 成功状态码
+                msgName: 'msg', // 消息字段名
+                countName: 'count', // 总数字段名
+                dataName: 'data' // 数据列表字段名
+            },
+            parseData: function (res) { // 重写解析数据函数
+                return {
+                    "code": res.code, // 状态码
+                    "msg": res.msg, // 消息
+                    "count": res.count, // 数据总数
+                    "data": res.data // 数据列表
+                };
+            },
+            done: function (res, curr, count) {
+                // 表格渲染完毕后的回调函数
+                console.log('数据加载完成');
+            }
+        });
+
+        // 监听工具栏事件
+        table.on('toolbar(datalist)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch (obj.event) {
+                case 'refresh':
+                    table.reload('datalist', {
+                        page: {
+                            curr: 1 // 重新从第一页开始
+                        }
+                    });
+                    break;
+            }
+        });
+    });
+</script>
+</body>
+</html>

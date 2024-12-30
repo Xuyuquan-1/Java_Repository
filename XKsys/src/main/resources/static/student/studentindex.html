@@ -23,14 +23,29 @@
         </ul>
     </div>
 
+
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+        <legend>垂直导航菜单</legend>
+    </fieldset>
+
+
     <div class="layui-side layui-bg-black">
         <div class="layui-side-scroll">
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree" lay-filter="test">
-                <li class="layui-nav-item"><a href="javascript:;" _url="/student/selectedCourses.html"><i class="layui-icon layui-icon-list"></i> 已选课程</a></li>
-                <li class="layui-nav-item"><a href="javascript:;" _url="/student/availableCourses.html"><i class="layui-icon layui-icon-read"></i> 可选课程</a></li>
-                <li class="layui-nav-item"><a href="javascript:;" _url="/student/mySchedule.html"><i class="layui-icon layui-icon-template-1"></i> 我的课表</a></li>
-                <li class="layui-nav-item"><a href="javascript:;" _url="/student/studentInfo.html"><i class="layui-icon layui-icon-form"></i> 修改个人信息</a></li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a href="javascript:;" _url="/student/selectedCourses.html"><i class="layui-icon layui-icon-list"></i> 已选课程</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" _url="/student/courseteacher.html">查看选课老师</a></dd>
+                        <dd><a href="javascript:;" _url="/student/coursedetail.html">查看课程详情</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item"><a href="javascript:;" _url="/student/availableCourses.html"><i
+                        class="layui-icon layui-icon-read"></i> 可选课程</a></li>
+                <li class="layui-nav-item"><a href="javascript:;" _url="/student/mySchedule.html"><i
+                        class="layui-icon layui-icon-template-1"></i> 我的课表</a></li>
+                <li class="layui-nav-item"><a href="javascript:;" _url="/student/studentInfo.html"><i
+                        class="layui-icon layui-icon-form"></i> 修改个人信息</a></li>
             </ul>
         </div>
     </div>

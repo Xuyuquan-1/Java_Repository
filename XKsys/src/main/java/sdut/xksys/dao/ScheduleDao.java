@@ -15,9 +15,11 @@ public class ScheduleDao {
 
     // 插入数据到 schedules 表
     public void updateSchedules(String studentno) {
-        // SQL语句中添加了WHERE条件以仅选择特定学生的选课记录
-        String sql = "INSERT INTO schedules (teachername, classroom, dayofweek, starttime, endtime, studentno, courseid) "
+        // SQL语句中添加了ON DUPLICATE KEY UPDATE以实现更新或插入
+        String sql1 = "DELETE FROM schedules";
+        String sql2 = "INSERT INTO schedules (coursename, teachername, classroom, dayofweek, starttime, endtime, studentno, courseid) "
                 + "SELECT DISTINCT "  // 使用DISTINCT避免重复记录
+                + "    co.coursename, "
                 + "    t.teachername, "
                 + "    c.classroomname, "
                 + "    ti.dayofweek, "
@@ -34,18 +36,26 @@ public class ScheduleDao {
                 + "JOIN course_times ct2 ON co.courseid = ct2.courseid "
                 + "JOIN times ti ON ct2.timeid = ti.timeid "
                 + "WHERE e.status = 'ENROLLED' AND e.studentno = ?;";
+
         try (Connection conn = JdbcUtil.getConnection()) {
             // 开启事务
             conn.setAutoCommit(false);
-            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                // 设置参数
-                pstmt.setString(1, studentno);
-                // 执行更新
-                int rowsAffected = pstmt.executeUpdate();
-                if (rowsAffected > 0) {
-                    System.out.println("成功为学生 " + studentno + " 插入 " + rowsAffected + " 条课程安排记录。");
-                } else {
-                    System.out.println("未找到符合条件的选课记录，无法为学生 " + studentno + " 生成课程安排。");
+            try {
+                // 执行删除操作
+                try (PreparedStatement pstmt1 = conn.prepareStatement(sql1)) {
+                    pstmt1.executeUpdate();
+                }
+                // 执行插入操作
+                try (PreparedStatement pstmt2 = conn.prepareStatement(sql2)) {
+                    // 设置参数
+                    pstmt2.setString(1, studentno);
+                    // 执行更新或插入
+                    int rowsAffected = pstmt2.executeUpdate();
+                    if (rowsAffected > 0) {
+                        System.out.println("成功为学生 " + studentno + " 插入 " + rowsAffected + " 条课程安排记录。");
+                    } else {
+                        System.out.println("未找到符合条件的选课记录，无法为学生 " + studentno + " 生成课程安排。");
+                    }
                 }
                 // 提交事务
                 conn.commit();
@@ -59,6 +69,7 @@ public class ScheduleDao {
             // 可能需要更详细的错误处理或日志记录
         }
     }
+
     public List<Schedule> getScheduleByStudentno(String studentno) throws SQLException, IllegalAccessException, InstantiationException{
         String sql = "select * from schedules where studentno = ?";
         ResultSet rs = JdbcUtil.query(sql, studentno);
