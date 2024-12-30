@@ -68,15 +68,27 @@ public class LoginController {
         }
     }
 
-//    @RequestMapping("/islogin")
-//    public Boolean isLogin(HttpSession session) {
-//        // 检查会话中是否存在用户信息
-//        if (session.getAttribute("admin") != null || session.getAttribute("student") != null) {
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
+    @RequestMapping("/islogin")
+    public Object isLogin(HttpSession session) {
+        // 检查会话中是否存在用户信息
+        if (session.getAttribute("admin") != null || session.getAttribute("student") != null) {
+            if (session.getAttribute("admin") != null) {
+                Object obj = session.getAttribute("admin");
+                if (obj instanceof Admin) {
+                    Admin admin = (Admin) obj;
+                    return admin;
+                }
+            } else if (session.getAttribute("student") != null) {
+                Object obj = session.getAttribute("student");
+                if (obj instanceof Student) {
+                    Student student = (Student) obj;
+                    return student;
+                }
+            }
+        }
+        return null;
+
+    }
 
     @RequestMapping("/logout")
     public String logout(HttpSession session) {

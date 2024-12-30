@@ -18,6 +18,7 @@ public class AdminController {
 
     @GetMapping("/getinfo")
     public Admin getAdminInfo(HttpSession session){
+
          Admin oldAdmin =  (Admin) session.getAttribute("admin");
          Admin newAdmin = adminDao.getAdminById(oldAdmin.getAdminid());
          try {
