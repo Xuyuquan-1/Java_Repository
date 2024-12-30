@@ -37,7 +37,7 @@
                     <a href="javascript:;" _url="/student/selectedCourses.html"><i class="layui-icon layui-icon-list"></i> 已选课程</a>
                     <dl class="layui-nav-child">
                         <dd><a href="javascript:;" _url="/student/courseteacher.html">查看选课老师</a></dd>
-                        <dd><a href="javascript:;" _url="/student/coursedetail.html">查看课程详情</a></dd>
+                        <dd><a href="javascript:;" _url="/student/detailcourse.html">查看课程详情</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item"><a href="javascript:;" _url="/student/availableCourses.html"><i
@@ -71,7 +71,7 @@
         layer.confirm("确认要退出吗？", function () {
             // 点击确认要执行的代码
             $.ajax({
-                url: 'login/loginout',
+                url: 'login/logout',
                 success: function () {
                     top.location.href = "login.html";
                 }
