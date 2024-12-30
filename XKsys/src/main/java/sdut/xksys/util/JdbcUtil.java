@@ -18,7 +18,7 @@ public class JdbcUtil {
         // 配置数据库连接属性
         dataSource.setUrl("jdbc:mysql://localhost:3306/courseSelectionSystem?useSSL=false&serverTimezone=UTC");
         dataSource.setUsername("root");
-        dataSource.setPassword("123456");
+        dataSource.setPassword("");
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
 
         // 配置连接池属性

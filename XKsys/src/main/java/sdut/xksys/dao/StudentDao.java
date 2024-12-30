@@ -8,6 +8,7 @@ import sdut.xksys.util.RestResult;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -43,6 +44,19 @@ public class StudentDao {
         String sql = "insert into students(studentname, studentno, studentpwd, email, major, grade) values(?, ?, ?, ?, ?, ?)";
         int result = JdbcUtil.update(sql, student.getStudentname(), student.getStudentno(), student.getStudentpwd(), student.getEmail(), student.getMajor(), student.getGrade());
         return result;
+    }
+
+    public List<Student> getCheckStudent(Student student) throws SQLException, IllegalAccessException, InstantiationException {
+        String sql = "select * from students where studentname = ?";
+        List params = new ArrayList();
+        if(student.getStudentname()!=""){
+            params.add("%"+student.getStudentname()+"%");
+        }
+        sql=sql+" order by status asc ";
+        ResultSet rs = JdbcUtil.query(sql, params.toArray());
+        List<Student> list=JdbcUtil.convertResultSetToList(rs, Student.class);
+        JdbcUtil.close(rs);
+        return list;
     }
 
     public int updateStudent(Student student) throws SQLException {

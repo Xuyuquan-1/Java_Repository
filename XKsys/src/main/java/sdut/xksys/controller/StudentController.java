@@ -40,6 +40,28 @@ public class StudentController {
         }
     }
 
+    @RequestMapping("/newlist")
+    public Object checkStudent(Student student) {
+        try {
+            System.out.println(student.getStudentname());
+            List<Student> list = studentDao.getCheckStudent(student);
+
+            int count = studentDao.getStudentCount();
+            RestResult result = new RestResult(count,list);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Controller.getAllstudent:error");
+        }
+        finally {
+            ;
+        }
+    }
+
+
+
+
+
     @RequestMapping("/add")
     public Object addStudent(@RequestBody Student student) {
         try {
