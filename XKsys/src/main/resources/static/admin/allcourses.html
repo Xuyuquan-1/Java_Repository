@@ -111,8 +111,15 @@
 
 <!--表格头部工具栏-->
 <script type="text/html" id="toptools">
-    <button type="button" class="layui-btn " lay-event="check">查询</button>
-    <button type="button" class="layui-btn layui-btn-primary" lay-event="add">新增</button>
+    <div class="layui-form-item">
+        <div class="layui-input-inline" >
+            <input type="text" name="checktext" autocomplete="off" class="layui-input">
+        </div>
+        <div class="layui-input-inline">
+            <button type="button" class="layui-btn " lay-event="check">查询</button>
+            <button type="button" class="layui-btn layui-btn-primary" lay-event="add">新增</button>
+        </div>
+    </div>
 </script>
 
 <!--表格行内工具栏-->
