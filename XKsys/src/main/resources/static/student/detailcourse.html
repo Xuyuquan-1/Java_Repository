@@ -10,6 +10,10 @@
         .layui-table {
             margin-top: 20px;
         }
+        .layui-table-cell {
+            height: auto; /* 允许单元格高度自适应 */
+            white-space: pre-wrap; /* 保留空白符并允许换行 */
+        }
     </style>
 </head>
 <body>
@@ -33,17 +37,14 @@
         // 渲染表格
         table.render({
             elem: '#datalist', // 表格容器 ID
-            url: '/courseteacher/list', // 数据接口
+            url: '/detailcourse/list', // 数据接口
             method: 'get', // 请求方式
             page: true, // 开启分页
             toolbar: '#toptools', // 工具栏
             cols: [[ // 表头
-                {field: 'coursename', title: '课程名称', sort: true},
-                {field: 'teachername', title: '教师名称', sort: true},
-                {field: 'teacherno', title: '教师编号', sort: true},
-                {field: 'email', title: '邮箱', sort: true},
-                {field: 'phone', title: '电话', sort: true},
-                {field: 'office', title: '办公室', sort: true}
+                {field: 'description', title: '课程描述', sort: true},
+                {field: 'startdate', title: '开始日期', sort: true},
+                {field: 'enddate', title: '结束日期', sort: true},
             ]],
             response: { // 定义返回数据格式
                 statusName: 'code', // 状态码字段名
