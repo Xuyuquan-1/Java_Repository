@@ -32,7 +32,7 @@
 </head>
 <body>
 <table class="layui-table" lay-data="{toolbar:'#toptools', url:'http://localhost:8080/course/newlist', page:true, id:'datalist'}"
-       id="datalist" lay-filter="datalist">
+       lay-filter="datalist">
     <thead>
     <tr>
         <th lay-data="{field:'courseid', sort: true}">课程ID</th>
@@ -177,7 +177,7 @@
             var checktext = $("[name='checktext']").val(); // 获取输入框的值
             // console.log(checktext);
             // console.log(document.getElementById("datalist"));
-            //datalist是通过id选择的
+            //datalist是通过table初始化时的id(唯一标识)选择的，并不是html里面的id
             table.reload("datalist", {
                 page: {
                     curr: 1 // 重载表格时从第一页开始
