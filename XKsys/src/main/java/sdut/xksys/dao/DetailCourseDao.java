@@ -12,6 +12,7 @@ import java.util.List;
 public class DetailCourseDao {
     public List<DetailCourse> getDetailCourse(String studentno) throws SQLException, IllegalAccessException, InstantiationException {
         String sql = "SELECT " +
+                "c.coursename, " + // 添加逗号分隔符
                 "d.description, " +
                 "d.startdate, " +
                 "d.enddate " +
@@ -19,6 +20,8 @@ public class DetailCourseDao {
                 "enrollments e " +
                 "JOIN " +
                 "detailcourse d ON e.courseid = d.courseid " +
+                "JOIN " +
+                "courses c ON d.courseid = c.courseid " +
                 "WHERE " +
                 "e.studentno = ? " +
                 "AND e.status = 'ENROLLED';";

@@ -42,9 +42,10 @@
             page: true, // 开启分页
             toolbar: '#toptools', // 工具栏
             cols: [[ // 表头
+                {field: 'coursename', title: '课程名称', sort: true, width: 150},
                 {field: 'description', title: '课程描述', sort: true},
-                {field: 'startdate', title: '开始日期', sort: true},
-                {field: 'enddate', title: '结束日期', sort: true},
+                {field: 'startdate', title: '开始日期', sort: true, width: 120},
+                {field: 'enddate', title: '结束日期', sort: true, width: 120},
             ]],
             response: { // 定义返回数据格式
                 statusName: 'code', // 状态码字段名

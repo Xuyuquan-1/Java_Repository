@@ -5,15 +5,18 @@ import java.util.Date;
 public class DetailCourse {
     int courseid;
     int detailcourseid;
+    String coursename;
     String description;
     Date startdate;
     Date enddate;
 
-    public DetailCourse() {}
+    public DetailCourse() {
+    }
 
-    public DetailCourse(int courseid, int detailcourseid, String description, Date startdate, Date enddate) {
+    public DetailCourse(int courseid, int detailcourseid, String coursename, String description, Date startdate, Date enddate) {
         this.courseid = courseid;
         this.detailcourseid = detailcourseid;
+        this.coursename = coursename;
         this.description = description;
         this.startdate = startdate;
         this.enddate = enddate;
@@ -33,6 +36,14 @@ public class DetailCourse {
 
     public void setDetailcourseid(int detailcourseid) {
         this.detailcourseid = detailcourseid;
+    }
+
+    public String getCoursename() {
+        return coursename;
+    }
+
+    public void setCoursename(String coursename) {
+        this.coursename = coursename;
     }
 
     public String getDescription() {

@@ -1,183 +1,221 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>学生信息</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生信息修改</title>
+    <!-- 引入Layui CSS -->
     <link rel="stylesheet" href="/layui/css/layui.css">
+    <!-- 引入jQuery -->
+    <script src="/js/jquery-1.11.0.min.js"></script>
+    <!-- 引入Layui JS -->
+    <script src="/layui/layui.all.js"></script>
+    <style>
+        /* 自定义样式 */
+        body {
+            background-color: #f2f2f2;
+        }
+        #editForm {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border: 1px solid #e2e2e2;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1050;
+        }
+        #overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1040;
+        }
+        .layui-title {
+            color: #009688; /* 使用 Layui 的绿色主题 */
+        }
+        .layui-btn-primary {
+            background-color: #009688; /* 使用 Layui 的绿色主题 */
+            color: white;
+        }
+        .layui-btn-primary:hover {
+            background-color: #00867a; /* 绿色主题的 hover 状态 */
+        }
+    </style>
 </head>
 <body>
-<div class="layui-container" style="margin-top: 50px;">
-    <form class="layui-form" id="studentForm">
-        <div class="layui-form-item">
-            <label class="layui-form-label">学生ID</label>
-            <div class="layui-input-block">
-                <input type="text" name="studentid" id="studentId" readonly class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">学生姓名</label>
-            <div class="layui-input-block">
-                <input type="text" name="studentname" id="studentNameEdit" required lay-verify="required"
-                       autocomplete="off" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">学生学号</label>
-            <div class="layui-input-block">
-                <input type="text" name="studentno" id="studentNoEdit" required lay-verify="required" autocomplete="off"
-                       class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">密码</label>
-            <div class="layui-input-block">
-                <input type="password" name="studentpwd" id="studentPwdEdit" required lay-verify="required"
-                       autocomplete="off" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">邮件</label>
-            <div class="layui-input-block">
-                <input type="email" name="email" id="studentEmailEdit" required lay-verify="required" autocomplete="off"
-                       class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">专业</label>
-            <div class="layui-input-block">
-                <input type="text" name="major" id="studentMajorEdit" required lay-verify="required" autocomplete="off"
-                       class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">年级</label>
-            <div class="layui-input-block">
-                <input type="text" name="grade" id="studentGradeEdit" required lay-verify="required"
-                       autocomplete="off" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <div class="layui-input-block">
-                <button class="layui-btn" lay-submit lay-filter="editStudent">编辑</button>
-            </div>
-        </div>
-    </form>
-</div>
 
-
-<!--编辑窗口组件-->
-<div id="editWin" lay-filter="editWin" class="layui-form" style="display: none; padding: 20px;">
-    <input type="hidden" name="studentid">
-
-    <!-- 使用 layui-inline 包裹每个表单项 -->
-    <div class="layui-form-item layui-inline">
-        <label class="layui-form-label"><i class="layui-icon layui-icon-username"></i> 学生姓名</label>
-        <div class="layui-input-inline">
-            <input type="text" name="studentname" placeholder="请输入学生姓名" autocomplete="off" class="layui-input"
-                   lay-verify="required">
-        </div>
-    </div>
-
-    <div class="layui-form-item layui-inline">
-        <label class="layui-form-label"><i class="layui-icon layui-icon-user"></i> 学生学号</label>
-        <div class="layui-input-inline">
-            <input type="text" name="studentno" placeholder="请输入学生学号" autocomplete="off" class="layui-input"
-                   lay-verify="required">
-        </div>
-    </div>
-
-    <div class="layui-form-item layui-inline">
-        <label class="layui-form-label"><i class="layui-icon layui-icon-email"></i> 学生邮箱</label>
-        <div class="layui-input-inline">
-            <input type="email" name="email" placeholder="请输入学生邮箱" autocomplete="off" class="layui-input"
-                   lay-verify="email">
-        </div>
-    </div>
-
-    <div class="layui-form-item layui-inline">
-        <label class="layui-form-label"><i class="layui-icon layui-icon-note"></i> 学生专业</label>
-        <div class="layui-input-inline">
-            <input type="text" name="major" placeholder="请输入学生专业" autocomplete="off" class="layui-input"
-                   lay-verify="required">
-        </div>
-    </div>
-
-    <div class="layui-form-item layui-inline">
-        <label class="layui-form-label"><i class="layui-icon layui-icon-female"></i> 学生性别</label>
-        <div class="layui-input-inline">
-            <select name="grade" lay-verify="required">
-                <option value="">请选择性别</option>
-                <option value="男">男</option>
-                <option value="女">女</option>
-            </select>
+<div class="layui-container mt-5">
+    <div class="layui-row">
+        <div class="layui-col-md12">
+            <h2 class="layui-title text-center">学生信息</h2>
+            <table id="studentInfoTable" class="layui-table">
+                <thead>
+                <tr>
+                    <th>字段</th>
+                    <th>信息</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- 数据将通过JavaScript动态插入 -->
+                </tbody>
+            </table>
+            <div class="layui-col-md12 text-center">
+                <button id="editButton" class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe642;</i> 编辑信息</button>
+            </div>
         </div>
     </div>
 </div>
-<script src="/layui/layui.all.js"></script>
+
+<div id="overlay"></div>
+
+<div id="editForm" class="layui-form layui-card">
+    <h3 class="layui-card-header text-center">编辑学生信息</h3>
+    <div class="layui-card-body">
+        <form id="editStudentForm">
+            <div class="layui-form-item">
+                <label class="layui-form-label">学号</label>
+                <div class="layui-input-block">
+                    <input type="text" id="editStudentid" name="studentid" class="layui-input" placeholder="学号" readonly>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">姓名</label>
+                <div class="layui-input-block">
+                    <input type="text" id="editStudentname" name="studentname" class="layui-input" placeholder="姓名">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">学号</label>
+                <div class="layui-input-block">
+                    <input type="text" id="editStudentno" name="studentno" class="layui-input" placeholder="学号">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">密码</label>
+                <div class="layui-input-block">
+                    <input type="password" id="editStudentpwd" name="studentpwd" class="layui-input" placeholder="密码">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">邮箱</label>
+                <div class="layui-input-block">
+                    <input type="email" id="editEmail" name="email" class="layui-input" placeholder="邮箱">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">专业</label>
+                <div class="layui-input-block">
+                    <input type="text" id="editMajor" name="major" class="layui-input" placeholder="专业">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">年级</label>
+                <div class="layui-input-block">
+                    <input type="text" id="editGrade" name="grade" class="layui-input" placeholder="年级">
+                </div>
+            </div>
+            <div class="layui-form-item text-center">
+                <button id="saveEditButton" class="layui-btn layui-btn-normal"><i class="layui-icon">&#xe605;</i> 保存修改</button>
+                <button id="cancelEditButton" class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe601;</i> 取消</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script>
-    /*声明layui内部对象*/
-    const $ = layui.$;
-    const form = layui.form;
-    const layer = layui.layer;
-    var baseUrl = "http://localhost:8080/student/";
+    layui.use(['form', 'layer'], function() {
+        var form = layui.form;
+        var layer = layui.layer;
 
-    // 获取当前登录学生的信息
-    function getStudentInfo() {
+        // 获取学生信息
         $.ajax({
-            url:baseUrl + "getinfo",
-            method: "GET",
-            success: function (result) {
-                if (result) {
-                    $("#studentId").val(result.studentid);
-                    $("#studentNameEdit").val(result.studentname);
-                    $("#studentNoEdit").val(result.studentno);
-                    $("#studentPwdEdit").val(result.studentpwd);
-                    $("#studentEmailEdit").val(result.email);
-                    $("#studentMajorEdit").val(result.major);
-                    $("#studentGradeEdit").val(result.grade);
-                } else {
-                    // 如果后端返回的格式不符合预期，提供更具体的错误信息
-                    layer.msg("获取学生信息失败: " + (result.message || '未知错误'), {icon: 2, time: 1800});
-                }
+            url: 'http://localhost:8080/student/getinfo',
+            method: 'GET',
+            success: function(data) {
+                // 渲染表格
+                var tableBody = $('#studentInfoTable tbody');
+                tableBody.empty();
+                tableBody.append('<tr><td>学号</td><td>' + data.studentid + '</td></tr>');
+                tableBody.append('<tr><td>姓名</td><td>' + data.studentname + '</td></tr>');
+                tableBody.append('<tr><td>学号</td><td>' + data.studentno + '</td></tr>');
+                tableBody.append('<tr><td>密码</td><td>' + data.studentpwd + '</td></tr>');
+                tableBody.append('<tr><td>邮箱</td><td>' + data.email + '</td></tr>');
+                tableBody.append('<tr><td>专业</td><td>' + data.major + '</td></tr>');
+                tableBody.append('<tr><td>年级</td><td>' + data.grade + '</td></tr>');
+
+                // 填充编辑表单
+                $('#editStudentid').val(data.studentid);
+                $('#editStudentname').val(data.studentname);
+                $('#editStudentno').val(data.studentno);
+                $('#editStudentpwd').val(data.studentpwd);
+                $('#editEmail').val(data.email);
+                $('#editMajor').val(data.major);
+                $('#editGrade').val(data.grade);
             },
-            error: function (jqXHR, textStatus, errorThrown) {
-                // 记录详细的错误信息到控制台
-                console.error("获取学生信息失败: " + textStatus + ", " + errorThrown);
-                // 提供用户友好的错误提示
-                layer.msg("获取学生信息失败: " + (jqXHR.responseText || '网络错误'), {icon: 2, time: 1800});
+            error: function(xhr, status, error) {
+                console.error('获取学生信息失败:', error);
+                layer.msg('获取学生信息失败，请重试。', {icon: 2});
             }
         });
-    }
 
-    // 提交修改
-    form.on('submit(editStudent)', function (data) {
-        $.ajax({
-            url: "edit",
-            method: "POST",
-            data: data.field,
-            success: function (result) {
-                //修改成功，数据库同步成功，但是result.success返回false
-                if (result) {
-                    layer.msg("修改成功，但是result.success返回false");
-                    setTimeout(function () {
-                        // 重定向
-                        location.href = "studentindex.html";
-                    }, 1000);
-                } else {
-                    layer.msg("修改失败：" + result.message, {icon: 2, time: 1800});
-                }
-            },
-            error: function () {
-                layer.msg("修改失败", {icon: 2, time: 1800});
-            }
+        // 点击编辑按钮后显示编辑表单和遮罩层
+        $('#editButton').click(function() {
+            $('#overlay').show();
+            $('#editForm').show();
         });
-        return false; // 阻止表单跳转
-    });
 
-    // 页面加载时获取学生信息
-    $(document).ready(function () {
-        getStudentInfo();
+        // 点击取消按钮后隐藏编辑表单和遮罩层
+        $('#cancelEditButton').click(function() {
+            $('#editForm').hide();
+            $('#overlay').hide();
+        });
+
+        // 点击保存按钮后发送编辑信息
+        $('#saveEditButton').click(function() {
+            var editedData = {
+                studentid: $('#editStudentid').val(),
+                studentname: $('#editStudentname').val(),
+                studentno: $('#editStudentno').val(),
+                studentpwd: $('#editStudentpwd').val(),
+                email: $('#editEmail').val(),
+                major: $('#editMajor').val(),
+                grade: $('#editGrade').val()
+            };
+
+            $.ajax({
+                url: 'http://localhost:8080/student/edit',
+                method: 'POST',
+                data: editedData,
+                success: function(response) {
+                    console.log('信息修改成功:', response);
+                    // 隐藏编辑表单和遮罩层，并更新信息
+                    $('#editForm').hide();
+                    $('#overlay').hide();
+                    $('#studentInfoTable tbody').empty();
+                    $('#studentInfoTable tbody').append('<tr><td>学号</td><td>' + editedData.studentid + '</td></tr>');
+                    $('#studentInfoTable tbody').append('<tr><td>姓名</td><td>' + editedData.studentname + '</td></tr>');
+                    $('#studentInfoTable tbody').append('<tr><td>学号</td><td>' + editedData.studentno + '</td></tr>');
+                    $('#studentInfoTable tbody').append('<tr><td>密码</td><td>' + editedData.studentpwd + '</td></tr>');
+                    $('#studentInfoTable tbody').append('<tr><td>邮箱</td><td>' + editedData.email + '</td></tr>');
+                    $('#studentInfoTable tbody').append('<tr><td>专业</td><td>' + editedData.major + '</td></tr>');
+                    $('#studentInfoTable tbody').append('<tr><td>年级</td><td>' + editedData.grade + '</td></tr>');
+                    layer.msg('信息修改成功。', {icon: 1});
+                },
+                error: function(xhr, status, error) {
+                    console.error('信息修改失败:', error);
+                    layer.msg('信息修改失败，请重试。', {icon: 2});
+                }
+            });
+        });
     });
 </script>
+
 </body>
 </html>
