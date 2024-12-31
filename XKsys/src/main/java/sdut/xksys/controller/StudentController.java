@@ -108,4 +108,14 @@ public class StudentController {
             return "error";
         }
     }
+
+    @RequestMapping("/getStudentName")
+    public String getStudentName(HttpSession session) {
+        Student student = (Student) session.getAttribute("student");
+        if (student != null) {
+            return student.getStudentname();
+        } else {
+            return "未登录";
+        }
+    }
 }

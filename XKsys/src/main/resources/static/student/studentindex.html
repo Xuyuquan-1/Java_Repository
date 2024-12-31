@@ -14,7 +14,7 @@
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
                 <a href="javascript:;" id="loginName">
-                    <img src="/img/user.png" class="layui-nav-img">贤心
+                    贤心
                 </a>
                 <dl class="layui-nav-child">
                     <dd><a href="javascript:;" id="logout">退出</a></dd>
@@ -76,6 +76,14 @@
                 }
             });
         });
+    });
+   document.addEventListener("DOMContentLoaded", function() {
+        fetch('/student/getStudentName')
+            .then(response => response.text())
+            .then(studentName => {
+                document.getElementById('loginName').innerText = studentName;
+            })
+            .catch(error => console.error('Error fetching student name:', error));
     });
 </script>
 </body>

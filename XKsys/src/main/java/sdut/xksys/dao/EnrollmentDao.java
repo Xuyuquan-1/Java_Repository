@@ -8,6 +8,8 @@ import sdut.xksys.util.JdbcUtil;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -61,11 +63,10 @@ public class EnrollmentDao {
     }
 
 
-    public int selectCourse(String studentno, int courseid ) throws SQLException, IllegalAccessException, InstantiationException {
+    public int selectCourse(String studentno, int courseid) throws SQLException, IllegalAccessException, InstantiationException {
         String sql = "UPDATE enrollments SET status = 'ENROLLED' WHERE studentno = ? AND courseid = ?";
         return JdbcUtil.update(sql, studentno, courseid);
     }
-
     public int exitCourse(String studentno, int courseid) throws SQLException, IllegalAccessException, InstantiationException {
         String sql = "UPDATE enrollments SET status = 'PENDING' WHERE studentno = ? AND courseid = ?";
         return JdbcUtil.update(sql, studentno, courseid);
