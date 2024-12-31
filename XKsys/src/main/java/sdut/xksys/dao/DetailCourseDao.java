@@ -12,19 +12,23 @@ import java.util.List;
 public class DetailCourseDao {
     public List<DetailCourse> getDetailCourse(String studentno) throws SQLException, IllegalAccessException, InstantiationException {
         String sql = "SELECT " +
-                "c.coursename, " + // 添加逗号分隔符
-                "d.description, " +
-                "d.startdate, " +
-                "d.enddate " +
+                "    c.coursename, " +
+                "    dc.description, " +
+                "    dc.startdate, " +
+                "    dc.enddate, " +
+                "    t.dayofweek, " +
+                "    t.starttime, " +
+                "    t.endtime " +
                 "FROM " +
-                "enrollments e " +
+                "    enrollments e " +
                 "JOIN " +
-                "detailcourse d ON e.courseid = d.courseid " +
+                "    courses c ON e.courseid = c.courseid " +
                 "JOIN " +
-                "courses c ON d.courseid = c.courseid " +
+                "    detailcourse dc ON e.courseid = dc.courseid " +
+                "JOIN " +
+                "    times t ON e.courseid = t.courseid " +
                 "WHERE " +
-                "e.studentno = ? " +
-                "AND e.status = 'ENROLLED';";
+                "    e.studentno = ? ;";
         ResultSet rs = JdbcUtil.query(sql, studentno);
         List<DetailCourse> list = JdbcUtil.convertResultSetToList(rs, DetailCourse.class);
         JdbcUtil.close(rs);

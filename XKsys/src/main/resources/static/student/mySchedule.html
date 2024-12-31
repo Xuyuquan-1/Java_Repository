@@ -21,6 +21,14 @@
         var table = layui.table;
         var $ = layui.jquery;
 
+        // 定义时间段映射
+        var timePeriods = [
+            { start: '08:00:00', end: '09:40:00' },
+            { start: '10:00:00', end: '11:40:00' },
+            { start: '14:00:00', end: '15:40:00' },
+            { start: '16:00:00', end: '17:40:00' }
+        ];
+
         // 使用 AJAX 请求获取数据
         $.ajax({
             url: '/schedule/list',
@@ -30,20 +38,30 @@
                 if (res.code === 0) {
                     var jsonData = res.data;
 
-                    var weekMap = {'周一': [], '周二': [], '周三': [], '周四': [], '周五': [], '周六': [], '周日': []};
+                    // 初始化 weekMap
+                    var weekMap = {
+                        '周一': ['', '', '', ''],
+                        '周二': ['', '', '', ''],
+                        '周三': ['', '', '', ''],
+                        '周四': ['', '', '', ''],
+                        '周五': ['', '', '', ''],
+                        '周六': ['', '', '', ''],
+                        '周日': ['', '', '', '']
+                    };
+
+                    // 遍历数据，根据 dayofweek 和时间段插入课程信息
                     jsonData.forEach(function (item) {
                         var dayOfWeek = item.dayofweek || '周一'; // 如果 dayofweek 为 null，则默认为 '周一'
-                        // 格式化课程信息
-                        var courseInfo = item.coursename +' '+ item.teachername + ' ' + item.classroom + ' ' + item.starttime + '-' + item.endtime;
-                        weekMap[dayOfWeek].push(courseInfo);
-                    });
+                        var courseInfo = item.coursename + ' ' + item.teachername + ' ' + item.classroomname + ' ' + item.starttime + '-' + item.endtime;
 
-                    // 补充空的课程信息
-                    for (var day in weekMap) {
-                        while (weekMap[day].length < 4) {
-                            weekMap[day].push(''); // 没有课就用空字符串表示
+                        // 找到对应的课程节数并插入
+                        for (var i = 0; i < timePeriods.length; i++) {
+                            if (item.starttime === timePeriods[i].start && item.endtime === timePeriods[i].end) {
+                                weekMap[dayOfWeek][i] = courseInfo;
+                                break;
+                            }
                         }
-                    }
+                    });
 
                     // 将 weekMap 转换为 table 所需的数据格式
                     var tableData = [];
@@ -59,20 +77,20 @@
 
                     // 渲染表格
                     table.render({
-                        elem: '#demo'
-                        , cols: [[
-                            {field: 'period', title: '时间段', width: 100}
-                            , {field: '周一', title: '周一', width: 150}
-                            , {field: '周二', title: '周二', width: 150}
-                            , {field: '周三', title: '周三', width: 150}
-                            , {field: '周四', title: '周四', width: 150}
-                            , {field: '周五', title: '周五', width: 150}
-                            , {field: '周六', title: '周六', width: 150}
-                            , {field: '周日', title: '周日', width: 150}
-                        ]]
-                        , data: tableData
-                        , page: false // 不需要分页
-                        , height: 600 // 增加表格高度
+                        elem: '#demo',
+                        cols: [[
+                            { field: 'period', title: '时间段', width: 100 },
+                            { field: '周一', title: '周一', width: 150 },
+                            { field: '周二', title: '周二', width: 150 },
+                            { field: '周三', title: '周三', width: 150 },
+                            { field: '周四', title: '周四', width: 150 },
+                            { field: '周五', title: '周五', width: 150 },
+                            { field: '周六', title: '周六', width: 150 },
+                            { field: '周日', title: '周日', width: 150 }
+                        ]],
+                        data: tableData,
+                        page: false, // 不需要分页
+                        height: 600 // 增加表格高度
                     });
                 } else {
                     layer.msg(res.msg); // 使用 layer 弹出错误信息

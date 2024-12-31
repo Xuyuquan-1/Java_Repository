@@ -6,23 +6,27 @@ import java.sql.Time;
 
 @Data
 public class Schedule {
-    String coursename;
     Long scheduleid; // 上课时间表ID
+    String coursename;
     String teachername; // 教师姓名
-    String classroom; // 教室名称
+    String classroomname; // 教室名称
     String dayofweek; // 上课星期
     Time starttime; // 上课开始时间
     Time endtime; // 上课结束时间
-    String studentno; // 学生学号
-    Long courseid; // 课程ID
 
-    public String getCoursename() {
-        return coursename;
+    public Schedule() {
     }
 
-    public void setCoursename(String coursename) {
+    public Schedule(String coursename, Long scheduleid, String teachername, String classroomname, String dayofweek, Time starttime, Time endtime) {
         this.coursename = coursename;
+        this.scheduleid = scheduleid;
+        this.teachername = teachername;
+        this.classroomname = classroomname;
+        this.dayofweek = dayofweek;
+        this.starttime = starttime;
+        this.endtime = endtime;
     }
+
 
     public Long getScheduleid() {
         return scheduleid;
@@ -30,6 +34,13 @@ public class Schedule {
 
     public void setScheduleid(Long scheduleid) {
         this.scheduleid = scheduleid;
+    }
+
+    public void setCoursename() {
+        this.coursename = coursename;
+    }
+    public String getCoursename() {
+        return coursename;
     }
 
     public String getTeachername() {
@@ -40,12 +51,12 @@ public class Schedule {
         this.teachername = teachername;
     }
 
-    public String getClassroom() {
-        return classroom;
+    public String getClassroomname() {
+        return classroomname;
     }
 
-    public void setClassroom(String classroom) {
-        this.classroom = classroom;
+    public void setClassroomname(String classroomname) {
+        this.classroomname = classroomname;
     }
 
     public String getDayofweek() {
@@ -70,21 +81,5 @@ public class Schedule {
 
     public void setEndtime(Time endtime) {
         this.endtime = endtime;
-    }
-
-    public String getStudentno() {
-        return studentno;
-    }
-
-    public void setStudentno(String studentno) {
-        this.studentno = studentno;
-    }
-
-    public Long getCourseid() {
-        return courseid;
-    }
-
-    public void setCourseid(Long courseid) {
-        this.courseid = courseid;
     }
 }

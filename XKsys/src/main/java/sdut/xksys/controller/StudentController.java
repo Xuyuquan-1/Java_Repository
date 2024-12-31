@@ -77,11 +77,22 @@ public class StudentController {
             return "/add error";
         }
     }
-
+   //admin的编辑
     @RequestMapping("/edit")
     public Object updateStudent(Student student) {
         try {
             return studentDao.editUpdateStudent(student);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "error";
+        }
+    }
+
+    //student的编辑
+    @RequestMapping("/update")
+    public Object studentUpdateStudent(@RequestBody Student student) {
+        try {
+            return studentDao.updateStudent(student);
         } catch (Exception e) {
             e.printStackTrace();
             return "error";
@@ -95,6 +106,16 @@ public class StudentController {
         } catch (Exception e) {
             e.printStackTrace();
             return "error";
+        }
+    }
+
+    @RequestMapping("/getStudentName")
+    public String getStudentName(HttpSession session) {
+        Student student = (Student) session.getAttribute("student");
+        if (student != null) {
+            return student.getStudentname();
+        } else {
+            return "未登录";
         }
     }
 }

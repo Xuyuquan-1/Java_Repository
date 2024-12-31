@@ -15,27 +15,29 @@ public class ScheduleDao {
 
     // 插入数据到 schedules 表
     public void updateSchedules(String studentno) {
-        // SQL语句中添加了ON DUPLICATE KEY UPDATE以实现更新或插入
         String sql1 = "DELETE FROM schedules";
-        String sql2 = "INSERT INTO schedules (coursename, teachername, classroom, dayofweek, starttime, endtime, studentno, courseid) "
-                + "SELECT DISTINCT "  // 使用DISTINCT避免重复记录
-                + "    co.coursename, "
-                + "    t.teachername, "
-                + "    c.classroomname, "
-                + "    ti.dayofweek, "
-                + "    ti.starttime, "
-                + "    ti.endtime, "
-                + "    e.studentno, "
-                + "    e.courseid "
-                + "FROM enrollments e "
-                + "JOIN courses co ON e.courseid = co.courseid "
-                + "JOIN course_teachers ct ON co.courseid = ct.courseid "
-                + "JOIN teachers t ON ct.teacherid = t.teacherid "
-                + "JOIN course_classrooms cc ON co.courseid = cc.courseid "
-                + "JOIN classrooms c ON cc.classroomid = c.classroomid "
-                + "JOIN course_times ct2 ON co.courseid = ct2.courseid "
-                + "JOIN times ti ON ct2.timeid = ti.timeid "
-                + "WHERE e.status = 'ENROLLED' AND e.studentno = ?;";
+        String sql2 = "INSERT INTO schedules (coursename, teachername, classroomname, dayofweek, starttime, endtime) " +
+                "SELECT " +
+                "    c.coursename, " +
+                "    te.teachername, " +
+                "    cl.classroomname, " +
+                "    t.dayofweek, " +
+                "    t.starttime, " +
+                "    t.endtime " +
+                "FROM " +
+                "    enrollments e " +
+                "JOIN " +
+                "    courses c ON e.courseid = c.courseid " +
+                "JOIN " +
+                "    classrooms cl ON e.courseid = cl.courseid " +
+                "JOIN " +
+                "    times t ON e.courseid = t.courseid " +
+                "JOIN " +
+                "    course_teachers ct ON e.courseid = ct.courseid " +
+                "JOIN " +
+                "    teachers te ON ct.teacherid = te.teacherid " +
+                "WHERE " +
+                "    e.status='ENROLLED' AND e.studentno = ? ;";
 
         try (Connection conn = JdbcUtil.getConnection()) {
             // 开启事务
@@ -70,18 +72,23 @@ public class ScheduleDao {
         }
     }
 
-    public List<Schedule> getScheduleByStudentno(String studentno) throws SQLException, IllegalAccessException, InstantiationException{
-        String sql = "select * from schedules where studentno = ?";
-        ResultSet rs = JdbcUtil.query(sql, studentno);
+    public List<Schedule> getSchedule() throws SQLException, IllegalAccessException, InstantiationException{
+        String sql = "select * from schedules";
+        ResultSet rs = JdbcUtil.query(sql);
         List<Schedule> list = JdbcUtil.convertResultSetToList(rs, Schedule.class);
         JdbcUtil.close(rs);
         return list;
     }
-    public int getScheduleCount(String studentno) throws SQLException {
-        String sql = "select count(*) from schedules where studentno = ?";
-        ResultSet rs = JdbcUtil.query(sql, studentno);
-        rs.next();
-        int result = rs.getInt(1);
-        return result;
+    public int getScheduleCount() throws SQLException {
+        String sql = "select count(*) from schedules";
+        ResultSet rs = JdbcUtil.query(sql);
+        try {
+            rs.next();
+            int count = rs.getInt(1);
+            return count;
+        }catch(Exception e){
+            e.printStackTrace();
+            throw new RuntimeException("CourseDao.getCourseCount:error");
+        }
     }
 }

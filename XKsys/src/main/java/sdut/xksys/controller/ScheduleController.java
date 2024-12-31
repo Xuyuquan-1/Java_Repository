@@ -23,8 +23,8 @@ public class ScheduleController {
         String studentno = student.getStudentno();
         try {
             scheduleDao.updateSchedules(studentno);
-            List list = scheduleDao.getScheduleByStudentno(studentno);
-            int count = scheduleDao.getScheduleCount(studentno);
+            List list = scheduleDao.getSchedule();
+            int count = scheduleDao.getScheduleCount();
             return new RestResult( count,list);
 
         } catch (Exception e) {

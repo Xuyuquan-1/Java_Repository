@@ -177,7 +177,6 @@
             $('#overlay').hide();
         });
 
-        // 点击保存按钮后发送编辑信息
         $('#saveEditButton').click(function() {
             var editedData = {
                 studentid: $('#editStudentid').val(),
@@ -190,9 +189,10 @@
             };
 
             $.ajax({
-                url: 'http://localhost:8080/student/edit',
+                url: 'http://localhost:8080/student/update',
                 method: 'POST',
-                data: editedData,
+                contentType: 'application/json', // 设置请求头为 application/json
+                data: JSON.stringify(editedData), // 将数据转换为 JSON 字符串
                 success: function(response) {
                     console.log('信息修改成功:', response);
                     // 隐藏编辑表单和遮罩层，并更新信息
