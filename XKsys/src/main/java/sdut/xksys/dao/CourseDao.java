@@ -48,6 +48,8 @@ public class CourseDao {
         return course;
     }
 
+
+
     public int getCourseCount(){
         String sql = "select count(*) from courses";
         ResultSet rs = JdbcUtil.query(sql);

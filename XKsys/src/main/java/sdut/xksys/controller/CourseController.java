@@ -5,8 +5,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sdut.xksys.bean.Course;
+import sdut.xksys.bean.CourseWithDsp;
 import sdut.xksys.bean.Student;
 import sdut.xksys.dao.CourseDao;
+import sdut.xksys.dao.DetailCourseDao;
 import sdut.xksys.util.RestResult;
 
 import java.sql.ResultSet;
@@ -18,6 +20,8 @@ public class CourseController {
 
     @Autowired
     CourseDao courseDao;
+    @Autowired
+    DetailCourseDao detailCourseDao;
 
     @RequestMapping("/list")
     public Object getAllCourses() {
@@ -61,6 +65,19 @@ public class CourseController {
     public Object addCourse(Course course) {
         try {
             return courseDao.addCourse(course);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "error";
+        }
+    }
+
+    @RequestMapping("/newadd")
+    public Object newaddCourse(@RequestBody CourseWithDsp data) {
+        try {
+            courseDao.addCourse(data.getCourse());
+            String coursename = data.getCourse().getCoursename();
+            detailCourseDao.addDetailCourse(coursename);
+            return null;
         } catch (Exception e) {
             e.printStackTrace();
             return "error";

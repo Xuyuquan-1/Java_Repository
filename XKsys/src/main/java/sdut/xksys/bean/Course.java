@@ -53,4 +53,15 @@ public class Course {
     public void setMaxenrollment(int maxenrollment) {
         this.maxenrollment = maxenrollment;
     }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "courseid=" + courseid +
+                ", coursename='" + coursename + '\'' +
+                ", credits='" + credits + '\'' +
+                ", semester='" + semester + '\'' +
+                ", maxenrollment=" + maxenrollment +
+                '}';
+    }
 }
