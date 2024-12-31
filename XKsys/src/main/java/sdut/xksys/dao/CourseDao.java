@@ -67,6 +67,19 @@ public class CourseDao {
 
     }
 
+    public Course getCourse(String coursename){
+        String sql = "select * from courses where coursename = ?";
+        ResultSet rs = JdbcUtil.query(sql, coursename);
+        try {
+            List<Course> list = JdbcUtil.convertResultSetToList(rs, Course.class);
+            Course course = list.get(0);
+            return course;
+        }catch(Exception e){
+            e.printStackTrace();
+            throw new RuntimeException("CourseDao.getCourse:error");
+        }
+    }
+
     public int addCourse(Course course) throws SQLException {
         String sql = "INSERT INTO courses (coursename, credits, semester, maxenrollment) VALUES (?, ?, ?, ?)";
         int rowsAffected = JdbcUtil.update(sql, course.getCoursename(), course.getCredits(), course.getSemester(), course.getMaxenrollment());

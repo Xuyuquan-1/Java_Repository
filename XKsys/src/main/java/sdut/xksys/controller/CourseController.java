@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sdut.xksys.bean.Course;
 import sdut.xksys.bean.CourseWithDsp;
+import sdut.xksys.bean.DetailCourse;
 import sdut.xksys.bean.Student;
 import sdut.xksys.dao.CourseDao;
 import sdut.xksys.dao.DetailCourseDao;
@@ -71,12 +72,15 @@ public class CourseController {
         }
     }
 
+    //用于 添加课程同时添加课程描述
     @RequestMapping("/newadd")
     public Object newaddCourse(@RequestBody CourseWithDsp data) {
         try {
             courseDao.addCourse(data.getCourse());
             String coursename = data.getCourse().getCoursename();
-            detailCourseDao.addDetailCourse(coursename);
+            //此时的newcourse已经有courseid了
+            Course newcourse = courseDao.getCourse(coursename);
+//            DetailCourse detailCourse = new DetailCourse(newcourse.getCourseid(), data.getDsp());
             return null;
         } catch (Exception e) {
             e.printStackTrace();

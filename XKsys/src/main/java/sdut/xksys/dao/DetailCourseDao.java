@@ -38,4 +38,11 @@ public class DetailCourseDao {
     public int getDetailCourseCount(String studentno) throws SQLException, IllegalAccessException, InstantiationException {
         return getDetailCourse(studentno).size();
     }
+
+    public int addDetailCourse(DetailCourse detailCourse) throws SQLException {
+        String sql = "INSERT INTO detailcourse (courseid, description, startdate, enddate) VALUES (?, ?, ?, ?);";
+        return JdbcUtil.update(sql, detailCourse.getCourseid(), detailCourse.getDescription(), detailCourse.getStartdate(), detailCourse.getEnddate());
+    }
+
+
 }
