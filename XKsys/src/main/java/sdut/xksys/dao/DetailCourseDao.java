@@ -16,19 +16,17 @@ public class DetailCourseDao {
                 "    dc.description, " +
                 "    dc.startdate, " +
                 "    dc.enddate, " +
-                "    t.dayofweek, " +
-                "    t.starttime, " +
-                "    t.endtime " +
+                "    dc.dayofweek, " +
+                "    dc.starttime, " +
+                "    dc.endtime " +
                 "FROM " +
                 "    enrollments e " +
                 "JOIN " +
                 "    courses c ON e.courseid = c.courseid " +
                 "JOIN " +
                 "    detailcourse dc ON e.courseid = dc.courseid " +
-                "JOIN " +
-                "    times t ON e.courseid = t.courseid " +
                 "WHERE " +
-                "    e.studentno = ? ;";
+                "    e.studentno = ?;";
         ResultSet rs = JdbcUtil.query(sql, studentno);
         List<DetailCourse> list = JdbcUtil.convertResultSetToList(rs, DetailCourse.class);
         JdbcUtil.close(rs);
