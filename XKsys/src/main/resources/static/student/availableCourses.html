@@ -16,6 +16,22 @@
         .layui-btn-normal {
             background-color: #009688;
         }
+        .credits-info {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #333;
+            background-color: #f9f9f9;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .credits-info p {
+            margin: 0;
+        }
+        .credits-info span {
+            font-weight: bold;
+            color: #009688;
+        }
     </style>
 </head>
 <body>
@@ -37,6 +53,11 @@
     <button type="button" class="layui-btn layui-btn-xs layui-btn-normal" lay-event="select">选择</button>
 </script>
 
+<!-- 显示已选择学分和总共要选择的学分 -->
+<div class="credits-info" id="credits-info">
+    <p>您已选择了 <span id="current-credits">0</span> 学分课程，您总共要选择 <span id="total-credits">0</span> 学分课程。</p>
+</div>
+
 <script src="/layui/layui.all.js"></script>
 <script>
     /* 声明layui内部对象 */
@@ -44,6 +65,29 @@
     const table = layui.table;
     const layer = layui.layer;
     const form = layui.form;
+
+    // 初始化时获取已选择学分和总共要选择的学分
+    function loadCreditsInfo() {
+        $.ajax({
+            url: "enrollment/getStudentCurrentCredits",
+            success: function (currentCredits) {
+                $("#current-credits").text(currentCredits);
+            },
+            error: function () {
+                layer.msg("获取已选择学分失败，请重试", { icon: 2, time: 1800 });
+            }
+        });
+
+        $.ajax({
+            url: "enrollment/getStudentTotalCredits",
+            success: function (totalCredits) {
+                $("#total-credits").text(totalCredits);
+            },
+            error: function () {
+                layer.msg("获取总共要选择学分失败，请重试", { icon: 2, time: 1800 });
+            }
+        });
+    }
 
     /* 行内工具栏的监听事件 */
     table.on("tool(datalist)", function (obj) {
@@ -58,9 +102,15 @@
                     url: "enrollment/selectcourse",
                     data: { courseid: data.courseid },
                     success: function (result) {
-                        layer.closeAll();
-                        table.reload("datalist");
-                        layer.msg("选择成功", { icon: 1, time: 1800 });
+                        if(result==-1){
+                            layer.msg("选课失败，该课程已满", { icon: 2, time: 1800 });
+                        }else {
+                            layer.closeAll();
+                            table.reload("datalist");
+                            layer.msg("选择成功", { icon: 1, time: 1800 });
+                            // 重新加载学分信息
+                            loadCreditsInfo();
+                        }
                     },
                     error: function () {
                         layer.msg("选择失败，请重试", { icon: 2, time: 1800 });
@@ -68,6 +118,11 @@
                 });
             });
         }
+    });
+
+    // 页面加载时初始化学分信息
+    $(document).ready(function () {
+        loadCreditsInfo();
     });
 </script>
 </body>

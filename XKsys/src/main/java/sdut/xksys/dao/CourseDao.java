@@ -111,4 +111,6 @@ public class CourseDao {
         int rowsAffected = JdbcUtil.update(sql, courseid);
         return rowsAffected;
     }
+
+
 }
