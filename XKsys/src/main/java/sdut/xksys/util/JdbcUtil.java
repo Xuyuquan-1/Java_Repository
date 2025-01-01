@@ -1,9 +1,17 @@
 package sdut.xksys.util;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import sdut.xksys.bean.Course;
+import sdut.xksys.bean.CourseAndDsp;
+import sdut.xksys.bean.CourseWithDsp;
+import sdut.xksys.bean.DetailCourse;
 
 import java.lang.reflect.Field;
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -162,6 +170,64 @@ public class JdbcUtil {
 
         return result.toString();
     }
+    //课程与课程描述的绑定
+    public static CourseWithDsp getCourseWithDspList(DetailCourse detail, Course course) throws SQLException, IllegalAccessException, InstantiationException {
+        CourseWithDsp cwd = new CourseWithDsp(course, detail);
+        return cwd;
+    }
+
+
+    //CourseWithDSP 和 CourseAndDSP的相互转换
+    public static CourseAndDsp CwpConvertCAp(CourseWithDsp cwp){
+        CourseAndDsp cad = new CourseAndDsp();
+        cad.setCourseid(cwp.getCourse().getCourseid());
+        cad.setCoursename(cwp.getCourse().getCoursename());
+        cad.setCredits(cwp.getCourse().getCredits());
+        cad.setSemester(cwp.getCourse().getSemester());
+        cad.setMaxenrollment(cwp.getCourse().getMaxenrollment());
+        cad.setDescription(cwp.getDetailcourse().getDescription());
+        cad.setStartdate(cwp.getDetailcourse().getStartdate());
+        cad.setEnddate(cwp.getDetailcourse().getEnddate());
+        cad.setDayofweek(cwp.getDetailcourse().getDayofweek());
+        cad.setStarttime(cwp.getDetailcourse().getStarttime());
+        cad.setEndtime(cwp.getDetailcourse().getEndtime());
+        cad.setDetailcourseid(cwp.getDetailcourse().getDetailcourseid());
+        return cad;
+    }
+
+    public static CourseWithDsp CAPConvertCWP(CourseAndDsp cap){
+        DetailCourse detail = new DetailCourse(cap.getCourseid(), cap.getDetailcourseid(), cap.getCoursename(), cap.getDescription(), cap.getStartdate(), cap.getEnddate(), cap.getDayofweek(), cap.getStarttime(), cap.getEndtime());
+        Course course = new Course();
+        course.setCourseid(cap.getCourseid());
+        course.setCoursename(cap.getCoursename());
+        course.setCredits(cap.getCredits());
+        course.setSemester(cap.getSemester());
+        course.setMaxenrollment(cap.getMaxenrollment());
+        return new CourseWithDsp(course, detail);
+    }
+
+    public static String DateTimeToString(Object obj) {
+        if (obj instanceof java.util.Date) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            return sdf.format((java.util.Date) obj);
+        } else if (obj instanceof java.sql.Time) {
+            SimpleDateFormat sdftime = new SimpleDateFormat("HH:mm:ss");
+            return sdftime.format((java.sql.Time) obj);
+        } else {
+            throw new IllegalArgumentException("Unsupported object type: " + obj.getClass().getName());
+        }
+    }
+
+    public static Time stringToTime(String timeString) {
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        try {
+            LocalTime localTime = LocalTime.parse(timeString, timeFormatter);
+            return Time.valueOf(localTime);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null; // 或者抛出自定义异常
+        }
+    }
 
     /**
      * 将对象值转换为指定类型。
@@ -211,6 +277,28 @@ public class JdbcUtil {
 
         // 对于其他类型，这里简单地返回null（实际项目中可能需要添加更多的类型转换逻辑）
         return null;
+    }
+
+    //字符串解析日期
+    public static java.util.Date stringConvertToDate(String dateString) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            return dateFormat.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    //字符串解析时间
+    public static Time stringConvertToTime(String timeString) {
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+        try {
+            return new Time(timeFormat.parse(timeString).getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     // 关闭连接（注意：这里只是归还连接池，并非真正关闭连接）

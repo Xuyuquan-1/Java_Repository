@@ -48,6 +48,8 @@ public class CourseDao {
         return course;
     }
 
+
+
     public int getCourseCount(){
         String sql = "select count(*) from courses";
         ResultSet rs = JdbcUtil.query(sql);
@@ -63,6 +65,19 @@ public class CourseDao {
             ;
         }
 
+    }
+
+    public Course getCourseByName(String coursename){
+        String sql = "select * from courses where coursename = ?";
+        ResultSet rs = JdbcUtil.query(sql, coursename);
+        try {
+            List<Course> list = JdbcUtil.convertResultSetToList(rs, Course.class);
+            Course course = list.get(0);
+            return course;
+        }catch(Exception e){
+            e.printStackTrace();
+            throw new RuntimeException("CourseDao.getCourse:error");
+        }
     }
 
     public int addCourse(Course course) throws SQLException {
