@@ -142,7 +142,7 @@
                 // 渲染表格
                 var tableBody = $('#studentInfoTable tbody');
                 tableBody.empty();
-                tableBody.append('<tr><td>学号</td><td>' + data.studentid + '</td></tr>');
+                tableBody.append('<tr><td>ID</td><td>' + data.studentid + '</td></tr>');
                 tableBody.append('<tr><td>姓名</td><td>' + data.studentname + '</td></tr>');
                 tableBody.append('<tr><td>学号</td><td>' + data.studentno + '</td></tr>');
                 tableBody.append('<tr><td>密码</td><td>' + data.studentpwd + '</td></tr>');
@@ -199,7 +199,7 @@
                     $('#editForm').hide();
                     $('#overlay').hide();
                     $('#studentInfoTable tbody').empty();
-                    $('#studentInfoTable tbody').append('<tr><td>学号</td><td>' + editedData.studentid + '</td></tr>');
+                    $('#studentInfoTable tbody').append('<tr><td>ID</td><td>' + editedData.studentid + '</td></tr>');
                     $('#studentInfoTable tbody').append('<tr><td>姓名</td><td>' + editedData.studentname + '</td></tr>');
                     $('#studentInfoTable tbody').append('<tr><td>学号</td><td>' + editedData.studentno + '</td></tr>');
                     $('#studentInfoTable tbody').append('<tr><td>密码</td><td>' + editedData.studentpwd + '</td></tr>');

@@ -6,10 +6,6 @@
     <title>查看选课老师</title>
     <link rel="stylesheet" href="/layui/css/layui.css">
     <style>
-        /* 自定义样式 */
-        .layui-table {
-            margin-top: 20px;
-        }
         .layui-table-cell {
             height: auto; /* 允许单元格高度自适应 */
             white-space: pre-wrap; /* 保留空白符并允许换行 */
@@ -39,14 +35,13 @@
             elem: '#datalist', // 表格容器 ID
             url: '/detailcourse/list', // 数据接口
             method: 'get', // 请求方式
-            page: true, // 开启分页
             toolbar: '#toptools', // 工具栏
             cols: [[ // 表头
                 {field: 'coursename', title: '课程名称', sort: true, width: 150},
                 {field: 'description', title: '课程描述', sort: true},
                 {field: 'startdate', title: '开始日期', sort: true, width: 120},
                 {field: 'enddate', title: '结束日期', sort: true, width: 120},
-                {field: 'dayofweek', title: '星期几', sort: true,width: 120 },
+                {field: 'dayofweek', title: '星期几', sort: true, width: 120},
                 {field: 'starttime', title: '开始时间', sort: true, width: 120},
                 {field: 'endtime', title: '结束时间', sort: true, width: 120}
             ]],
