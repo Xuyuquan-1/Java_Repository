@@ -79,4 +79,9 @@ public class EnrollmentDao {
         return JdbcUtil.update(sql, studentno, courseid);
     }
 
+    public int deleteEnrollment(int courseid) {
+        String sql = "DELETE FROM enrollments WHERE courseid = ?";
+        return JdbcUtil.update(sql, courseid);
+    }
+
 }

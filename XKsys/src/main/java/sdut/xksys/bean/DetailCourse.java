@@ -30,6 +30,7 @@ public class DetailCourse {
     public DetailCourse() {
     }
 
+
     public DetailCourse(int courseid, int detailcourseid, String coursename, String description, Date startdate, Date enddate, String dayofweek, Time starttime, Time endtime) {
         this.courseid = courseid;
         this.detailcourseid = detailcourseid;

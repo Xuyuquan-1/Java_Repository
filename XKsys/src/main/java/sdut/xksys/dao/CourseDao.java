@@ -76,7 +76,21 @@ public class CourseDao {
             return course;
         }catch(Exception e){
             e.printStackTrace();
-            throw new RuntimeException("CourseDao.getCourse:error");
+            throw new RuntimeException("CourseDao.getCourseByName:error");
+        }
+    }
+
+
+    //专门用来模糊查询
+    public List<Course> getCheckCourseByName(String coursename){
+        String sql = "select * from courses where coursename like ?";
+        ResultSet rs = JdbcUtil.query(sql, "%"+coursename+"%");
+        try {
+            List<Course> list = JdbcUtil.convertResultSetToList(rs, Course.class);
+            return list;
+        }catch(Exception e){
+            e.printStackTrace();
+            throw new RuntimeException("CourseDao.getCheckCourseByName:error");
         }
     }
 

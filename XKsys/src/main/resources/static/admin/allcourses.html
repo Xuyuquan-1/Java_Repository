@@ -28,10 +28,15 @@
         #addWin, #editWin {
             padding: 20px;
         }
+        .check{
+            padding: 50px;
+            height:300px;
+            width:300px
+        }
     </style>
 </head>
 <body>
-<table class="layui-table" lay-data="{toolbar:'#toptools', url:'http://localhost:8080/course/coursewithdsplist', page:true, id:'datalist'}"
+<table class="layui-table" lay-data="{toolbar:'#toptools', url:'http://localhost:8080/course/coursewithdsplist', page:false, id:'datalist'}"
        lay-filter="datalist">
     <thead>
     <tr>
@@ -194,6 +199,17 @@
 
 </div>
 
+<!--课程详情组件-->
+<div id="checkWin" lay-filter="checkWin" class="layui-form" style="display: none;">
+    <input type="hidden" name="courseid">
+    <!-- 使用 layui-inline 包裹每个表单项 -->
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">课程名称</label>
+        <div class="layui-input-inline">
+            <input type="text" name="checkWin" placeholder="请输入课程名称" autocomplete="off" class="layui-input" lay-verify="required">
+        </div>
+    </div>
+</div>
 <!--表格头部工具栏-->
 <script type="text/html" id="toptools">
     <form class="layui-form layui-row layui-col-space4">
@@ -319,6 +335,22 @@
         }
     });
 
+    var func = function (courseid){
+        layui.$.ajax({
+            method: "get",
+            url: "course/detail",
+            contentType: "application/json",
+            data: JSON.stringify(courseid),
+            success: function (result) {
+                form.val("checkWin",result);
+                console.log("successful");
+            },
+            error:function (result){
+                console.log("error");
+            }
+        })
+    }
+
     /*行内工具栏的监听事件*/
     table.on("tool(datalist)", function (obj) {
         var event = obj.event;
@@ -334,7 +366,7 @@
                 type: 1,
                 title: '编辑课程',
                 area: ['400px', '600px'], // 调整窗口大小
-                content: $("#editWin"),
+                content: $("#checkWin"),
                 btn: ["保存"],
                 btn1: function () {
                     //获取表单数据
@@ -363,7 +395,25 @@
                     });
                 }
             });
-        } else if (event == 'delete') {
+        }else if(event == 'checkdetail') {
+            // func(data.courseid);
+            console.log(data.description);
+            form.val("checkWin",data.description);
+            layer.open({
+                type: 1,
+                title: '查看课程详情',
+                area: ['400px', '600px'], // 调整窗口大小
+                content: $("#checkWin"),
+                btn: ["关闭"],
+                btn1: function () {
+                    //关闭窗口
+                    layer.closeAll();
+                }
+            })
+
+        }
+
+        else if (event == 'delete') {
             //点击删除按钮执行的方法
             //确认是否删除数据
             layer.confirm("确认要删除该行数据吗?", function () {
