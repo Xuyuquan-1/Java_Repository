@@ -67,7 +67,7 @@ public class CourseDao {
 
     }
 
-    public Course getCourse(String coursename){
+    public Course getCourseByName(String coursename){
         String sql = "select * from courses where coursename = ?";
         ResultSet rs = JdbcUtil.query(sql, coursename);
         try {

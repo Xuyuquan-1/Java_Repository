@@ -3,65 +3,52 @@ package sdut.xksys.bean;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Time;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class DetailCourse {
-    int courseid;
+public class CourseAndDsp {
     int detailcourseid;
+    int courseid;
     String coursename;
+    String credits;
+    String semester;
+    int maxenrollment;
     String description;
+    //加上这个注解才能解析Date类
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     Date startdate;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     Date enddate;
     String dayofweek;
-    @DateTimeFormat(pattern = "HH:mm")
     Time starttime;
-    @DateTimeFormat(pattern = "HH:mm")
     Time endtime;
 
-    String strstartdate;
-    String strenddate;
+
     String strstarttime;
     String strendtime;
 
 
-    public DetailCourse() {
-    }
-
-    public DetailCourse(int courseid, int detailcourseid, String coursename, String description, Date startdate, Date enddate, String dayofweek, Time starttime, Time endtime) {
-        this.courseid = courseid;
-        this.detailcourseid = detailcourseid;
-        this.coursename = coursename;
-        this.description = description;
-        this.startdate = startdate;
-        this.enddate = enddate;
-        this.dayofweek = dayofweek;
-        this.starttime = starttime;
-        this.endtime = endtime;
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        this.strstartdate = sdf.format(startdate);
-        this.strenddate = sdf.format(enddate);
-
-        SimpleDateFormat sdft = new SimpleDateFormat("HH:mm");
-        this.strstarttime = sdft.format(starttime);
-        this.strendtime = sdft.format(endtime);
-
-
-    }
-
-    public int getCourseid() {
-        return courseid;
+    public String getCoursename() {
+        return coursename;
     }
 
     public int getDetailcourseid() {
         return detailcourseid;
     }
 
-    public String getCoursename() {
-        return coursename;
+    public int getCourseid() {
+        return courseid;
+    }
+
+    public int getMaxenrollment() {
+        return maxenrollment;
+    }
+
+    public String getSemester() {
+        return semester;
+    }
+
+    public String getCredits() {
+        return credits;
     }
 
     public String getDescription() {
@@ -88,14 +75,6 @@ public class DetailCourse {
         return endtime;
     }
 
-    public String getStrenddate() {
-        return strenddate;
-    }
-
-    public String getStrstartdate() {
-        return strstartdate;
-    }
-
     public String getStrstarttime() {
         return strstarttime;
     }
@@ -104,28 +83,32 @@ public class DetailCourse {
         return strendtime;
     }
 
-    public void setCourseid(int courseid) {
-        this.courseid = courseid;
-    }
-
     public void setDetailcourseid(int detailcourseid) {
         this.detailcourseid = detailcourseid;
+    }
+
+    public void setCourseid(int courseid) {
+        this.courseid = courseid;
     }
 
     public void setCoursename(String coursename) {
         this.coursename = coursename;
     }
 
+    public void setSemester(String semester) {
+        this.semester = semester;
+    }
+
+    public void setMaxenrollment(int maxenrollment) {
+        this.maxenrollment = maxenrollment;
+    }
+
+    public void setCredits(String credits) {
+        this.credits = credits;
+    }
+
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public void setStartdate(Date startdate) {
-        this.startdate = startdate;
-    }
-
-    public void setEnddate(Date enddate) {
-        this.enddate = enddate;
     }
 
     public void setDayofweek(String dayofweek) {
@@ -140,14 +123,6 @@ public class DetailCourse {
         this.endtime = endtime;
     }
 
-    public void setStrstartdate(String strstartdate) {
-        this.strstartdate = strstartdate;
-    }
-
-    public void setStrenddate(String strenddate) {
-        this.strenddate = strenddate;
-    }
-
     public void setStrstarttime(String strstarttime) {
         this.strstarttime = strstarttime;
     }
@@ -156,20 +131,29 @@ public class DetailCourse {
         this.strendtime = strendtime;
     }
 
+    public void setStartdate(Date startdate) {
+        this.startdate = startdate;
+    }
+
+    public void setEnddate(Date enddate) {
+        this.enddate = enddate;
+    }
+
     @Override
     public String toString() {
-        return "DetailCourse{" +
-                "courseid=" + courseid +
-                ", detailcourseid=" + detailcourseid +
+        return "CourseAndDsp{" +
+                "detailcourseid=" + detailcourseid +
+                ", courseid=" + courseid +
                 ", coursename='" + coursename + '\'' +
+                ", credits='" + credits + '\'' +
+                ", semester='" + semester + '\'' +
+                ", maxenrollment=" + maxenrollment +
                 ", description='" + description + '\'' +
                 ", startdate=" + startdate +
                 ", enddate=" + enddate +
                 ", dayofweek='" + dayofweek + '\'' +
                 ", starttime=" + starttime +
                 ", endtime=" + endtime +
-                ", strstartdate='" + strstartdate + '\'' +
-                ", strenddate='" + strenddate + '\'' +
                 ", strstarttime='" + strstarttime + '\'' +
                 ", strendtime='" + strendtime + '\'' +
                 '}';

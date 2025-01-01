@@ -14,6 +14,7 @@ public class Course {
     String semester;
     int maxenrollment;
 
+
     public int getCourseid() {
         return courseid;
     }

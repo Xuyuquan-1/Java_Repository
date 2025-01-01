@@ -4,25 +4,40 @@ package sdut.xksys.bean;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
-@AllArgsConstructor
+
 public class CourseWithDsp {
     Course course;
-    String dsp;
+    DetailCourse detailcourse;
 
     public Course getCourse() {
         return course;
     }
 
-    public String getDsp() {
-        return dsp;
+    public DetailCourse getDetailcourse() {
+        return detailcourse;
     }
 
     public void setCourse(Course course) {
         this.course = course;
     }
 
-    public void setDsp(String dsp) {
-        this.dsp = dsp;
+    public void setDetailcourse(DetailCourse detailcourse) {
+        this.detailcourse = detailcourse;
+    }
+    public CourseWithDsp() {
+        ;
+    }
+
+    public CourseWithDsp(Course course, DetailCourse detailcourse) {
+        this.course = course;
+        this.detailcourse = detailcourse;
+    }
+
+    @Override
+    public String toString() {
+        return "CourseWithDsp{" +
+                "course=" + course +
+                ", detailcourse=" + detailcourse +
+                '}';
     }
 }

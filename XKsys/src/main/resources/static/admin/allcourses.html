@@ -31,7 +31,7 @@
     </style>
 </head>
 <body>
-<table class="layui-table" lay-data="{toolbar:'#toptools', url:'http://localhost:8080/course/newlist', page:true, id:'datalist'}"
+<table class="layui-table" lay-data="{toolbar:'#toptools', url:'http://localhost:8080/course/coursewithdsplist', page:true, id:'datalist'}"
        lay-filter="datalist">
     <thead>
     <tr>
@@ -40,6 +40,12 @@
         <th lay-data="{field:'credits', sort: true}">学分</th>
         <th lay-data="{field:'semester', sort: true}">学期</th>
         <th lay-data="{field:'maxenrollment', sort: true}">最大容量</th>
+        <th lay-data="{toolbar:'#linetool'}">课程详情</th>
+        <th lay-data="{field:'dayofweek', sort: true}">上课时间</th>
+        <th lay-data="{field:'starttime', sort: true}">开始时间</th>
+        <th lay-data="{field:'endtime', sort: true}">结束时间</th>
+        <th lay-data="{field:'startdate', sort: true}">开始日期</th>
+        <th lay-data="{field:'enddate', sort: true}">结束日期</th>
         <th lay-data="{toolbar:'#linetools'}">操作</th>
     </tr>
     </thead>
@@ -76,8 +82,37 @@
             <input type="number" name="maxenrollment" placeholder="请输入最大容量" autocomplete="off" class="layui-input" lay-verify="required">
         </div>
     </div>
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">上课时间</label>
+        <div class="layui-input-inline">
+            <input type="text" name="dayofweek" placeholder="上课时间" autocomplete="off" class="layui-input" lay-verify="required">
+        </div>
+    </div>
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">起始日期</label>
+        <div class="layui-input-inline">
+            <input type="date" name="strstartdate" placeholder="起始日期" autocomplete="off" class="layui-input" lay-verify="required">
+        </div>
+    </div>
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">结束日期</label>
+        <div class="layui-input-inline">
+            <input type="date" name="strenddate" placeholder="结束日期" autocomplete="off" class="layui-input" lay-verify="required">
+        </div>
+    </div>
 
-
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">课程起时时间</label>
+        <div class="layui-input-inline">
+            <input type="time" name="strstarttime" placeholder="课程起时时间" autocomplete="off" class="layui-input" lay-verify="required">
+        </div>
+    </div>
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">课程结束时间</label>
+        <div class="layui-input-inline">
+            <input type="time" name="strendtime" placeholder="课程结束时间" autocomplete="off" class="layui-input" lay-verify="required">
+        </div>
+    </div>
     <div class="layui-form-item layui-inline">
         <label class="layui-form-label">课程描述</label>
         <div class="layui-input-inline">
@@ -124,6 +159,39 @@
             <input type="text" name="description" placeholder="请输入课程描述" autocomplete="off" class="layui-input" lay-verify="required">
         </div>
     </div>
+
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">上课时间</label>
+        <div class="layui-input-inline">
+            <input type="text" name="dayofweek" placeholder="上课时间" autocomplete="off" class="layui-input" lay-verify="required">
+        </div>
+    </div>
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">起始日期</label>
+        <div class="layui-input-inline">
+            <input type="date" name="startdate" placeholder="起始日期" autocomplete="off" class="layui-input" lay-verify="required">
+        </div>
+    </div>
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">结束日期</label>
+        <div class="layui-input-inline">
+            <input type="date" name="enddate" placeholder="结束日期" autocomplete="off" class="layui-input" lay-verify="required">
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">课程起时时间</label>
+        <div class="layui-input-inline">
+            <input type="time" name="strstarttime" placeholder="课程起时时间" autocomplete="off" class="layui-input" lay-verify="required">
+        </div>
+    </div>
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">课程结束时间</label>
+        <div class="layui-input-inline">
+            <input type="time" name="strendtime" placeholder="课程结束时间" autocomplete="off" class="layui-input" lay-verify="required">
+        </div>
+    </div>
+
 </div>
 
 <!--表格头部工具栏-->
@@ -146,8 +214,27 @@
     <button type="button" class="layui-btn layui-btn-xs layui-btn-danger" lay-event="delete">删除</button>
 </script>
 
+<script type="text/html" id="linetool">
+    <button type="button" class="layui-btn layui-btn-xs layui-btn-normal" lay-event="checkdetail">课程详情</button>
+</script>
+
 <script src="/layui/layui.all.js"></script>
 <script>
+
+    //转换函数
+    function convertToHourMinuteSecond(time) {
+        // 使用正则表达式检查时间格式是否为 HH:mm
+        var timePattern = /^(\d{2}):(\d{2})$/;
+        var match = time.match(timePattern);
+        if (match) {
+            // 如果匹配成功，返回 HH:mm:00
+            return match[1] + ":" + match[2] + ":00";
+        }
+        // 如果不匹配，返回原始时间
+        return time;
+    }
+
+
     /*声明layui内部对象*/
     const $ = layui.$;
     const table = layui.table;
@@ -160,7 +247,8 @@
         if (event == 'add') {
             //点击新增按钮执行的方法
             //重置表单内容
-            form.val("addWin", {coursename: "", credits: "", semester: "", maxenrollment: "", description: ""});
+            form.val("addWin", {coursename: "", credits: "", semester: "", maxenrollment: "",
+                description: "",dayofweek: "", strstartdate: "", strenddate: "", strstarttime: "", strendtime: ""});
             //打开一个对话框(输入内容)
             layer.open({
                 //具有遮罩层样式的窗口
@@ -173,18 +261,32 @@
                     //点击保存按钮  保存数据
                     //表单中的数据
                     var formdata = form.val("addWin");
-                    var dp = formdata.description;
-                    // var dp = "String";
-                    delete formdata.description;
+                    var detailcourse = {
+                        courseid: '',
+                        coursename: formdata.coursename,
+                        description: formdata.description,
+                        dayofweek: formdata.dayofweek,
+                        strstartdate: formdata.strstartdate,
+                        strenddate: formdata.strenddate,
+                        strstarttime: formdata.strstarttime,
+                        strendtime: formdata.strendtime,
+                    }
+                    var course = {
+                        courseid:'',
+                        coursename:formdata.coursename,
+                        credits:formdata.credits,
+                        semester: formdata.semester,
+                        maxenrollment: formdata.maxenrollment
+                    }
                     console.log(formdata);
                     var data ={
                         //与变量名相同而不是类名
-                        course:formdata,
-                        dsp:dp
+                        course:course,
+                        detailcourse:detailcourse
                     }
                     $.ajax({
                         method: 'post',
-                        url: 'course/newadd',
+                        url: 'course/addwithdetail',
                         contentType:'application/json',
                         data: JSON.stringify(data),
                         success: function (result) {
@@ -201,7 +303,7 @@
         }
         if(event == 'check') {
             var checktext = $("[name='checktext']").val(); // 获取输入框的值
-            // console.log(checktext);
+            console.log(checktext);
             // console.log(document.getElementById("datalist"));
             //datalist是通过table初始化时的id(唯一标识)选择的，并不是html里面的id
             table.reload("datalist", {
@@ -221,6 +323,8 @@
     table.on("tool(datalist)", function (obj) {
         var event = obj.event;
         var data = obj.data;
+        data.strstarttime = data.starttime;
+        data.strendtime = data.endtime;
         console.log(data)//点击按钮所在行的数据
         if (event == 'edit') {
             //点击编辑按钮执行的方法
@@ -235,12 +339,18 @@
                 btn1: function () {
                     //获取表单数据
                     var formdata = form.val("editWin");
+
+                    //后端只能转换HH：mm：ss格式的数据，而输入进来的格式是HH：mm，所以需要转换一下
+                    formdata.strstarttime = convertToHourMinuteSecond(formdata.strstarttime);
+                    formdata.strendtime = convertToHourMinuteSecond(formdata.strendtime);
+                    console.log(formdata.strstarttime);
+                    console.log(formdata.strendtime)
                     //提交数据
                     $.ajax({
                         method: "post",
-                        url: "course/edit",
-                        data:formdata,
-                        // contextType:'application/json',
+                        url: 'course/newedit',
+                        // contextType: "application/json",
+                        data: formdata,
                         // data:JSON.stringify(formdata),
                         success: function (result) {
                             //刷新表格
