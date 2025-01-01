@@ -95,6 +95,12 @@ public class DetailCourseDao {
         return list.get(0);
     }
 
+    public int deleteDetailCourse(int courseid){
+        String sql = "delete from detailcourse where courseid = ?";
+        int result = JdbcUtil.update(sql, courseid);
+        return result;
+    }
+
 
 
 

@@ -6,8 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import sdut.xksys.bean.*;
-import sdut.xksys.dao.CourseDao;
-import sdut.xksys.dao.DetailCourseDao;
+import sdut.xksys.dao.*;
 import sdut.xksys.util.JdbcUtil;
 import sdut.xksys.util.RestResult;
 
@@ -28,6 +27,14 @@ public class CourseController {
     CourseDao courseDao;
     @Autowired
     DetailCourseDao detailCourseDao;
+    @Autowired
+    ClassroomDao classroomDao;
+    @Autowired
+    CourseidWithTeacheridDao courseidWithTeacheridDao;
+    @Autowired
+    EnrollmentDao enrollmentDao;
+    @Autowired
+    StudentDao studentDao;
 
     @RequestMapping("/list")
     public Object getAllCourses() {
@@ -170,6 +177,23 @@ public class CourseController {
             System.out.println(detailCourse);
             System.out.println("______________");
 
+
+            //classroom 约束于courseid 选择教室
+            //查找所选教室，更新,默认绑定id=1
+            Classroom classroom = classroomDao.getClassroomById(1);
+            classroom.setCourseid(tempCourse.getCourseid());
+            classroomDao.addClassroom(classroom);
+            //course_teacher 约束于courseid 选择老师
+            //默认老师id=1
+            CourseidWithTeacherid courseidWithTeacherid = new CourseidWithTeacherid(tempCourse.getCourseid(),1);
+            courseidWithTeacheridDao.addCourseidWithTeacherid(courseidWithTeacherid);
+
+            //Enrollment 每个学生都加一条未选择记录
+            List<Student> allstudents = studentDao.getAllStudents();
+            for(Student student:allstudents) {
+                enrollmentDao.addEnrollment(student.getStudentno(),tempCourse.getCourseid());
+            }
+
             detailCourseDao.addDetailCourse(detailCourse);
             List<String> list = new ArrayList<>();
             list.add("添加成功");
@@ -221,6 +245,7 @@ public class CourseController {
     @RequestMapping("/delete")
     public Object deleteCourse(int courseid) {
         try {
+            detailCourseDao.deleteDetailCourse(courseid);
             return courseDao.deleteCourse(courseid);
         } catch (Exception e) {
             e.printStackTrace();

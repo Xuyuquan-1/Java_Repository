@@ -72,4 +72,11 @@ public class EnrollmentDao {
         return JdbcUtil.update(sql, studentno, courseid);
     }
 
+    //////////////add
+
+    public int addEnrollment(String studentno, int courseid) {
+        String sql = "INSERT INTO enrollments (studentno, courseid, status) VALUES (?, ?, 'PENDING')";
+        return JdbcUtil.update(sql, studentno, courseid);
+    }
+
 }
