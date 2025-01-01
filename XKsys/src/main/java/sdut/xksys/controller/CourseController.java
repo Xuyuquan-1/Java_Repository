@@ -92,19 +92,22 @@ public class CourseController {
                 System.out.println(coursename);
                 System.out.println("///////////////");
                 //获取查询课程
-                Course course = courseDao.getCourseByName(coursename);
-                System.out.println(course);
+                List<Course> courses = courseDao.getCheckCourseByName(coursename);
+//                System.out.println(course);
                 //通过Coureid获取DetailCourse
-                DetailCourse detailCourse = detailCourseDao.getDetailCourseByCourseid(course.getCourseid());
-                System.out.println(detailCourse);
-                //获取CourseWithDsp
-                CourseWithDsp courseWithDsp = new CourseWithDsp(course, detailCourse);
-                //获取CouresAndDsp
-                CourseAndDsp courseAndDsp = JdbcUtil.CwpConvertCAp(courseWithDsp);
                 List<CourseAndDsp> courseAndDspList = new ArrayList<>();
-                courseAndDspList.add(courseAndDsp);
+                for(Course course:courses) {
+                    DetailCourse detailCourse = detailCourseDao.getDetailCourseByCourseid(course.getCourseid());
+//                System.out.println(detailCourse);
+                    //获取CourseWithDsp
+                    CourseWithDsp courseWithDsp = new CourseWithDsp(course, detailCourse);
+                    //获取CouresAndDsp
+                    CourseAndDsp courseAndDsp = JdbcUtil.CwpConvertCAp(courseWithDsp);
+                    courseAndDspList.add(courseAndDsp);
+                }
+                int count = courseDao.getCourseCount();
                 //return
-                return new RestResult(1, courseAndDspList);
+                return new RestResult(count, courseAndDspList);
 
             }else{
                 return "error";
@@ -241,12 +244,29 @@ public class CourseController {
     }
 
 
+    @RequestMapping("/detail")
+    public Object checkDetail(@RequestBody String courseid){
+        try {
+            DetailCourse detail = detailCourseDao.getDetailCourseByCourseid(Integer.parseInt(courseid));
+            System.out.println(detail.getDescription());
+            return detail.getDescription();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("/course/detail:error!");
+        }
+    }
 
     @RequestMapping("/delete")
     public Object deleteCourse(int courseid) {
         try {
-            detailCourseDao.deleteDetailCourse(courseid);
-            return courseDao.deleteCourse(courseid);
+            int result1 = detailCourseDao.deleteDetailCourse(courseid);
+            int result2 = classroomDao.deleteClassroom(courseid);
+            int result3 = courseidWithTeacheridDao.deleteCourseidWithTeacheridBycourseid(courseid);
+            int result4 = enrollmentDao.deleteEnrollment(courseid);
+            int result5 = courseDao.deleteCourse(courseid);
+
+
+            return result1*result2*result3*result4*result5;
         } catch (Exception e) {
             e.printStackTrace();
             return "error";

@@ -180,4 +180,9 @@ public class EnrollmentDao {
             JdbcUtil.close(rs);
         }
     }
+
+    public int deleteEnrollment(int courseid) {
+        String sql = "DELETE FROM enrollments WHERE courseid = ?";
+        return JdbcUtil.update(sql, courseid);
+    }
 }

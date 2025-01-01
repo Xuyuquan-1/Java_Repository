@@ -31,15 +31,15 @@ public class ClassroomDao {
         return JdbcUtil.update(sql, classroom.getCourseid(), classroom.getClassroomname(), classroom.getCapacity());
     }
 
-    public int updateClassroom(Classroom classroom) throws SQLException{
+    public int updateClassroom(Classroom classroom) {
         String sql = "update classrooms set classroomname = ?, capacity = ?, courseid = ? where classroomid = ?";
         return JdbcUtil.update(sql, classroom.getClassroomname(), classroom.getCapacity(),classroom.getCourseid() ,classroom.getClassroomid());
     }
 
 
-    public int deleteClassroom(int classroomid) throws SQLException{
-        String sql = "delete from classrooms where classroomid = ?";
-        return JdbcUtil.update(sql, classroomid);
+    public int deleteClassroom(int courseid) {
+        String sql = "delete from classrooms where courseid = ?";
+        return JdbcUtil.update(sql, courseid);
     }
 
     public Classroom getClassroomByCourseId(int courseid) throws SQLException, IllegalAccessException, InstantiationException {
