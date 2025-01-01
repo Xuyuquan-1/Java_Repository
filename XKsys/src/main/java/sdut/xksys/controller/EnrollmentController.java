@@ -9,6 +9,7 @@ import sdut.xksys.bean.Student;
 import sdut.xksys.dao.EnrollmentDao;
 import sdut.xksys.util.RestResult;
 
+import java.sql.SQLException;
 import java.util.List;
 
 @RestController
@@ -68,5 +69,33 @@ public class EnrollmentController {
             return "error";
         }
     }
+    @RequestMapping("/getStudentCurrentCredits")
+    public String getStudentCurrentCredits(HttpSession session) {
+        Student student = (Student) session.getAttribute("student");
+        if (student != null) {
+            try {
+                return String.valueOf(enrollmentDao.getStudentCurrentCredits(student.getStudentno()));
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return "error";
+            }
+        } else {
+            return "未登录";
+        }
+    }
 
+    @RequestMapping("/getStudentTotalCredits")
+    public String getStudentTotalCredits(HttpSession session) {
+        Student student = (Student) session.getAttribute("student");
+        if (student != null) {
+            try {
+                return String.valueOf(enrollmentDao.getStudentTotalCredits(student.getStudentno()));
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return "error";
+            }
+        } else {
+            return "未登录";
+        }
+    }
 }
