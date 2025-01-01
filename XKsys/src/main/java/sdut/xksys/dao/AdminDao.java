@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 import sdut.xksys.bean.Admin;
 import sdut.xksys.bean.Course;
 import sdut.xksys.bean.Student;
+import sdut.xksys.bean.StudentCredits;
 import sdut.xksys.util.JdbcUtil;
 
 import java.sql.ResultSet;
@@ -22,18 +23,18 @@ public class AdminDao {
     }
 
 
-    public Admin getAdminById(int adminid){
+    public Admin getAdminById(int adminid) {
         String sql = "select * from admins where adminid = ?";
-        ResultSet rs = JdbcUtil.query(sql,adminid);
+        ResultSet rs = JdbcUtil.query(sql, adminid);
         try {
             List<Admin> list = JdbcUtil.convertResultSetToList(rs, Admin.class);
             Admin admin = list.get(0);
             JdbcUtil.close(rs);
             return admin;
-        } catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("AdminDao.getAdminById:error!");
-        }finally {
+        } finally {
             ;
         }
     }
@@ -60,5 +61,27 @@ public class AdminDao {
         List<Student> studentList = JdbcUtil.convertResultSetToList(rs, Student.class);
         JdbcUtil.close(rs);
         return studentList;
+    }
+
+    public List<StudentCredits> getStudentCredits() throws SQLException, IllegalAccessException, InstantiationException {
+        String sql = "select * from studentcredits";
+        ResultSet rs = JdbcUtil.query(sql);
+        List<StudentCredits> list = JdbcUtil.convertResultSetToList(rs, StudentCredits.class);
+        JdbcUtil.close(rs);
+        return list;
+    }
+
+    public int getStudentCurrentCreditsCount() throws SQLException, IllegalAccessException, InstantiationException {
+        String sql = "select currentcredits from studentcredits";
+        ResultSet rs = JdbcUtil.query(sql);
+        List<StudentCredits> list = JdbcUtil.convertResultSetToList(rs, StudentCredits.class);
+        JdbcUtil.close(rs);
+        return list.size();
+    }
+
+    public int updateStudentTotalCredits(String currentcredits) throws SQLException {
+        String sql = "update studentcredits set totalcredits = ?";
+        int result = JdbcUtil.update(sql, currentcredits);
+        return result;
     }
 }

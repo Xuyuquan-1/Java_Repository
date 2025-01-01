@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="http://localhost:8080/admin">
+    <meta charset="UTF-8">
+    <title>学分管理</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <style>
+        .layui-table th, .layui-table td {
+            text-align: center;
+        }
+
+        .layui-form-label {
+            width: 100px;
+        }
+
+        .layui-input-block {
+            margin-left: 120px;
+        }
+
+        /* 确保表单项在同一行内对齐 */
+        .layui-inline .layui-input-inline {
+            width: 200px; /* 根据需要调整宽度 */
+        }
+
+        .layui-inline .layui-form-label {
+            width: 100px;
+            text-align: right;
+            padding-right: 10px;
+        }
+    </style>
+</head>
+<body>
+<table class="layui-table" lay-data="{toolbar:'#toptools', url:'http://localhost:8080/admin/getStudentCredits', page:true, id:'datalist'}"
+       lay-filter="datalist">
+    <thead>
+    <tr>
+        <th lay-data="{field:'studentno', sort: true}">学生学号</th>
+        <th id="name" lay-data="{field:'currentcredits', sort: true}">已选课程学分</th>
+        <th lay-data="{field:'totalcredits', sort: true}">本学期需选课程学分</th>
+        <th lay-data="{toolbar: '#linetools', align: 'center'}">操作</th>
+    </tr>
+    </thead>
+</table>
+<!-- 编辑窗口组件 -->
+<div id="editWin" lay-filter="editWin" class="layui-form" style="display: none; padding: 20px;">
+    <input type="hidden" name="studentid">
+
+    <!-- 使用 layui-inline 包裹每个表单项 -->
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label"><i class="layui-icon layui-icon-username"></i> 学生学号</label>
+        <div class="layui-input-inline">
+            <input type="text" name="studentno" placeholder="请输入学生学号" autocomplete="off" class="layui-input" lay-verify="required">
+        </div>
+    </div>
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label"><i class="layui-icon layui-icon-note"></i> 总需学分</label>
+        <div class="layui-input-inline">
+            <input type="number" name="totalcredits" placeholder="请输入总需学分" autocomplete="off" class="layui-input" lay-verify="required|number">
+        </div>
+    </div>
+</div>
+
+<!--表格行内工具栏-->
+<script type="text/html" id="linetools">
+    <button type="button" class="layui-btn layui-btn-xs layui-btn-normal" lay-event="edit">修改本学期需选课程学分</button>
+</script>
+
+<script src="/layui/layui.all.js"></script>
+<script>
+    /*声明layui内部对象*/
+    const $ = layui.$;
+    const table = layui.table;
+    const layer = layui.layer;
+    const form = layui.form;
+    var baseUrl = "http://localhost:8080/";
+    /*行内工具栏的监听事件*/
+    table.on("tool(datalist)", function (obj) {
+        var event = obj.event;
+        var data = obj.data; //点击按钮所在行的数据
+        if (event == 'edit') {
+            //点击编辑按钮执行的方法
+            form.val("editWin", data); //显示原始数据
+            //打开对话框
+            layer.open({
+                type: 1,
+                title: '编辑学生',
+                area: ['400px', '500px'],
+                content: $("#editWin"),
+                btn: ["保存"],
+                btn1: function () {
+                    //获取表单数据
+                    var formdata = form.val("editWin");
+                    //验证 totalcredits 是否为空
+                    if (!formdata.totalcredits) {
+                        layer.msg("本学期需选课程学分不能为空", {icon: 2, time: 1800});
+                        return;
+                    }
+                    //提交数据
+                    $.ajax({
+                        method: "post",
+                        url: "admin/updateStudentCredits",
+                        data: formdata,
+                        success: function (result) {
+                            //刷新表格
+                            table.reload("datalist");
+                            //关闭窗口
+                            layer.closeAll();
+                            //提示用户
+                            layer.msg("保存成功", {icon: 1, time: 1800});
+                        },
+                        error: function (result) {
+                            layer.msg("保存失败", {icon: 2, time: 1800});
+                        }
+                    });
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>
