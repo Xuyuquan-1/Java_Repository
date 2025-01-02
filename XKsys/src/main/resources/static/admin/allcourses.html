@@ -29,9 +29,9 @@
             padding: 20px;
         }
         .check{
-            padding: 50px;
-            height:300px;
-            width:300px
+            padding: 20px;
+            height:260px;
+            width:260px
         }
     </style>
 </head>
@@ -201,12 +201,12 @@
 
 <!--课程详情组件-->
 <div id="checkWin" lay-filter="checkWin" class="layui-form" style="display: none;">
-    <input type="hidden" name="courseid">
+    <input type="hidden" name="description">
     <!-- 使用 layui-inline 包裹每个表单项 -->
     <div class="layui-form-item layui-inline">
-        <label class="layui-form-label">课程名称</label>
+        <label class="layui-form-label">课程描述</label>
         <div class="layui-input-inline">
-            <input type="text" name="checkWin" placeholder="请输入课程名称" autocomplete="off" class="layui-input" lay-verify="required">
+            <textarea type="text" name="description"  placeholder="请输入课程描述" autocomplete="off" class="layui-input check" lay-verify="required"></textarea>
         </div>
     </div>
 </div>
@@ -337,13 +337,26 @@
 
     var func = function (courseid){
         layui.$.ajax({
-            method: "get",
-            url: "course/detail",
-            contentType: "application/json",
+            method: 'post',
+            url: 'course/detail',
+            nysnc: false,
+            contentType: 'application/json',
+            dataType: 'json',
             data: JSON.stringify(courseid),
             success: function (result) {
-                form.val("checkWin",result);
-                console.log("successful");
+                form.val("checkWin",{description:result.data});
+                console.log("successful"+result.data);
+                layer.open({
+                    type: 1,
+                    title: '查看课程详情',
+                    area: ['400px', '400px'], // 调整窗口大小
+                    content: $("#checkWin"),
+                    btn: ["关闭"],
+                    btn1: function () {
+                        //关闭窗口
+                        layer.closeAll();
+                    }
+                })
             },
             error:function (result){
                 console.log("error");
@@ -366,7 +379,7 @@
                 type: 1,
                 title: '编辑课程',
                 area: ['400px', '600px'], // 调整窗口大小
-                content: $("#checkWin"),
+                content: $("#editWin"),
                 btn: ["保存"],
                 btn1: function () {
                     //获取表单数据
@@ -396,20 +409,10 @@
                 }
             });
         }else if(event == 'checkdetail') {
-            // func(data.courseid);
+            console.log(data.courseid);
             console.log(data.description);
-            form.val("checkWin",data.description);
-            layer.open({
-                type: 1,
-                title: '查看课程详情',
-                area: ['400px', '600px'], // 调整窗口大小
-                content: $("#checkWin"),
-                btn: ["关闭"],
-                btn1: function () {
-                    //关闭窗口
-                    layer.closeAll();
-                }
-            })
+            // form.val("checkWin",{description:data.description});
+            func(data.courseid);
 
         }
 
