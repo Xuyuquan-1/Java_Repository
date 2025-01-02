@@ -31,6 +31,8 @@ public class DetailCourse {
     String strendtime;
 
 
+
+
     public DetailCourse() {
     }
 

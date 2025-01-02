@@ -53,7 +53,7 @@
         <th lay-data="{field:'enddate', sort: true}">结束日期</th>
         <th lay-data="{field:'oldclassroom', sort: true}">上课教室</th>
 <!--        <th lay-data="{field:'classroom', sort: true}" style="display:none">新上课教室</th>-->
-        <th lay-data="{field:'oldteacherid', sort: true}">任课教师</th>
+        <th lay-data="{field:'oldteacherid',  hide: true}">任课教师</th>
 <!--        <th lay-data="{field:'teacherid', sort: true}" style="display:none">新任课教师</th>-->
         <th lay-data="{toolbar:'#linetools'}">操作</th>
     </tr>
@@ -474,6 +474,37 @@
         console.log(data)//点击按钮所在行的数据
         if (event == 'edit') {
             //点击编辑按钮执行的方法
+            if(data.oldteacherid === '1') {
+                data.oldteacherid = '张老师';
+            }
+            if(data.oldteacherid === '2') {
+                data.oldteacherid = '李老师';
+            }
+            if(data.oldteacherid === '3') {
+                data.oldteacherid = '王老师';
+            }
+            if(data.oldteacherid === '4') {
+                data.oldteacherid = '赵老师';
+            }
+            if(data.oldteacherid === '5'){
+                data.oldteacherid = '孙老师';
+            }
+            if(data.oldteacherid === '6') {
+                data.oldteacherid = '周老师';
+            }
+            if(data.oldteacherid === '7') {
+                data.oldteacherid = '吴老师';
+            }
+            if(data.oldteacherid === '8') {
+                data.oldteacherid = '郑老师';
+            }
+            if(data.oldteacherid === '9') {
+                data.oldteacherid = '冯老师';
+            }
+            if(data.oldteacherid === '10') {
+                data.oldteacherid = '陈老师';
+            }
+
             form.val("editWin", data); //显示原始数据
             //打开对话框
             layer.open({
