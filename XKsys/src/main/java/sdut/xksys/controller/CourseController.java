@@ -1,10 +1,7 @@
 package sdut.xksys.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import sdut.xksys.bean.*;
 import sdut.xksys.dao.*;
 import sdut.xksys.util.JdbcUtil;
@@ -35,6 +32,8 @@ public class CourseController {
     EnrollmentDao enrollmentDao;
     @Autowired
     StudentDao studentDao;
+    @Autowired
+    CurrentEnrollmentDao currentEnrollmentDao;
 
     @RequestMapping("/list")
     public Object getAllCourses() {
@@ -182,8 +181,8 @@ public class CourseController {
 
 
             //classroom 约束于courseid 选择教室
-            //查找所选教室，更新,默认绑定id=1
-            Classroom classroom = classroomDao.getClassroomById(1);
+            //查找所选教室，更新,默认绑定id=1  2
+            Classroom classroom = classroomDao.getClassroomById(2);
             classroom.setCourseid(tempCourse.getCourseid());
             classroomDao.addClassroom(classroom);
             //course_teacher 约束于courseid 选择老师
@@ -196,6 +195,8 @@ public class CourseController {
             for(Student student:allstudents) {
                 enrollmentDao.addEnrollment(student.getStudentno(),tempCourse.getCourseid());
             }
+            //current_enrollment 添加一条记录
+            currentEnrollmentDao.addInitCurrentEnrollment(tempCourse.getCourseid());
 
             detailCourseDao.addDetailCourse(detailCourse);
             List<String> list = new ArrayList<>();
@@ -247,9 +248,12 @@ public class CourseController {
     @RequestMapping("/detail")
     public Object checkDetail(@RequestBody String courseid){
         try {
+            System.out.println("|||||||||||||||||");
             DetailCourse detail = detailCourseDao.getDetailCourseByCourseid(Integer.parseInt(courseid));
             System.out.println(detail.getDescription());
-            return detail.getDescription();
+            List<String> list = new ArrayList<>();
+            list.add(detail.getDescription());
+            return new RestResult(1, list);
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("/course/detail:error!");
@@ -264,9 +268,10 @@ public class CourseController {
             int result3 = courseidWithTeacheridDao.deleteCourseidWithTeacheridBycourseid(courseid);
             int result4 = enrollmentDao.deleteEnrollment(courseid);
             int result5 = courseDao.deleteCourse(courseid);
+            int result6 = currentEnrollmentDao.deleteCurrentEnrollmentById(courseid);
 
 
-            return result1*result2*result3*result4*result5;
+            return result1*result2*result3*result4*result5*result6;
         } catch (Exception e) {
             e.printStackTrace();
             return "error";
