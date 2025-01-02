@@ -64,10 +64,6 @@ public class StudentController {
         }
     }
 
-
-
-
-
     @RequestMapping("/add")
     public Object addStudent(@RequestBody Student student) {
         try {
