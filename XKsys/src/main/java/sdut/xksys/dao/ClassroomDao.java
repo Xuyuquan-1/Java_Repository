@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 import sdut.xksys.bean.Classroom;
 import sdut.xksys.util.JdbcUtil;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -23,10 +24,19 @@ public class ClassroomDao {
 
     public Classroom getClassroomById(int classroomid) throws SQLException, IllegalAccessException, InstantiationException{
         String sql = "select * from classrooms where classroomid = ?";
-        return JdbcUtil.convertResultSetToList(JdbcUtil.query(sql, classroomid), Classroom.class).get(0);
+        ResultSet rs = JdbcUtil.query(sql, classroomid);
+        List<Classroom> list = JdbcUtil.convertResultSetToList(rs, Classroom.class);
+        JdbcUtil.close(rs);
+        return list.get(0);
     }
 
-    public int addClassroom(Classroom classroom) throws SQLException{
+
+    public Classroom getClassroomByClassroomName(String classroomname) throws SQLException, IllegalAccessException, InstantiationException{
+        String sql = "select * from classrooms where classroomname = ?";
+        return JdbcUtil.convertResultSetToList(JdbcUtil.query(sql, classroomname), Classroom.class).get(0);
+    }
+
+    public int addClassroom(Classroom classroom){
         String sql = "insert into classrooms(courseid, classroomname, capacity) values(?,?,?)";
         return JdbcUtil.update(sql, classroom.getCourseid(), classroom.getClassroomname(), classroom.getCapacity());
     }

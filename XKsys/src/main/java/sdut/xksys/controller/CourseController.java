@@ -80,9 +80,16 @@ public class CourseController {
 //                    System.out.println("*******"+ce.getCourseid()+"********");
 
                     DetailCourse detail = detailCourseDao.getDetailCourseByCourseid(ce.getCourseid());
+                    //添加教室和教师
+                    //设置detailcourse的教师和教室(detailcourse存储的是classroomname)
+                    detail.setClassroom(classroomDao.getClassroomByCourseId(ce.getCourseid()).getClassroomname());
+                    detail.setOldclassroom(classroomDao.getClassroomByCourseId(ce.getCourseid()).getClassroomname());
+
+                   detail.setOldteacherid(String.valueOf(courseidWithTeacheridDao.getCourseidWithTeacheridByCourseid(ce.getCourseid()).get(0).getTeacherid()));
+                   detail.setTeacherid(String.valueOf(courseidWithTeacheridDao.getCourseidWithTeacheridByCourseid(ce.getCourseid()).get(0).getTeacherid()));
+
                     CourseWithDsp courseWithDsp = new CourseWithDsp(ce, detail);
                     courseAndDspList.add(JdbcUtil.CwpConvertCAp(courseWithDsp));
-
 
                 }
                 return new RestResult(coursecount, courseAndDspList);
@@ -98,11 +105,20 @@ public class CourseController {
                 for(Course course:courses) {
                     DetailCourse detailCourse = detailCourseDao.getDetailCourseByCourseid(course.getCourseid());
 //                System.out.println(detailCourse);
+                    //设置detailcourse的教师和教室(detailcourse存储的是classroomname)
+                    detailCourse.setClassroom(classroomDao.getClassroomByCourseId(course.getCourseid()).getClassroomname());
+                    detailCourse.setOldclassroom(classroomDao.getClassroomByCourseId(course.getCourseid()).getClassroomname());
+
+                    detailCourse.setOldteacherid(String.valueOf(courseidWithTeacheridDao.getCourseidWithTeacheridByCourseid(course.getCourseid()).get(0).getTeacherid()));
+                    detailCourse.setTeacherid(String.valueOf(courseidWithTeacheridDao.getCourseidWithTeacheridByCourseid(course.getCourseid()).get(0).getTeacherid()));
                     //获取CourseWithDsp
                     CourseWithDsp courseWithDsp = new CourseWithDsp(course, detailCourse);
                     //获取CouresAndDsp
                     CourseAndDsp courseAndDsp = JdbcUtil.CwpConvertCAp(courseWithDsp);
                     courseAndDspList.add(courseAndDsp);
+                    System.out.println("============");
+                    System.out.println(courseAndDsp);
+                    System.out.println("============");
                 }
                 int count = courseDao.getCourseCount();
                 //return
@@ -181,21 +197,37 @@ public class CourseController {
 
 
             //classroom 约束于courseid 选择教室
-            //查找所选教室，更新,默认绑定id=1  2
-            Classroom classroom = classroomDao.getClassroomById(2);
+            //查找所选教室，更新,默认绑定id=2
+//            Classroom classroom = classroomDao.getClassroomById(2);
+
+            //设置classroom基本信息
+            Classroom classroom = new Classroom();
+            classroom.setClassroomname(detailCourse.getOldclassroom());
+            classroom.setCapacity(ClassroomEnum.getCapcity(detailCourse.getOldclassroom()));
             classroom.setCourseid(tempCourse.getCourseid());
+
+            System.out.println("______________");
+            System.out.println(classroom);
+            System.out.println("______________");
+            //添加classroom
             classroomDao.addClassroom(classroom);
             //course_teacher 约束于courseid 选择老师
-            //默认老师id=1
-            CourseidWithTeacherid courseidWithTeacherid = new CourseidWithTeacherid(tempCourse.getCourseid(),1);
-            courseidWithTeacheridDao.addCourseidWithTeacherid(courseidWithTeacherid);
+            //默认老师id=1(已修改)
+            CourseidWithTeacherid courseidWithTeacherid = new CourseidWithTeacherid();
+            courseidWithTeacherid.setCourseid(tempCourse.getCourseid());
+            courseidWithTeacherid.setTeacherid(Integer.parseInt(detailCourse.getOldteacherid()));
 
+            System.out.println("______________");
+            System.out.println(courseidWithTeacherid);
+            System.out.println("______________");
+
+            courseidWithTeacheridDao.addCourseidWithTeacherid(courseidWithTeacherid);
             //Enrollment 每个学生都加一条未选择记录
             List<Student> allstudents = studentDao.getAllStudents();
             for(Student student:allstudents) {
                 enrollmentDao.addEnrollment(student.getStudentno(),tempCourse.getCourseid());
             }
-            //current_enrollment 添加一条记录
+            //向current_enrollment 添加一条记录
             currentEnrollmentDao.addInitCurrentEnrollment(tempCourse.getCourseid());
 
             detailCourseDao.addDetailCourse(detailCourse);
@@ -225,15 +257,26 @@ public class CourseController {
 
         cad.setStarttime(JdbcUtil.stringToTime(cad.getStrstarttime()));
         cad.setEndtime(JdbcUtil.stringToTime(cad.getStrendtime()));
-//        System.out.println("_________");
-//        System.out.println(cad);
-//        System.out.println("_________");
+        System.out.println("_________");
+        System.out.println(cad);
+        System.out.println("_________");
         try {
             CourseWithDsp courseWithDsp = JdbcUtil.CAPConvertCWP(cad);
             System.out.println(courseWithDsp);
 //            System.out.println("----------------");
             courseDao.updateCourse(courseWithDsp.getCourse());
             detailCourseDao.updateDetailCourse(courseWithDsp.getDetailcourse());
+            //从courseid中获取classroom
+            Classroom oldclassroom = classroomDao.getClassroomByCourseId(cad.getCourseid());
+            oldclassroom.setCapacity(ClassroomEnum.getCapcity(cad.getClassroom()));
+            oldclassroom.setClassroomname(cad.getClassroom());
+            classroomDao.updateClassroom(oldclassroom);
+
+            //更新老师
+            CourseidWithTeacherid courseidWithTeacherid = courseidWithTeacheridDao.getCourseidWithTeacheridByCourseid(cad.getCourseid()).get(0);
+            courseidWithTeacherid.setTeacherid(Integer.parseInt(cad.getTeacherid()));
+            courseidWithTeacheridDao.updateCourseidWithTeacherBycourseid(courseidWithTeacherid);
+
             List<String> list = new ArrayList<>();
             list.add("修改成功");
             return new RestResult(1, list);

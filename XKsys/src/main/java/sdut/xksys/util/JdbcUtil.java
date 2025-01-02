@@ -31,10 +31,10 @@ public class JdbcUtil {
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
 
         // 配置连接池属性
-        dataSource.setInitialSize(5);
-        dataSource.setMinIdle(5);
-        dataSource.setMaxActive(20);
-        dataSource.setMaxWait(60000);
+        dataSource.setInitialSize(30);
+        dataSource.setMinIdle(30);
+        dataSource.setMaxActive(150);
+        dataSource.setMaxWait(600000);
 
         // 配置监控统计拦截的filters，stat:监控统计，log4j:日志记录，wall:防御sql注入
         //dataSource.setFilters("stat,wall,log4j");
@@ -43,8 +43,8 @@ public class JdbcUtil {
         Properties properties = new Properties();
         properties.setProperty("validationQuery", "SELECT 1");
         properties.setProperty("testWhileIdle", "true");
-        properties.setProperty("testOnBorrow", "false");
-        properties.setProperty("testOnReturn", "false");
+        properties.setProperty("testOnBorrow", "true");
+        properties.setProperty("testOnReturn", "true");
 //        dataSource.setConnectionProperties(properties);
     }
 
@@ -192,11 +192,15 @@ public class JdbcUtil {
         cad.setStarttime(cwp.getDetailcourse().getStarttime());
         cad.setEndtime(cwp.getDetailcourse().getEndtime());
         cad.setDetailcourseid(cwp.getDetailcourse().getDetailcourseid());
+        cad.setClassroom(cwp.getDetailcourse().getClassroom());
+        cad.setTeacherid(cwp.getDetailcourse().getTeacherid());
+        cad.setOldclassroom(cwp.getDetailcourse().getOldclassroom());
+        cad.setOldteacherid(cwp.getDetailcourse().getOldteacherid());
         return cad;
     }
 
     public static CourseWithDsp CAPConvertCWP(CourseAndDsp cap){
-        DetailCourse detail = new DetailCourse(cap.getCourseid(), cap.getDetailcourseid(), cap.getCoursename(), cap.getDescription(), cap.getStartdate(), cap.getEnddate(), cap.getDayofweek(), cap.getStarttime(), cap.getEndtime());
+        DetailCourse detail = new DetailCourse(cap.getCourseid(), cap.getDetailcourseid(), cap.getCoursename(), cap.getOldclassroom(),cap.getOldteacherid(), cap.getClassroom(), cap.getTeacherid(), cap.getDescription(), cap.getStartdate(), cap.getEnddate(), cap.getDayofweek(), cap.getStarttime(), cap.getEndtime());
         Course course = new Course();
         course.setCourseid(cap.getCourseid());
         course.setCoursename(cap.getCoursename());
