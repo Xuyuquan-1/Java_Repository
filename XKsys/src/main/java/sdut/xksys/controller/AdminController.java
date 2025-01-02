@@ -35,6 +35,12 @@ public class AdminController {
          }
     }
 
+    @RequestMapping("/getAdminName")
+    public String getAdminName(HttpSession session){
+        Admin admin = (Admin) session.getAttribute("admin");
+        return admin.getAdminname();
+    }
+
     @RequestMapping("/edit")
     public Object updateAdmin(Admin admin) {
         try {

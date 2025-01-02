@@ -14,7 +14,7 @@
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
                 <a href="javascript:;" id="loginName">
-                    <img src="/img/user.png" class="layui-nav-img">admin
+                    贤心
                 </a>
                 <dl class="layui-nav-child">
                     <dd><a href="admin/adminInfo.html">个人信息</a></dd>
@@ -68,6 +68,14 @@
                 }
             });
         });
+    });
+    document.addEventListener("DOMContentLoaded", function() {
+        fetch('/admin/getAdminName')
+            .then(response => response.text())
+            .then(adminName => {
+                document.getElementById('loginName').innerText = adminName;
+            })
+            .catch(error => console.error('Error fetching student name:', error));
     });
 </script>
 </body>
