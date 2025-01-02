@@ -20,6 +20,10 @@ public class DetailCourse {
     Time starttime;
     @DateTimeFormat(pattern = "HH:mm")
     Time endtime;
+    String classroom;
+    String teacherid;
+    String oldclassroom;
+    String oldteacherid;
 
     String strstartdate;
     String strenddate;
@@ -31,7 +35,7 @@ public class DetailCourse {
     }
 
 
-    public DetailCourse(int courseid, int detailcourseid, String coursename, String description, Date startdate, Date enddate, String dayofweek, Time starttime, Time endtime) {
+    public DetailCourse(int courseid, int detailcourseid, String coursename, String oldclassroom, String oldteacherid, String classroom, String teacherid, String description, Date startdate, Date enddate, String dayofweek, Time starttime, Time endtime) {
         this.courseid = courseid;
         this.detailcourseid = detailcourseid;
         this.coursename = coursename;
@@ -42,6 +46,11 @@ public class DetailCourse {
         this.starttime = starttime;
         this.endtime = endtime;
 
+        this.classroom = classroom;
+        this.teacherid = teacherid;
+        this.oldclassroom = oldclassroom;
+        this.oldteacherid = oldteacherid;
+
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         this.strstartdate = sdf.format(startdate);
         this.strenddate = sdf.format(enddate);
@@ -50,59 +59,6 @@ public class DetailCourse {
         this.strstarttime = sdft.format(starttime);
         this.strendtime = sdft.format(endtime);
 
-
-    }
-
-    public int getCourseid() {
-        return courseid;
-    }
-
-    public int getDetailcourseid() {
-        return detailcourseid;
-    }
-
-    public String getCoursename() {
-        return coursename;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public Date getStartdate() {
-        return startdate;
-    }
-
-    public Date getEnddate() {
-        return enddate;
-    }
-
-    public String getDayofweek() {
-        return dayofweek;
-    }
-
-    public Time getStarttime() {
-        return starttime;
-    }
-
-    public Time getEndtime() {
-        return endtime;
-    }
-
-    public String getStrenddate() {
-        return strenddate;
-    }
-
-    public String getStrstartdate() {
-        return strstartdate;
-    }
-
-    public String getStrstarttime() {
-        return strstarttime;
-    }
-
-    public String getStrendtime() {
-        return strendtime;
     }
 
     public void setCourseid(int courseid) {
@@ -141,6 +97,22 @@ public class DetailCourse {
         this.endtime = endtime;
     }
 
+    public void setClassroom(String classroom) {
+        this.classroom = classroom;
+    }
+
+    public void setTeacherid(String teacherid) {
+        this.teacherid = teacherid;
+    }
+
+    public void setOldclassroom(String oldclassroom) {
+        this.oldclassroom = oldclassroom;
+    }
+
+    public void setOldteacherid(String oldteacherid) {
+        this.oldteacherid = oldteacherid;
+    }
+
     public void setStrstartdate(String strstartdate) {
         this.strstartdate = strstartdate;
     }
@@ -157,6 +129,74 @@ public class DetailCourse {
         this.strendtime = strendtime;
     }
 
+    public int getCourseid() {
+        return courseid;
+    }
+
+    public int getDetailcourseid() {
+        return detailcourseid;
+    }
+
+    public String getCoursename() {
+        return coursename;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Date getStartdate() {
+        return startdate;
+    }
+
+    public Date getEnddate() {
+        return enddate;
+    }
+
+    public String getDayofweek() {
+        return dayofweek;
+    }
+
+    public Time getStarttime() {
+        return starttime;
+    }
+
+    public Time getEndtime() {
+        return endtime;
+    }
+
+    public String getClassroom() {
+        return classroom;
+    }
+
+    public String getTeacherid() {
+        return teacherid;
+    }
+
+    public String getOldclassroom() {
+        return oldclassroom;
+    }
+
+    public String getOldteacherid() {
+        return oldteacherid;
+    }
+
+    public String getStrstartdate() {
+        return strstartdate;
+    }
+
+    public String getStrenddate() {
+        return strenddate;
+    }
+
+    public String getStrstarttime() {
+        return strstarttime;
+    }
+
+    public String getStrendtime() {
+        return strendtime;
+    }
+
     @Override
     public String toString() {
         return "DetailCourse{" +
@@ -169,6 +209,10 @@ public class DetailCourse {
                 ", dayofweek='" + dayofweek + '\'' +
                 ", starttime=" + starttime +
                 ", endtime=" + endtime +
+                ", classroom='" + classroom + '\'' +
+                ", teacherid='" + teacherid + '\'' +
+                ", oldclassroom='" + oldclassroom + '\'' +
+                ", oldteacherid='" + oldteacherid + '\'' +
                 ", strstartdate='" + strstartdate + '\'' +
                 ", strenddate='" + strenddate + '\'' +
                 ", strstarttime='" + strstarttime + '\'' +

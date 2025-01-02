@@ -51,6 +51,10 @@
         <th lay-data="{field:'endtime', sort: true}">结束时间</th>
         <th lay-data="{field:'startdate', sort: true}">开始日期</th>
         <th lay-data="{field:'enddate', sort: true}">结束日期</th>
+        <th lay-data="{field:'oldclassroom', sort: true}">上课教室</th>
+<!--        <th lay-data="{field:'classroom', sort: true}" style="display:none">新上课教室</th>-->
+        <th lay-data="{field:'oldteacherid', sort: true}">任课教师</th>
+<!--        <th lay-data="{field:'teacherid', sort: true}" style="display:none">新任课教师</th>-->
         <th lay-data="{toolbar:'#linetools'}">操作</th>
     </tr>
     </thead>
@@ -85,6 +89,43 @@
         <label class="layui-form-label">最大容量</label>
         <div class="layui-input-inline">
             <input type="number" name="maxenrollment" placeholder="请输入最大容量" autocomplete="off" class="layui-input" lay-verify="required">
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">上课教室</label>
+        <div class="layui-input-inline">
+            <select name="oldclassroom" lay-verify="required">
+                <option value="">请选择上课教室</option>
+                <option value="教室1">教室1</option>
+                <option value="教室2">教室2</option>
+                <option value="教室3">教室3</option>
+                <option value="教室4">教室4</option>
+                <option value="教室5">教室5</option>
+                <option value="教室6">教室6</option>
+                <option value="教室7">教室7</option>
+                <!-- 根据需要添加更多选项 -->
+            </select>
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">任课教师</label>
+        <div class="layui-input-inline">
+            <select name="oldteacherid" lay-verify="required">
+                <option value="">请选择任课教师</option>
+                <option value="1">张老师</option>
+                <option value="2">李老师</option>
+                <option value="3">王老师</option>
+                <option value="4">赵老师</option>
+                <option value="5">孙老师</option>
+                <option value="6">周老师</option>
+                <option value="7">吴老师</option>
+                <option value="8">郑老师</option>
+                <option value="9">冯老师</option>
+                <option value="10">陈老师</option>
+                <!-- 根据需要添加更多选项 -->
+            </select>
         </div>
     </div>
     <div class="layui-form-item layui-inline">
@@ -124,6 +165,7 @@
             <input type="text" name="description" placeholder="请输入课程描述" autocomplete="off" class="layui-input" lay-verify="required">
         </div>
     </div>
+
 </div>
 
 <!--编辑窗口组件-->
@@ -154,9 +196,63 @@
     <div class="layui-form-item layui-inline">
         <label class="layui-form-label">最大容量</label>
         <div class="layui-input-inline">
-            <input type="number" name="maxenrollment" placeholder="请输入最大容量" autocomplete="off" class="layui-input" lay-verify="required">
+            <input type="text" name="maxenrollment" placeholder="请输入最大容量" autocomplete="off" class="layui-input" lay-verify="required">
         </div>
     </div>
+
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">当前上课教室</label>
+        <div class="layui-input-inline">
+            <input type="text" name="oldclassroom" autocomplete="off" class="layui-input" lay-verify="required" readonly>
+        </div>
+    </div>
+
+
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">新上课教室</label>
+        <div class="layui-input-inline">
+            <select name="classroom" lay-verify="required">
+                <option value="">请选择上课教室</option>
+                <option value="教室1">教室1</option>
+                <option value="教室2">教室2</option>
+                <option value="教室3">教室3</option>
+                <option value="教室4">教室4</option>
+                <option value="教室5">教室5</option>
+                <option value="教室6">教室6</option>
+                <option value="教室7">教室7</option>
+                <!-- 根据需要添加更多选项 -->
+            </select>
+        </div>
+    </div>
+
+
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">当前任课教师</label>
+        <div class="layui-input-inline">
+            <input type="text" name="oldteacherid" autocomplete="off" class="layui-input" lay-verify="required" readonly>
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">新任课教师</label>
+        <div class="layui-input-inline">
+            <select name="teacherid" lay-verify="required">
+                <option value="">请选择任课教师</option>
+                <option value="1">张老师</option>
+                <option value="2">李老师</option>
+                <option value="3">王老师</option>
+                <option value="4">赵老师</option>
+                <option value="5">孙老师</option>
+                <option value="6">周老师</option>
+                <option value="7">吴老师</option>
+                <option value="8">郑老师</option>
+                <option value="9">冯老师</option>
+                <option value="10">陈老师</option>
+                <!-- 根据需要添加更多选项 -->
+            </select>
+        </div>
+    </div>
+
 
     <div class="layui-form-item layui-inline">
         <label class="layui-form-label">课程描述</label>
@@ -204,9 +300,9 @@
     <input type="hidden" name="description">
     <!-- 使用 layui-inline 包裹每个表单项 -->
     <div class="layui-form-item layui-inline">
-        <label class="layui-form-label">课程描述</label>
+        <label class="layui-form-label">课程详情</label>
         <div class="layui-input-inline">
-            <textarea type="text" name="description"  placeholder="请输入课程描述" autocomplete="off" class="layui-input check" lay-verify="required"></textarea>
+            <textarea type="text" name="description" autocomplete="off" class="layui-input check" lay-verify="required readonly"></textarea>
         </div>
     </div>
 </div>
@@ -264,7 +360,7 @@
             //点击新增按钮执行的方法
             //重置表单内容
             form.val("addWin", {coursename: "", credits: "", semester: "", maxenrollment: "",
-                description: "",dayofweek: "", strstartdate: "", strenddate: "", strstarttime: "", strendtime: ""});
+                description: "",dayofweek: "", strstartdate: "", strenddate: "", strstarttime: "", strendtime: "",classroom: "",teacherid: "",oldclassroom:"",oldteacherid:""});
             //打开一个对话框(输入内容)
             layer.open({
                 //具有遮罩层样式的窗口
@@ -286,6 +382,10 @@
                         strenddate: formdata.strenddate,
                         strstarttime: formdata.strstarttime,
                         strendtime: formdata.strendtime,
+                        classroom: formdata.classroom,
+                        teacherid: formdata.teacherid,//目前还是字符串类型
+                        oldclassroom: formdata.oldclassroom,
+                        oldteacherid: formdata.oldteacherid
                     }
                     var course = {
                         courseid:'',
@@ -323,9 +423,9 @@
             // console.log(document.getElementById("datalist"));
             //datalist是通过table初始化时的id(唯一标识)选择的，并不是html里面的id
             table.reload("datalist", {
-                page: {
-                    curr: 1 // 重载表格时从第一页开始
-                },
+                // page: {
+                //     curr: 1 // 重载表格时从第一页开始
+                // },
                 where: {
                     coursename:checktext // 使用获取到的值作为查询条件
                 }
@@ -335,6 +435,7 @@
         }
     });
 
+    //查看课程详情
     var func = function (courseid){
         layui.$.ajax({
             method: 'post',

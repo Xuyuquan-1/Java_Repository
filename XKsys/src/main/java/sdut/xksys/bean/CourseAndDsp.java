@@ -21,14 +21,85 @@ public class CourseAndDsp {
     String dayofweek;
     Time starttime;
     Time endtime;
-
+    String classroom;
+    String teacherid;
+    String oldclassroom;
+    String oldteacherid;
 
     String strstarttime;
     String strendtime;
 
 
-    public String getCoursename() {
-        return coursename;
+    public void setDetailcourseid(int detailcourseid) {
+        this.detailcourseid = detailcourseid;
+    }
+
+    public void setCourseid(int courseid) {
+        this.courseid = courseid;
+    }
+
+    public void setCoursename(String coursename) {
+        this.coursename = coursename;
+    }
+
+    public void setCredits(String credits) {
+        this.credits = credits;
+    }
+
+    public void setSemester(String semester) {
+        this.semester = semester;
+    }
+
+    public void setMaxenrollment(int maxenrollment) {
+        this.maxenrollment = maxenrollment;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setStartdate(Date startdate) {
+        this.startdate = startdate;
+    }
+
+    public void setEnddate(Date enddate) {
+        this.enddate = enddate;
+    }
+
+    public void setDayofweek(String dayofweek) {
+        this.dayofweek = dayofweek;
+    }
+
+    public void setStarttime(Time starttime) {
+        this.starttime = starttime;
+    }
+
+    public void setEndtime(Time endtime) {
+        this.endtime = endtime;
+    }
+
+    public void setClassroom(String classroom) {
+        this.classroom = classroom;
+    }
+
+    public void setTeacherid(String teacherid) {
+        this.teacherid = teacherid;
+    }
+
+    public void setOldclassroom(String oldclassroom) {
+        this.oldclassroom = oldclassroom;
+    }
+
+    public void setOldteacherid(String oldteacherid) {
+        this.oldteacherid = oldteacherid;
+    }
+
+    public void setStrstarttime(String strstarttime) {
+        this.strstarttime = strstarttime;
+    }
+
+    public void setStrendtime(String strendtime) {
+        this.strendtime = strendtime;
     }
 
     public int getDetailcourseid() {
@@ -39,16 +110,20 @@ public class CourseAndDsp {
         return courseid;
     }
 
-    public int getMaxenrollment() {
-        return maxenrollment;
+    public String getCoursename() {
+        return coursename;
+    }
+
+    public String getCredits() {
+        return credits;
     }
 
     public String getSemester() {
         return semester;
     }
 
-    public String getCredits() {
-        return credits;
+    public int getMaxenrollment() {
+        return maxenrollment;
     }
 
     public String getDescription() {
@@ -75,68 +150,28 @@ public class CourseAndDsp {
         return endtime;
     }
 
+    public String getClassroom() {
+        return classroom;
+    }
+
+    public String getTeacherid() {
+        return teacherid;
+    }
+
+    public String getOldclassroom() {
+        return oldclassroom;
+    }
+
+    public String getOldteacherid() {
+        return oldteacherid;
+    }
+
     public String getStrstarttime() {
         return strstarttime;
     }
 
     public String getStrendtime() {
         return strendtime;
-    }
-
-    public void setDetailcourseid(int detailcourseid) {
-        this.detailcourseid = detailcourseid;
-    }
-
-    public void setCourseid(int courseid) {
-        this.courseid = courseid;
-    }
-
-    public void setCoursename(String coursename) {
-        this.coursename = coursename;
-    }
-
-    public void setSemester(String semester) {
-        this.semester = semester;
-    }
-
-    public void setMaxenrollment(int maxenrollment) {
-        this.maxenrollment = maxenrollment;
-    }
-
-    public void setCredits(String credits) {
-        this.credits = credits;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setDayofweek(String dayofweek) {
-        this.dayofweek = dayofweek;
-    }
-
-    public void setStarttime(Time starttime) {
-        this.starttime = starttime;
-    }
-
-    public void setEndtime(Time endtime) {
-        this.endtime = endtime;
-    }
-
-    public void setStrstarttime(String strstarttime) {
-        this.strstarttime = strstarttime;
-    }
-
-    public void setStrendtime(String strendtime) {
-        this.strendtime = strendtime;
-    }
-
-    public void setStartdate(Date startdate) {
-        this.startdate = startdate;
-    }
-
-    public void setEnddate(Date enddate) {
-        this.enddate = enddate;
     }
 
     @Override
@@ -154,6 +189,10 @@ public class CourseAndDsp {
                 ", dayofweek='" + dayofweek + '\'' +
                 ", starttime=" + starttime +
                 ", endtime=" + endtime +
+                ", classroom='" + classroom + '\'' +
+                ", teacherid='" + teacherid + '\'' +
+                ", oldclassroom='" + oldclassroom + '\'' +
+                ", oldteacherid='" + oldteacherid + '\'' +
                 ", strstarttime='" + strstarttime + '\'' +
                 ", strendtime='" + strendtime + '\'' +
                 '}';

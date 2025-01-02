@@ -50,7 +50,7 @@ public class CourseDao {
 
 
 
-    public int getCourseCount(){
+    public int getCourseCount() throws SQLException {
         String sql = "select count(*) from courses";
         ResultSet rs = JdbcUtil.query(sql);
         try {
@@ -62,7 +62,7 @@ public class CourseDao {
             throw new RuntimeException("CourseDao.getCourseCount:error");
         }
         finally {
-            ;
+            JdbcUtil.close(rs);
         }
 
     }
