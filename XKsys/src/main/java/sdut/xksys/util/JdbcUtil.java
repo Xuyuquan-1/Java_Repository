@@ -34,18 +34,25 @@ public class JdbcUtil {
         dataSource.setInitialSize(30);
         dataSource.setMinIdle(30);
         dataSource.setMaxActive(150);
-        dataSource.setMaxWait(600000);
+        dataSource.setMaxWait(60000);
+
 
         // 配置监控统计拦截的filters，stat:监控统计，log4j:日志记录，wall:防御sql注入
         //dataSource.setFilters("stat,wall,log4j");
 
         // 配置其他属性，如连接超时时间等
-        Properties properties = new Properties();
-        properties.setProperty("validationQuery", "SELECT 1");
-        properties.setProperty("testWhileIdle", "true");
-        properties.setProperty("testOnBorrow", "true");
-        properties.setProperty("testOnReturn", "true");
+//        Properties properties = new Properties();
+//        properties.setProperty("validationQuery", "SELECT 1");
+//        properties.setProperty("testWhileIdle", "true");
+//        properties.setProperty("testOnBorrow", "true");
+//        properties.setProperty("testOnReturn", "true");
+
 //        dataSource.setConnectionProperties(properties);
+
+//        DruidDataSource dataSource = new DruidDataSource();
+//        dataSource.setRemoveAbandoned(true);
+//        dataSource.setRemoveAbandonedTimeout(1800);
+//        dataSource.setLogAbandoned(true);
     }
 
     // 获取数据库连接

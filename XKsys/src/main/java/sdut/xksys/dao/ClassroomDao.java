@@ -33,7 +33,10 @@ public class ClassroomDao {
 
     public Classroom getClassroomByClassroomName(String classroomname) throws SQLException, IllegalAccessException, InstantiationException{
         String sql = "select * from classrooms where classroomname = ?";
-        return JdbcUtil.convertResultSetToList(JdbcUtil.query(sql, classroomname), Classroom.class).get(0);
+        ResultSet rs = JdbcUtil.query(sql, classroomname);
+        List<Classroom> lists = JdbcUtil.convertResultSetToList(rs, Classroom.class);
+        JdbcUtil.close(rs);
+        return lists.get(0);
     }
 
     public int addClassroom(Classroom classroom){
@@ -54,6 +57,10 @@ public class ClassroomDao {
 
     public Classroom getClassroomByCourseId(int courseid) throws SQLException, IllegalAccessException, InstantiationException {
         String sql = "select * from classrooms where courseid = ?";
-        return JdbcUtil.convertResultSetToList(JdbcUtil.query(sql, courseid), Classroom.class).get(0);
+        ResultSet rs = JdbcUtil.query(sql, courseid);
+        List<Classroom> lists =  JdbcUtil.convertResultSetToList(rs, Classroom.class);
+        JdbcUtil.close(rs);
+        return lists.get(0);
+
     }
 }

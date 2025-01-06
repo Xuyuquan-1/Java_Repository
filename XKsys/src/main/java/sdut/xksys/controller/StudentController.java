@@ -50,7 +50,7 @@ public class StudentController {
     @RequestMapping("/newlist")
     public Object checkStudent(Student student) {
         try {
-            System.out.println(student.getStudentname());
+//            System.out.println(student.getStudentname());
             List<Student> list = studentDao.getCheckStudent(student);
             int count = studentDao.getStudentCount();
             RestResult result = new RestResult(count,list);

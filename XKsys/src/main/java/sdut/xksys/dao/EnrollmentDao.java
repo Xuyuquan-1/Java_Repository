@@ -35,6 +35,7 @@ public class EnrollmentDao {
             return rs.getInt(1);
         } finally {
             JdbcUtil.close(rs);
+
         }
     }
 

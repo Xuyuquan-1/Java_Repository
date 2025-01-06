@@ -14,7 +14,7 @@ public class CourseidWithTeacheridDao {
         String sql = "select * from course_teachers where courseid = ?";
         ResultSet rs = JdbcUtil.query(sql, courseid);
         List<CourseidWithTeacherid> list = JdbcUtil.convertResultSetToList(rs, CourseidWithTeacherid.class);
-        rs.close();
+        JdbcUtil.close(rs);
         return list;
     }
 
@@ -22,7 +22,7 @@ public class CourseidWithTeacheridDao {
         String sql = "select * from course_teachers where teacherid = ?";
         ResultSet rs = JdbcUtil.query(sql, teacherid);
         List<CourseidWithTeacherid> list = JdbcUtil.convertResultSetToList(rs, CourseidWithTeacherid.class);
-        rs.close();
+        JdbcUtil.close(rs);
         return list;
     }
 

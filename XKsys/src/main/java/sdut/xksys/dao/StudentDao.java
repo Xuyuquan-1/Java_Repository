@@ -37,6 +37,7 @@ public class StudentDao {
         ResultSet rs = JdbcUtil.query(sql);
         rs.next();
         int result = rs.getInt(1);
+        JdbcUtil.close(rs);
         return result;
     }
 

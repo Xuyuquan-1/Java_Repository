@@ -31,7 +31,7 @@
     </style>
 </head>
 <body>
-<table class="layui-table" lay-data="{toolbar:'#toptools', url:'http://localhost:8080/student/newlist', page:false, id:'datalist'}"
+<table class="layui-table" lay-data="{toolbar:'#toptools', url:'http://localhost:8080/student/newlist',  id:'datalist'}"
        lay-filter="datalist">
     <thead>
     <tr>
@@ -211,9 +211,9 @@
             // console.log(checktext);
             // console.log(document.getElementById("datalist"));
             table.reload("datalist", {
-                page: {
-                    curr: 1 // 重载表格时从第一页开始
-                },
+                // page: {
+                //     curr: 1 // 重载表格时从第一页开始
+                // },
                 where: {
                     studentname:checktext // 使用获取到的值作为查询条件
                 }

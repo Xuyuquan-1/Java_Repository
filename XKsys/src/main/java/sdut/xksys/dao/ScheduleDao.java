@@ -84,6 +84,7 @@ public class ScheduleDao {
         try {
             rs.next();
             int count = rs.getInt(1);
+            JdbcUtil.close(rs);
             return count;
         }catch(Exception e){
             e.printStackTrace();

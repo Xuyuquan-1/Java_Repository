@@ -47,8 +47,6 @@ public class TeacherDao {
     public List<Teacher> checkTeachers(Teacher teacher)  {
         String sql = "select * from teachers ";
         List<String> params = new ArrayList<>();
-        if(teacher.getTeacherno()=="")
-            teacher.setTeacherno(null);
         if(teacher.getTeacherno()!=null)
         {
             sql = sql + " where teacherno like ?";

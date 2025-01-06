@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 import sdut.xksys.bean.CurrentEnrollment;
 import sdut.xksys.util.JdbcUtil;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -11,7 +12,9 @@ import java.util.List;
 public class CurrentEnrollmentDao {
     public CurrentEnrollment getCurrentEnrollmentById(int courseid) throws SQLException, IllegalAccessException, InstantiationException {
         String sql = "select * from currentenrollments where courseid = ?";
-        List<CurrentEnrollment> list = JdbcUtil.convertResultSetToList(JdbcUtil.query(sql, courseid), CurrentEnrollment.class);
+        ResultSet rs = JdbcUtil.query(sql, courseid);
+        List<CurrentEnrollment> list = JdbcUtil.convertResultSetToList(rs, CurrentEnrollment.class);
+        JdbcUtil.close(rs);
         return list.get(0);
     }
 

@@ -80,7 +80,7 @@ public class AdminDao {
     }
 
     public int updateStudentTotalCredits(String currentcredits) throws SQLException {
-        String sql = "update studentcredits set totalcredits = ?";
+        String sql = "update studentcredits set totalcredits = ? ";
         int result = JdbcUtil.update(sql, currentcredits);
         return result;
     }

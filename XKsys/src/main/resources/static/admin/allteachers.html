@@ -33,47 +33,7 @@
 <body>
 <table class="layui-table" lay-filter="datalist" id="teachertable"></table>
 
-<!--新增窗口组件-->
-<div id="addWin" lay-filter="addWin" class="layui-form" style="display: none; padding: 20px;">
-  <input type="hidden" name="studentid">
 
-  <!-- 使用 layui-inline 包裹每个表单项 -->
-  <div class="layui-form-item layui-inline">
-    <label class="layui-form-label"><i class="layui-icon layui-icon-username"></i> 教师名字</label>
-    <div class="layui-input-inline">
-      <input type="text" name="teachername" placeholder="请输入教师名字" autocomplete="off" class="layui-input" lay-verify="required">
-    </div>
-  </div>
-
-  <div class="layui-form-item layui-inline">
-    <label class="layui-form-label"><i class="layui-icon layui-icon-user"></i> 教师工号</label>
-    <div class="layui-input-inline">
-      <input type="text" name="teacherno" placeholder="请输入教师工号" autocomplete="off" class="layui-input" lay-verify="required">
-    </div>
-  </div>
-
-  <div class="layui-form-item layui-inline">
-    <label class="layui-form-label"><i class="layui-icon layui-icon-email"></i> 教师邮箱</label>
-    <div class="layui-input-inline">
-      <input type="email" name="email" placeholder="请输入教师邮箱" autocomplete="off" class="layui-input" lay-verify="required">
-    </div>
-  </div>
-
-  <div class="layui-form-item layui-inline">
-    <label class="layui-form-label"><i class="layui-icon layui-icon-note"></i>教师联系方式</label>
-    <div class="layui-input-inline">
-      <input type="text" name="phone" placeholder="请输入教师联系方式" autocomplete="off" class="layui-input" lay-verify="required">
-    </div>
-  </div>
-
-  <div class="layui-form-item layui-inline">
-    <label class="layui-form-label"><i class="layui-icon layui-icon-note"></i> 教师办公室</label>
-    <div class="layui-input-inline">
-      <input type="text" name="office" placeholder="请输入教师办公室" autocomplete="off" class="layui-input" lay-verify="required">
-    </div>
-  </div>
-
-</div>
 
 <!--编辑窗口组件-->
 <div id="editWin" lay-filter="editWin" class="layui-form" style="display: none; padding: 20px;">
@@ -125,7 +85,7 @@
   <form class="layui-form layui-row layui-col-space4">
     <div class="layui-form-item">
       <div class="layui-col-sm1 layui-input-inline">
-        <input type="text" name="checktext" placeholder="请输入姓名查找" autocomplete="off" class="layui-input">
+        <input type="text" name="checktext" placeholder="请输入工号查找" autocomplete="off" class="layui-input">
       </div>
       <div class="layui-col-sm1 layui-input-inline">
         <button type="button" class="layui-btn " lay-event="check">查询</button>
@@ -203,51 +163,13 @@
   table.on("toolbar(datalist)", function (obj) {
     var event = obj.event;
     // var data = obj.data;
-    if (event == 'add') {
-      //点击新增按钮执行的方法
-      //重置表单内容
-      form.val("addWin", {teachername: '', teacherno: '', email: '', phone: '', office: ''});
-      //打开一个对话框(输入内容)
-      layer.open({
-        //具有遮罩层样式的窗口
-        type: 1,
-        title: "新增教师信息",
-        area: ['400px', '500px'],
-        content: $("#addWin"),
-        btn: ["保存"],
-        btn1: function () {
-          //点击保存按钮  保存数据
-          //表单中的数据
-          var formdata = form.val("addWin");
-          console.log(formdata);
-          $.ajax({
-            method: 'post',
-            url: "teacher/add",
-            data: formdata,
-            contentType: 'application/json', // 明确发送的数据类型为 JSON
-            data: JSON.stringify(formdata), //转换为json字符串
-            success: function (result) {
-              //关闭对话框
-              layer.closeAll();
-              //刷新数据
-              table.reload("datalist");
-              //提示用户
-              // console.log(result);
-              layer.msgName("添加成功", {icon: 1, time: 1800});
-            },
-            error:function(result){
-              layer.msgName("添加失败！",{icon: 2, time:1000});
-            }
-          });
-        }
-      });
-    }
+
     if(event == 'check') {
       var checktext = $("[name='checktext']").val(); // 获取输入框的值
       table.reload("datalist", {
-        page: {
-          curr: 1 // 重载表格时从第一页开始
-        },
+        // page: {
+        //   curr: 1 // 重载表格时从第一页开始
+        // },
         where: {
           teacherno:checktext // 使用获取到的值作为查询条件
         }
@@ -268,7 +190,7 @@
       //打开对话框
       layer.open({
         type: 1,
-        title: '编辑学生',
+        title: '编辑教师信息',
         area: ['400px', '500px'],
         content: $("#editWin"),
         btn: ["保存"],
@@ -293,21 +215,6 @@
             }
           });
         }
-      });
-    } else if (event == 'delete') {
-      //点击删除按钮执行的方法
-      //确认是否删除数据
-      layer.confirm("确认要删除该行数据吗?", function () {
-        //点击确认后执行的代码
-        $.ajax({
-          url: "teacher/delete",
-          data: data,
-          success: function () {
-            layer.closeAll();
-            table.reload("datalist");
-            layer.msg("删除成功", {icon: 1, time: 1800});
-          }
-        });
       });
     }
   });
